@@ -43,7 +43,7 @@ public class MapGenerator {
 		// Check if id exist
 		if(mapsRepo.containsKey(id)){
 			throw new OverwriteException("Id :" + id
-									    + " Aleady exist in maps repository :");
+									    + " already exist in maps repository.");
 		}
 		
 		/* If the id doesn't exist put id inside 
