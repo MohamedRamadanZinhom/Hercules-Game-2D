@@ -11,22 +11,19 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 
 import com.engine.exception.*;
 
-/**
- * @author Z. Mohamed Osama
- *
- */
-public class ObjectsGenerator {
+
+public class ObjectsGenerator_Example {
 	
 	public static HashMap<String,Object>objectsRepo;
 	
-	public ObjectsGenerator()
+	public ObjectsGenerator_Example()
 	{
 		objectsRepo = new  HashMap<String,Object>();
 	}
 	
 	
 	@SuppressWarnings("unchecked") // The object type is a generic type
-	public <Type> Type load(String loaderType,String path) throws InvalideLoaderType
+	public <Type> Type load(String loaderType,String path) throws LoaderTypeException
 	{
 		Object object = null;
 		
@@ -43,12 +40,16 @@ public class ObjectsGenerator {
 					object = new BitmapFont(Gdx.files.internal(path));
 					break;
 				default:
-					throw new InvalideLoaderType("The type " 
+					throw new LoaderTypeException("The type " 
 												+ loaderType
 												+ " is not loader type");
 			}
 			objectsRepo.put(path, object);
 		}
 		return (Type) object;
+	}
+	
+	public void dispose() {
+		objectsRepo.clear();
 	}
 }
