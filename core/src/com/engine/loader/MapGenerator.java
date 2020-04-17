@@ -50,7 +50,13 @@ public class MapGenerator {
 		 * the repository HashMap<String,Map>.
 		 */
 		else {
-			Map map = new Map(path, mapFile);
+			Map map = null;
+			try {
+				map = new Map(path, mapFile);
+			} catch (NotDirectoryException | NotExistFileException error) {
+				System.out.print(error.toString());
+				error.printStackTrace();
+			}
 			mapsRepo.put(id, map);
 		}
 	}
