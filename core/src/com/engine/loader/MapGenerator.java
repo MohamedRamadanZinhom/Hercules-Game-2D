@@ -19,13 +19,15 @@ public class MapGenerator {
 	 * Methods
 	 * -----------
 	 * setMap : {@link #setMap(String, String, String)}
+	 * setMap : {@link #setMap(String, String, int))}
 	 * renderMap {@link #renderMap(String, OrthographicCamera)}
 	 * */
 	
-	protected static HashMap<String,Map>mapsRepo;
+	protected static HashMap<String,Map>mapsRepo = 
+			new HashMap<String,Map>();
 	
 	public MapGenerator() {
-		MapGenerator.mapsRepo = new HashMap<String,Map>();
+	 
 	}
 	
 	
@@ -37,13 +39,15 @@ public class MapGenerator {
 	 * @param id : String - The id which used to access specific TiledMap.
 	 * -----------
 	 * @throws HashMapOverwrite if TiledMap id (key) already exists in the maps repository.
+	 * -----------
+	 *  {@link #setMap(String, String, int)}
 	 * */
-	public void setMap(String path, String mapFile, String id) throws OverwriteException {
+	public static void setMap(String path, String mapFile, String id) throws OverwriteException {
 		
 		// Check if id exist
 		if(mapsRepo.containsKey(id)){
 			throw new OverwriteException("Id :" + id
-									    + " already exist in maps repository.");
+									    + " already exist in the maps repository.");
 		}
 		
 		/* If the id doesn't exist put id inside 
@@ -53,12 +57,42 @@ public class MapGenerator {
 			Map map = null;
 			try {
 				map = new Map(path, mapFile);
-			} catch (NotDirectoryException | NotExistFileException error) {
-				System.out.print(error.toString());
+			} catch (NotExistFileException error) {
 				error.printStackTrace();
 			}
 			mapsRepo.put(id, map);
 		}
+	}
+	
+	/**
+	 * Load [.tmx] (TiledMap) then put it inside the maps repository.
+	 * ----------
+	 * @param path : String - The path in which the [.tmx] file located.
+	 * @param mapFile : String - The [.tmx] file name.
+	 * @param id : int - The id cast inside the mathod to String 
+	 * 					which used to access specific TiledMap.
+	 * 
+	 * -------------------------------------------------------
+	 * Why cast id to String : setMap(String path, String mapFile, int id)
+	 * ----------------------------------------------------------
+	 * is an overloaded function which accepts overwrite to value 
+	 * for the given id in the maps repository. 
+	 * */
+	public static void setMap(String path, String mapFile, int id){
+		
+		// Cast id to String
+		String strId = String.valueOf(id);
+		
+		/* Put the strId & map inside 
+		 * the repository HashMap<String,Map>.*/
+		
+		try {
+			// add map to mapsRepo
+			mapsRepo.put(strId, new Map(path, mapFile));
+		} catch (NotExistFileException error) {
+			error.printStackTrace();
+		}
+
 	}
 	
 	/**
@@ -69,7 +103,7 @@ public class MapGenerator {
 	 * -----------
 	 * @throws KeyException if id (key) doesn't exists in the maps repository.
 	 * */
-	public void renderMap(String id, OrthographicCamera envCam) throws KeyException {
+	public static void renderMap(String id, OrthographicCamera envCam) throws KeyException {
 		
 		if(mapsRepo.containsKey(id))
 			mapsRepo.get(id).render(envCam);

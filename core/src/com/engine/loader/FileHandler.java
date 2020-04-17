@@ -19,7 +19,7 @@ public class FileHandler {
 	public static boolean isDir(String path) {
 		
 		boolean dir = Gdx.files
-				.external(path).isDirectory();
+				.internal(path).isDirectory();
 		if(dir)
 			return true;
 		else
@@ -39,8 +39,9 @@ public class FileHandler {
 		// isDir(String) is an overloaded (function) method.
 		boolean dir = FileHandler.isDir(path); 
 		
-		if(dir == false)
+		if(dir == false) {
 			throw new NotDirectoryException(errorMsg);
+		}
 	}
 	
 	/**
@@ -53,7 +54,7 @@ public class FileHandler {
 	 * */
 	public static boolean isFileExist(String path, String fileName) {
 		
-		boolean exist = Gdx.files.external(path + "/" + fileName).exists();
+		boolean exist = Gdx.files.internal(path + fileName).exists();
 		
 		if(exist)
 			return true;

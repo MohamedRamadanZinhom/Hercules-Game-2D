@@ -5,6 +5,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.engine.exception.KeyException;
+import com.engine.loader.MapGenerator;
 
 public class GameAdapter extends ApplicationAdapter {
 	
@@ -35,8 +37,10 @@ public class GameAdapter extends ApplicationAdapter {
 		envCam = new OrthographicCamera(); 
 		envCam.setToOrtho(false, V_WIDTH, V_HEIGHT);
 		
-		////////////// Map ////////////////
-
+		////////////// Test MapGenerator ////////////////
+		
+		MapGenerator.setMap("./test-assets/test-map/"
+				, "leve-1.tmx",1);
 	}
 
 	@Override
@@ -47,14 +51,18 @@ public class GameAdapter extends ApplicationAdapter {
 			Gdx.app.exit();
 		else
 		{
-			
+			try {
+				MapGenerator.renderMap("1", envCam);
+			} catch (KeyException error) {
+				error.printStackTrace();
+			}
 		}
 	}
 	
 	@Override
 	public void dispose () {
 		spriteBatch.dispose();
-		
+		MapGenerator.disposeAll();
 	}
 
 	

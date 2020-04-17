@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.engine.exception.NotDirectoryException;
 import com.engine.exception.NotExistFileException;
 
 class Map {
@@ -29,17 +28,15 @@ class Map {
 	private OrthogonalTiledMapRenderer map;
 	
 	public Map(String path,
-			String mapFile) throws NotDirectoryException, NotExistFileException {
+			String mapFile) throws NotExistFileException {
 		
-		String errorMsg_1 = "The path :" + path + " is not a directory";
 		
-		String errorMsg_2 = "The file :" + mapFile
+		String errorMsg = "The file :" + mapFile
 				+ " doesn't exist in the dir :" + path;
 		
-		FileHandler.isDir(path, errorMsg_1); // Check if path is a directory
-		FileHandler.isFileExist(path, mapFile, errorMsg_2); // Check if file exist.
+		FileHandler.isFileExist(path, mapFile, errorMsg); // Check if file exist.
 		
-		this.tiledMap = new TmxMapLoader().load(path + "/" + mapFile);
+		this.tiledMap = new TmxMapLoader().load(path + mapFile);
 		this.map = new OrthogonalTiledMapRenderer(this.tiledMap);
 	}
 	
