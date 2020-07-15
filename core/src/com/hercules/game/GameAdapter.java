@@ -4,7 +4,6 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.*;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.engine.exception.KeyException;
 import com.engine.loader.MapGenerator;
 
@@ -27,33 +26,32 @@ public class GameAdapter extends ApplicationAdapter {
 
 	@Override
 	public void create() {
-		
+
 		// Test MapGenerator
 		MapGenerator.setMap(MAP_DIR, MAP[0], 0);
 
-		envCam = new OrthographicCamera(V_WIDTH * SCALE, V_HEIGHT * SCALE);
-		
 		float x = MapGenerator.getLayerWidth("0", 0);
 		float y = MapGenerator.getLayerHeight("0", 0);
-				
+
+		envCam = new OrthographicCamera(V_WIDTH * SCALE, V_HEIGHT * SCALE);
+
 		envCam.setToOrtho(false, x, y * 2.25f);
 		envCam.update();
 	}
 
 	@Override
 	public void render() {
-		
+
 		/////////////// Handle Inputs //////////////
 		if (Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
 			Gdx.app.exit();
 		}
-		
+
 		///////////// Clear Screen /////////////////////////
-        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT); // Clear screen
-        
-        
-        //////////////// Update Camera ///////////////////
+		Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT); // Clear screen
+
+		//////////////// Update Camera ///////////////////
 		envCam.update();
 
 		//////////////// World ///////////////////////////
