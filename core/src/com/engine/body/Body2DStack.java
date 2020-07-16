@@ -25,6 +25,11 @@ abstract public class Body2DStack {
 		Body2DStack.type = bType;
 	}
 	
+	/**Debug bodies and physical object, properties
+	 * --------------------------------------------
+	 * @param world: World
+	 * @param Matrix4: projMatrix
+	 */
 	public static void render2DBody(World world
 			, Matrix4 projMatrix) {
 		

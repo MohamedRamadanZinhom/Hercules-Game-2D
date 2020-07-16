@@ -12,9 +12,15 @@ import com.engine.exception.*;
 
 public class MapGenerator {
 	/**
-	 * Attributes ----------- mapsRepo : protected HashMap<String,Map>
-	 * {@link #mapsRepo} Maps repository (check Map class). ----------- Methods
-	 * ----------- setMap : {@link #setMap(String, String, String)} setMap :
+	 * Attributes 
+	 * ----------- 
+	 * mapsRepo : protected HashMap<String,Map>
+	 * {@link #mapsRepo} Maps repository (check Map class). 
+	 * 
+	 * 
+	 * Methods
+	 * -----------
+	 * setMap : {@link #setMap(String, String, String)} setMap :
 	 * {@link #setMap(String, String, int))} renderMap
 	 * {@link #renderMap(String, OrthographicCamera)}
 	 */
@@ -26,15 +32,15 @@ public class MapGenerator {
 	}
 
 	/**
-	 * Load [.tmx] (TiledMap) then put it inside the maps repository. ----------
+	 * Load [.tmx] (TiledMap) then put it inside the maps repository.
+	 * ----------
 	 * 
 	 * @param path    : String - The path in which the [.tmx] file located.
 	 * @param mapFile : String - The [.tmx] file name.
 	 * @param id      : String - The id which used to access specific TiledMap.
-	 *                -----------
+
 	 * @throws HashMapOverwrite if TiledMap id (key) already exists in the maps
-	 *                          repository. -----------
-	 *                          {@link #setMap(String, String, int)}
+	 *                          repository. {@link #setMap(String, String, int)}
 	 */
 	public static void setMap(String path, String mapFile, String id) throws OverwriteException {
 
@@ -58,18 +64,16 @@ public class MapGenerator {
 	}
 
 	/**
-	 * Load [.tmx] (TiledMap) then put it inside the maps repository. ----------
+	 * Load [.tmx] (TiledMap) then put it inside the maps repository. 
 	 * 
 	 * @param path    : String - The path in which the [.tmx] file located.
 	 * @param mapFile : String - The [.tmx] file name.
 	 * @param id      : int - The id cast inside the mathod to String which used to
 	 *                access specific TiledMap.
 	 * 
-	 *                ------------------------------------------------------- Why
-	 *                cast id to String : setMap(String path, String mapFile, int
-	 *                id) ----------------------------------------------------------
-	 *                is an overloaded function which accepts overwrite to value for
-	 *                the given id in the maps repository.
+	 * Why cast id to String : setMap(String path, String mapFile, int id)
+	 * is an overloaded function which accepts overwrite to value for the given 
+	 * id in the maps repository.
 	 */
 	public static void setMap(String path, String mapFile, int id) {
 
@@ -90,11 +94,11 @@ public class MapGenerator {
 	}
 
 	/**
-	 * Render TiledMap with given id. -----------
+	 * Render TiledMap with given id. 
 	 * 
 	 * @param id     : String - The id which used to access specific map.
 	 * @param envCam : OrthographicCamera - The camera used to render the TiledMap
-	 *               with given id. -----------
+	 *               	with given id.
 	 * @throws KeyException if id (key) doesn't exists in the maps repository.
 	 */
 	public static void renderMap(String id, OrthographicCamera envCam) throws KeyException {
@@ -106,9 +110,10 @@ public class MapGenerator {
 	}
 
 	/**
-	 * get Map with given id. -----------
+	 * get Map with given id. 
 	 * 
-	 * @param id : String - The id which used to access specific map. -----------
+	 * @param id : String - The id which used to access specific map. 
+
 	 * @throws KeyException if id (key) doesn't exists in the maps repository.
 	 */
 	public static Map getMap(String id) throws KeyException {
@@ -121,7 +126,7 @@ public class MapGenerator {
 
 	/**
 	 * @param layerIndex : int - The id which used to access specific TiledMap.
-	 *                   -----------
+	 * 
 	 * @return layer's width in tiles.
 	 */
 	public static float getLayerWidth(String id, int layerIndex) {
@@ -136,14 +141,15 @@ public class MapGenerator {
 
 		return width;
 	}
+
 	/**
 	 * @param layerIndex : int - The id which used to access specific TiledMap.
-	 *                   -----------
+	 * 
 	 * @return TiledMapTileLayer: of given index.
 	 */
 	public static TiledMapTileLayer getLayer(String id, int layerIndex) {
 
-		TiledMapTileLayer layer= null;
+		TiledMapTileLayer layer = null;
 
 		try {
 			layer = getMap(id).getLayer(layerIndex);
@@ -156,7 +162,7 @@ public class MapGenerator {
 
 	/**
 	 * @param layerIndex : int - The id which used to access specific TiledMap.
-	 *                   -----------
+	 * 
 	 * @return tiles' height in pixels.
 	 */
 	public static float getTileWidth(String id, int layerIndex) {
@@ -174,7 +180,7 @@ public class MapGenerator {
 
 	/**
 	 * @param layerIndex : int - The id which used to access specific TiledMap.
-	 *                   -----------
+	 * 
 	 * @return layer's height in tiles.
 	 */
 	public static float getLayerHeight(String id, int layerIndex) {
@@ -192,7 +198,7 @@ public class MapGenerator {
 
 	/**
 	 * @param layerIndex : int - The id which used to access specific TiledMap.
-	 *                   -----------
+	 *
 	 * @return tiles' height in pixels.
 	 */
 	public static float getTileHeight(String id, int layerIndex) {
@@ -210,11 +216,11 @@ public class MapGenerator {
 
 	/**
 	 * Dispose all TiledMaps and OrthogonalTiledMapRenderer objects located in the
-	 * maps repository then clear the repository. -----------
+	 * maps repository then clear the repository
 	 * 
 	 * @param id     : String - The id which used to access specific map.
 	 * @param envCam : OrthographicCamera - The camera used to render the TiledMap
-	 *               with given id. -----------
+	 *                 with given id.
 	 */
 	public static void disposeAll() {
 		Iterator<Entry<String, Map>> it = mapsRepo.entrySet().iterator();
