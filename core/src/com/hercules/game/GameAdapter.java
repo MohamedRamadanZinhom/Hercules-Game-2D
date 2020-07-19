@@ -29,10 +29,13 @@ public class GameAdapter extends ApplicationAdapter {
 	OrthographicCamera playerCam;
 
 	// Test AnimationGenerator
-	AnimationGenerator demon;
+	AnimationGenerator []demon;
 
 	public static final String name = "demon";
+	
 	public static final String path = "./sprite-sheets/demon.png";
+	public static final String path2 = "./sprite-sheets/demon-left.png";
+
 	public static final float frameDuration = 0.09f;
 	public static final int nFrame = 21;
 
@@ -45,7 +48,9 @@ public class GameAdapter extends ApplicationAdapter {
 	public float x_postion = 32.0f; // player - x
 	public float y_postion = 32.0f; // player - y
 	public String mode = "idle";
-
+	
+	public int direction = 0;
+	
 	@Override
 	public void create() {
 
@@ -53,10 +58,13 @@ public class GameAdapter extends ApplicationAdapter {
 		MapGenerator.setMap(MAP_DIR, MAP[0], 0);
 
 		// Test AnimationGenerator
+		demon = new AnimationGenerator[2];
+		demon[0] = new AnimationGenerator(path); // right - enemy
+		demon[1] = new AnimationGenerator(path2); // left - enemy
 
-		demon = new AnimationGenerator(path); // enemy
 		try {
-			demon.addAnimation(name, nFrame, frameDuration, startKeys, endKeys, typeKeys);
+			demon[0].addAnimation(nFrame, frameDuration, startKeys, endKeys, typeKeys, "right");
+			demon[1].addAnimation(nFrame, frameDuration, startKeys, endKeys, typeKeys, "left");
 		} catch (OverwriteException error) {
 			error.printStackTrace();
 		}
@@ -79,10 +87,13 @@ public class GameAdapter extends ApplicationAdapter {
 		if (Gdx.input.isKeyPressed(Keys.RIGHT)) {
 			x_postion += 3;
 			mode = "walk";
+			direction = 0;
 		}
 		if (Gdx.input.isKeyPressed(Keys.LEFT)) {
 			x_postion -= 3;
 			mode = "walk";
+			direction = 1;
+			
 		}
 
 		if (Gdx.input.isKeyPressed(Keys.SPACE)) {
@@ -105,18 +116,18 @@ public class GameAdapter extends ApplicationAdapter {
 
 		///////////// Update /////////////////////
 
-		demon.animate(name, mode, x_postion, y_postion);
+		demon[direction].animate(mode, x_postion, y_postion);
 
 		// re-init
-		mode = "idle";
+		mode = "idle";		
 	}
 
 	@Override
 	public void dispose() {
-		
+
 		MapGenerator.disposeAll();
-		demon.dispose();
-		AnimationGenerator.disposeAll();
+		demon[0].dispose();
+		demon[1].dispose();
 	}
 
 }
