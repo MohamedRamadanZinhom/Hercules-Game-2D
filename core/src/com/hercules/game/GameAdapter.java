@@ -1,13 +1,7 @@
 package com.hercules.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.*;
-import com.engine.animation.AnimationGenerator;
-import com.engine.exception.KeyException;
-import com.engine.exception.OverwriteException;
-import com.engine.loader.MapGenerator;
 
 public class GameAdapter extends ApplicationAdapter {
 
@@ -28,106 +22,20 @@ public class GameAdapter extends ApplicationAdapter {
 	OrthographicCamera envCam;
 	OrthographicCamera playerCam;
 
-	// Test AnimationGenerator
-	AnimationGenerator []demon;
-
-	public static final String name = "demon";
-	
-	public static final String path = "./sprite-sheets/demon.png";
-	public static final String path2 = "./sprite-sheets/demon-left.png";
-
-	public static final float frameDuration = 0.09f;
-	public static final int nFrame = 21;
-
-	public static final int[] startKeys = { 0, 3, 9, 13, 15 };
-	public static final int[] endKeys = { 2, 8, 12, 14, 20 };
-	public static final String[] typeKeys = { "idle", "walk", "attack", "hurt", "death" };
-
-	// init-render
-	public float stateTime = 0.0f;
-	public float x_postion = 32.0f; // player - x
-	public float y_postion = 32.0f; // player - y
-	public String mode = "idle";
-	
-	public int direction = 0;
-	
 	@Override
 	public void create() {
 
-		// Test MapGenerator
-		MapGenerator.setMap(MAP_DIR, MAP[0], 0);
-
-		// Test AnimationGenerator
-		demon = new AnimationGenerator[2];
-		demon[0] = new AnimationGenerator(path); // right - enemy
-		demon[1] = new AnimationGenerator(path2); // left - enemy
-
-		try {
-			demon[0].addAnimation(nFrame, frameDuration, startKeys, endKeys, typeKeys, "right");
-			demon[1].addAnimation(nFrame, frameDuration, startKeys, endKeys, typeKeys, "left");
-		} catch (OverwriteException error) {
-			error.printStackTrace();
-		}
-
-		float x = MapGenerator.getLayerWidth("0", 0);
-		float y = MapGenerator.getLayerHeight("0", 0);
-
-		envCam = new OrthographicCamera(V_WIDTH * SCALE, V_HEIGHT * SCALE);
-		envCam.setToOrtho(false, x - initial_zoom_level, y * 2.25f - initial_zoom_level);
-
+		envCam = new OrthographicCamera(V_WIDTH * SCALE / GU, V_HEIGHT * SCALE / GU);
 	}
 
 	@Override
 	public void render() {
 
-		/////////////// Handle Inputs //////////////
-		if (Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
-			Gdx.app.exit();
-		}
-		if (Gdx.input.isKeyPressed(Keys.RIGHT)) {
-			x_postion += 3;
-			mode = "walk";
-			direction = 0;
-		}
-		if (Gdx.input.isKeyPressed(Keys.LEFT)) {
-			x_postion -= 3;
-			mode = "walk";
-			direction = 1;
-			
-		}
-
-		if (Gdx.input.isKeyPressed(Keys.SPACE)) {
-			mode = "attack";
-		}
-
-		///////////// Clear Screen /////////////////////////
-		Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT); // Clear screen
-
-		//////////////// Update Camera ///////////////////
-		envCam.update();
-
-		//////////////// World ///////////////////////////
-		try {
-			MapGenerator.renderMap("0", envCam);
-		} catch (KeyException error) {
-			error.printStackTrace();
-		}
-
-		///////////// Update /////////////////////
-
-		demon[direction].animate(mode, x_postion, y_postion);
-
-		// re-init
-		mode = "idle";		
 	}
 
 	@Override
 	public void dispose() {
 
-		MapGenerator.disposeAll();
-		demon[0].dispose();
-		demon[1].dispose();
 	}
 
 }
