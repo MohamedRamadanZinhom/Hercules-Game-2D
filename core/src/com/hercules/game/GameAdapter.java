@@ -69,7 +69,7 @@ public class GameAdapter extends ApplicationAdapter {
 		bodyTypeSignature.put(1, null);
 		bodyTypeSignature.put(2, new BodyProperty(BodyType.StaticBody, 0.0f, 0.0f, 0.0f, categoryBits[0], bitsMask[0]));
 		bodyTypeSignature.put(3,
-				new BodyProperty(BodyType.DynamicBody, 1.0f, 0.0f, 0.0f, categoryBits[1], bitsMask[1]));
+				new BodyProperty(BodyType.KinematicBody, 1.0f, 0.0f, 0.0f, categoryBits[1], bitsMask[1]));
 
 		world = new World(mapDir, mapFname, mapId);
 
@@ -77,7 +77,7 @@ public class GameAdapter extends ApplicationAdapter {
 		world2d.setContactListener(new CollisionSignal());
 
 		// Player
-		
+
 	}
 
 	@Override

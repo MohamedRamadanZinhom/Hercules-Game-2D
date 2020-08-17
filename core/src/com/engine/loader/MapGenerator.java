@@ -345,6 +345,10 @@ public class MapGenerator {
 					world.createDynamicBody(shape, restitution, density, friction, categoryBits, bitsMask, bodyId);
 
 				}
+
+				else if (bodyType == BodyType.KinematicBody) {
+					world.createKinematicBody(shape, categoryBits, bitsMask, bodyId);
+				}
 			}
 		}
 
