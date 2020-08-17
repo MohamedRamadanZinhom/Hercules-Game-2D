@@ -12,18 +12,18 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.MapLayers;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
+import com.badlogic.gdx.maps.objects.CircleMapObject;
+import com.badlogic.gdx.maps.objects.PolygonMapObject;
+import com.badlogic.gdx.maps.objects.PolylineMapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
+import com.badlogic.gdx.maps.objects.TextureMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.engine.world.BodyProperty;
 import com.engine.world.World2D;
 import com.engine.exception.*;
-import com.engine.math.Vec;
 
 public class MapGenerator {
 	/**
@@ -286,57 +286,59 @@ public class MapGenerator {
 			}
 
 			MapObjects objects = layers.get(layerIndex).getObjects();
-			
-			System.out.println(layers.get(layerIndex).getName()); // debug
-			
-			float tileWidth = getTileWidth(id, layerIndex);
-			float tileHeight = getTileHeight(id, layerIndex);
 
 			for (MapObject object : objects) {
 
-				Shape shape = getShapeFromObject(object, tileWidth, tileHeight, GU);
-				BodyType bdtype = bdProp.getBdtype();
-
-				Vector2 pos = Vec.getTransformedCenterForRectangle(getRectangleFromObject(object), tileWidth,
-						tileHeight, GU);
-
-				if (bdtype == BodyType.StaticBody) {
-
-					world.createStaticBody(pos.x, pos.y, shape, true);
+				if (object instanceof TextureMapObject) {
+					continue;
 				}
 
-				else if (bdtype == BodyType.DynamicBody) {
+				Shape shape;
 
-					float restitution = bdProp.getRestitution();
-					float density = bdProp.getDensity();
-					float friction = bdProp.getDensity();
+				if (object instanceof RectangleMapObject) {
 
-					world.createDynamicBody(pos.x, pos.y, shape, true, restitution, density, friction);
+					shape = World2D.getRectangle((RectangleMapObject) object);
+				}
+
+				else if (object instanceof PolygonMapObject) {
+
+					shape = World2D.getPolygon((PolygonMapObject) object);
+				}
+
+				else if (object instanceof PolylineMapObject) {
+
+					shape = World2D.getPolyline((PolylineMapObject) object);
+				}
+
+				else if (object instanceof CircleMapObject) {
+
+					shape = World2D.getCircle((CircleMapObject) object);
 				}
 
 				else {
-					continue; // do something - invalid case
+					continue;
+				}
+
+				BodyType bodyType = bdProp.getBdtype();
+				short categoryBits = bdProp.getCategoryBits();
+				short[] bitsMask = bdProp.getBitsMask();
+
+				float restitution = bdProp.getRestitution();
+				float density = bdProp.getDensity();
+				float friction = bdProp.getFriction();
+
+				if (bodyType == BodyType.StaticBody) {
+					world.createStaticBody(shape, categoryBits, bitsMask);
+				}
+
+				else if (bodyType == BodyType.DynamicBody) {
+					world.createDynamicBody(shape, restitution, density, friction, categoryBits, bitsMask);
+
 				}
 			}
 		}
 
 		return world;
-	}
-
-	public static Shape getShapeFromObject(MapObject object, float tileWidth, float tileHeight, float GU) {
-
-		Rectangle rectangle = getRectangleFromObject(object);
-
-		PolygonShape polygonShape = new PolygonShape();
-
-		polygonShape.setAsBox(rectangle.width / (tileWidth * GU), rectangle.height / (tileHeight * GU));
-
-		return polygonShape;
-	}
-
-	public static Rectangle getRectangleFromObject(MapObject object) {
-
-		return ((RectangleMapObject) object).getRectangle();
 	}
 
 	/**

@@ -3,6 +3,7 @@
 package com.engine.loader;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -50,6 +51,18 @@ class Map {
 	public TiledMapTileLayer getLayer(int layerIndex) {
 
 		TiledMapTileLayer layer = (TiledMapTileLayer) tiledMap.getLayers().get(layerIndex);
+
+		return layer;
+	}
+
+	/**
+	 * @param layerIndex : int - The id which used to access specific TiledMap.
+	 *                   -----------
+	 * @return MapLayer : object layer at given index of the Tiledmap.
+	 */
+	public MapLayer getMapLayer(int layerIndex) {
+
+		MapLayer layer = (MapLayer) tiledMap.getLayers().get(layerIndex);
 
 		return layer;
 	}

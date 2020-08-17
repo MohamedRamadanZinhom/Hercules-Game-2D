@@ -20,4 +20,5 @@ abstract public class Body2D {
 		this.bdtype = bdtype;
 		bdef.type = this.bdtype;
 	}
+
 }

@@ -26,7 +26,8 @@ public class DynamicBody2D extends Body2D {
 		this.friction = friction;
 	}
 
-	public void createBody(World world, float posX, float posY, Shape shape, boolean scale) {
+	public void createBody(World world, float posX, float posY, Shape shape, boolean scale, short categoryBits,
+			short[] bitsMask) {
 
 		Vector2 pos = new Vector2(posX, posY);
 
@@ -44,10 +45,18 @@ public class DynamicBody2D extends Body2D {
 		fdef.density = this.density;
 		fdef.friction = this.friction;
 
+		fdef.filter.categoryBits = categoryBits;
+
+		for (int i = 0; i < bitsMask.length; i++) {
+
+			fdef.filter.maskBits |= bitsMask[i];
+		}
+
 		body.createFixture(fdef);
 	}
 
-	public void createBody(World world, Shape shape, Vector2 position, float angle) {
+	public void createBody(World world, Shape shape, Vector2 position, float angle, short categoryBits,
+			short[] bitsMask) {
 
 		Body body = world.createBody(bdef);
 
@@ -57,9 +66,37 @@ public class DynamicBody2D extends Body2D {
 		fdef.density = this.density;
 		fdef.friction = this.friction;
 
+		fdef.filter.categoryBits = categoryBits;
+
+		for (int i = 0; i < bitsMask.length; i++) {
+
+			fdef.filter.maskBits |= bitsMask[i];
+		}
+
 		body.createFixture(fdef);
 
 		body.setTransform(position, angle);
+
+	}
+
+	public void createBody(World world, Shape shape, short categoryBits, short[] bitsMask) {
+
+		Body body = world.createBody(bdef);
+
+		fdef.shape = shape;
+
+		fdef.restitution = this.restitution;
+		fdef.density = this.density;
+		fdef.friction = this.friction;
+
+		fdef.filter.categoryBits = categoryBits;
+
+		for (int i = 0; i < bitsMask.length; i++) {
+
+			fdef.filter.maskBits |= bitsMask[i];
+		}
+
+		body.createFixture(fdef);
 
 	}
 
