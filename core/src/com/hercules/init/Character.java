@@ -1,3 +1,5 @@
+/** @author Z. Mohamed Osama */
+
 package com.hercules.init;
 
 import com.engine.animation.AnimationGenerator;
@@ -5,9 +7,10 @@ import com.engine.exception.OverwriteException;
 
 public abstract class Character {
 
+	private final float frameDuration;
+
 	protected String name;
 
-	protected final float frameDuration;
 	protected final float FPS_SCALE;
 
 	protected float posX;

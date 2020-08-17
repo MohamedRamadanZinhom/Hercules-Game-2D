@@ -6,9 +6,24 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
+import javax.xml.bind.ValidationException;
+
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.maps.MapLayers;
+import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.MapObjects;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
+import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.Shape;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.engine.world.BodyProperty;
+import com.engine.world.World2D;
 import com.engine.exception.*;
+import com.engine.math.Vec;
 
 public class MapGenerator {
 	/**
@@ -120,6 +135,21 @@ public class MapGenerator {
 	}
 
 	/**
+	 * get TiledMap of a Map with given id.
+	 * 
+	 * @param id : String - The id which used to access specific map.
+	 * 
+	 * @throws KeyException if id (key) doesn't exists in the maps repository.
+	 */
+	public static TiledMap getTiledMap(String id) throws KeyException {
+
+		if (mapsRepo.containsKey(id))
+			return mapsRepo.get(id).getTiledMap();
+		else
+			throw new KeyException("There's no map with id :" + id);
+	}
+
+	/**
 	 * @param layerIndex : int - The id which used to access specific TiledMap.
 	 * 
 	 * @return layer's width in tiles.
@@ -207,6 +237,104 @@ public class MapGenerator {
 		}
 
 		return tileHeight;
+	}
+
+	/**
+	 * @param id                : String map to build world from
+	 * 
+	 * @param bodyTypeSignature : HashMap<Integer, BodyType> - HashMap specify body
+	 *                          type, (static, dynamic, ..) for each map layer,
+	 * 
+	 * @param gravityX          : float
+	 * 
+	 * @param gravityY          : float
+	 * 
+	 * @param doSleep           : boolean
+	 * 
+	 * @return World2D object
+	 * @throws ValidationException
+	 */
+	public static World2D buildWorld(String id, HashMap<Integer, BodyProperty> bodyTypeSignature, float gravityX,
+			float gravityY, boolean doSleep, float GU) throws ValidationException {
+
+		World2D world = new World2D(gravityX, gravityY, GU, doSleep);
+
+		MapLayers layers = null;
+
+		try {
+
+			layers = getTiledMap(id).getLayers();
+
+		} catch (KeyException error) {
+
+			error.printStackTrace();
+
+		}
+
+		if (bodyTypeSignature.size() != layers.size()) {
+
+			throw new ValidationException("Faild buildWorld(...): bodyTypeSignature.size() " + "!= layers.size()");
+		}
+
+		for (Entry<Integer, BodyProperty> signature : bodyTypeSignature.entrySet()) {
+
+			int layerIndex = signature.getKey();
+			BodyProperty bdProp = signature.getValue();
+
+			if (bdProp == null) {
+				continue; // for non - box2d layer
+			}
+
+			MapObjects objects = layers.get(layerIndex).getObjects();
+
+			float tileWidth = getTileWidth(id, layerIndex);
+			float tileHeight = getTileHeight(id, layerIndex);
+
+			for (MapObject object : objects) {
+
+				Shape shape = getShapeFromObject(object, tileWidth, tileHeight, GU);
+				BodyType bdtype = bdProp.getBdtype();
+
+				Vector2 pos = Vec.getTransformedCenterForRectangle(getRectangleFromObject(object), tileWidth,
+						tileHeight, GU);
+
+				if (bdtype == BodyType.StaticBody) {
+
+					world.createStaticBody(pos.x, pos.y, shape, true);
+				}
+
+				else if (bdtype == BodyType.DynamicBody) {
+
+					float restitution = bdProp.getRestitution();
+					float density = bdProp.getDensity();
+					float friction = bdProp.getDensity();
+
+					world.createDynamicBody(pos.x, pos.y, shape, true, restitution, density, friction);
+				}
+
+				else {
+					continue; // do something - invalid case
+				}
+			}
+		}
+
+		return world;
+	}
+
+	public static Shape getShapeFromObject(MapObject object, float tileWidth, float tileHeight, float GU) {
+
+		Rectangle rectangle = getRectangleFromObject(object);
+
+		PolygonShape polygonShape = new PolygonShape();
+
+		polygonShape.setAsBox(rectangle.width / (tileWidth * GU), rectangle.height / (tileHeight * GU));
+
+		return polygonShape;
+	}
+
+	public static Rectangle getRectangleFromObject(MapObject object) {
+
+		return ((RectangleMapObject) object).getRectangle();
 	}
 
 	/**

@@ -1,3 +1,5 @@
+/** @author Z. Mohamed Osama */
+
 package com.engine.world;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -14,11 +16,14 @@ public class World2D {
 	protected World world;
 	protected OrthographicCamera envCam;
 
-	public World2D(float gravityX, float gravityY, boolean doSleep) {
+	public static float GU = 100.0f; // could be final
+
+	public World2D(float gravityX, float gravityY, float GU, boolean doSleep) {
 
 		this.world = new World(new Vector2(gravityX, gravityY), doSleep);
 		this.envCam = new OrthographicCamera();
 
+		World2D.GU = GU;
 	}
 
 	public void createStaticBody(float posX, float posY, Shape shape, boolean scale) {
@@ -27,16 +32,16 @@ public class World2D {
 		body.createBody(world, posX, posY, shape, scale);
 	}
 
+	public void createDynamicBody(float posX, float posY, Shape shape, boolean scale) {
+
+		DynamicBody2D body = new DynamicBody2D(0.0f, 0.0f, 0.0f);
+		body.createBody(world, posX, posY, shape, scale);
+	}
+
 	public void createDynamicBody(float posX, float posY, Shape shape, boolean scale, float restitution, float density,
 			float friction) {
 
 		DynamicBody2D body = new DynamicBody2D(restitution, density, friction);
-		body.createBody(world, posX, posY, shape, scale);
-	}
-	
-	public void createDynamicBody(float posX, float posY, Shape shape, boolean scale) {
-
-		DynamicBody2D body = new DynamicBody2D(0.0f, 0.0f, 0.0f);
 		body.createBody(world, posX, posY, shape, scale);
 	}
 
@@ -54,6 +59,12 @@ public class World2D {
 	public void renderBox2dDebug(Matrix4 projMatrix) {
 
 		World2D.b2dr.render(world, projMatrix);
+	}
+
+	public void dispose() {
+
+		b2dr.dispose();
+		world.dispose();
 	}
 
 }

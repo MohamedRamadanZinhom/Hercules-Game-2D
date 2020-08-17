@@ -1,3 +1,5 @@
+/** @author Z. Mohamed Osama */
+
 package com.hercules.init;
 
 import com.engine.exception.OverwriteException;
@@ -20,7 +22,4 @@ public abstract class Map {
 		}
 	}
 
-	public void initCollision() {
-
-	}
 }

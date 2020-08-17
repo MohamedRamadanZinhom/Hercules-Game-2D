@@ -1,3 +1,5 @@
+/** @author Z. Mohamed Osama */
+
 package com.engine.animation;
 
 import java.util.HashMap;

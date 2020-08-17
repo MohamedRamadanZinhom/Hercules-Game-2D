@@ -1,3 +1,5 @@
+/** @author Z. Mohamed Osama */
+
 package com.hercules.game;
 
 import com.badlogic.gdx.ApplicationAdapter;

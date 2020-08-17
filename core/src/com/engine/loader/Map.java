@@ -37,10 +37,14 @@ class Map {
 		map.setView(envCam);
 		map.render();
 	}
-	
+
+	public TiledMap getTiledMap() {
+		return this.tiledMap;
+	}
+
 	/**
 	 * @param layerIndex : int - The id which used to access specific TiledMap.
-	 * -----------
+	 *                   -----------
 	 * @return TiledMapTileLayer : layer at given indexof the Tiledmap.
 	 */
 	public TiledMapTileLayer getLayer(int layerIndex) {

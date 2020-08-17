@@ -1,3 +1,5 @@
+/** @author Z. Mohamed Osama */
+
 package com.hercules.init;
 
 public class Enemy extends Character {
@@ -26,6 +28,9 @@ public class Enemy extends Character {
 
 	@Override
 	public void animate() {
+
+		this.animator[this.index].animate(this.currentMode, this.posX, this.posX, this.FPS_SCALE);
+
 		// do something
 
 	}
