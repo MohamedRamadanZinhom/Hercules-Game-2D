@@ -34,7 +34,7 @@ public class Enemy extends Character {
 	@Override
 	public void animate() {
 
-		this.animator[this.index].animate(this.currentMode, this.posX, this.posX, this.FPS_SCALE);
+		this.animator[this.index].animate(this.currentMode, this.posX, this.posY, this.FPS_SCALE);
 
 		// do something
 

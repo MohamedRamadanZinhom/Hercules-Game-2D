@@ -2,6 +2,9 @@
 
 package com.engine.world;
 
+import java.util.HashMap;
+import java.util.Vector;
+
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -16,6 +19,8 @@ abstract public class Body2D {
 	protected final BodyType bdtype;
 	protected BodyDef bdef;
 	protected FixtureDef fdef;
+
+	public static HashMap<String, Vector<Body>> bodies = new HashMap<String, Vector<Body>>();
 
 	public Body2D(BodyType bdtype) {
 
@@ -45,6 +50,16 @@ abstract public class Body2D {
 		fdef.filter.maskBits = bitsMask;
 
 		body.createFixture(fdef).setUserData(bodyId);
+
+		if (bodies.containsKey(bodyId)) {
+
+			bodies.get(bodyId).add(body);
+
+		} else {
+
+			bodies.put(bodyId, new Vector<Body>());
+			bodies.get(bodyId).add(body);
+		}
 	}
 
 	public void createBody(World world, float posX, float posY, Shape shape, boolean scale, short categoryBits,
@@ -86,6 +101,15 @@ abstract public class Body2D {
 
 		body.setTransform(position, angle);
 
+		if (bodies.containsKey(bodyId)) {
+
+			bodies.get(bodyId).add(body);
+
+		} else {
+
+			bodies.put(bodyId, new Vector<Body>());
+			bodies.get(bodyId).add(body);
+		}
 	}
 
 	public void createBody(World world, Shape shape, boolean scale, Vector2 position, float angle, short categoryBits,
@@ -118,6 +142,16 @@ abstract public class Body2D {
 		fdef.filter.maskBits = bitsMask;
 
 		body.createFixture(fdef).setUserData(bodyId);
+
+		if (bodies.containsKey(bodyId)) {
+
+			bodies.get(bodyId).add(body);
+
+		} else {
+
+			bodies.put(bodyId, new Vector<Body>());
+			bodies.get(bodyId).add(body);
+		}
 	}
 
 	// Bind object with Box2D body
@@ -131,6 +165,17 @@ abstract public class Body2D {
 		fdef.filter.maskBits = bitsMask;
 
 		body.createFixture(fdef).setUserData(object);
+	}
+
+	// Debug
+	public static void debug() {
+
+		for (String key : Body2D.bodies.keySet()) {
+
+			String size = Integer.toString(Body2D.bodies.get(key).size());
+
+			System.out.println(key + " - No. of bodies :" + size);
+		}
 	}
 
 }

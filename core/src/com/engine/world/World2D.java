@@ -96,6 +96,12 @@ public class World2D {
 		body.createBody(world, shape, categoryBits, bitsMask, bodyId);
 	}
 
+	public void createKinematicBody(Shape shape, short categoryBits, short bitsMask, Object bodyId) {
+
+		KinematicBody body = new KinematicBody();
+		body.createBody(world, shape, categoryBits, bitsMask, bodyId);
+	}
+
 	public void update(float deltaTime, int velocityIterations, int positionIterations) {
 		world.step(deltaTime, velocityIterations, positionIterations);
 	}
@@ -114,12 +120,6 @@ public class World2D {
 	public void renderBox2dDebug(Matrix4 projMatrix) {
 
 		World2D.b2dr.render(world, projMatrix);
-	}
-
-	public void dispose() {
-
-		b2dr.dispose();
-		world.dispose();
 	}
 
 	public static PolygonShape getRectangle(RectangleMapObject rectangleObject) {
@@ -143,6 +143,7 @@ public class World2D {
 	}
 
 	public static PolygonShape getPolygon(PolygonMapObject polygonObject) {
+
 		PolygonShape polygon = new PolygonShape();
 		float[] vertices = polygonObject.getPolygon().getTransformedVertices();
 
@@ -171,4 +172,9 @@ public class World2D {
 		return chain;
 	}
 
+	public void dispose() {
+
+		b2dr.dispose();
+		world.dispose();
+	}
 }

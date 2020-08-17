@@ -9,7 +9,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.engine.world.Body2D;
 import com.engine.world.BodyProperty;
 import com.engine.world.World2D;
 import com.hercules.events.CollisionSignal;
@@ -20,8 +22,9 @@ public class GameAdapter extends ApplicationAdapter {
 
 	public static final String TITEL = "Hercules"; // Screen Title
 
-	public static final int V_WIDTH = 960; // Center X
-	public static final int V_HEIGHT = 540; // Center Y
+	public static final int V_WIDTH = 600; // 960; // Center X
+	public static final int V_HEIGHT = 300; // 540; // Center Y
+
 	public static final int SCALE = 2; // Center Scale
 
 	public static final float GU = 100.0f; // Box2D Game-Unit Scaler
@@ -68,15 +71,17 @@ public class GameAdapter extends ApplicationAdapter {
 
 	public static final String[] keysOrder = { "right", "left" };
 
-	public static final float FPS_SCALE = 1.0f;
-	public static final float frameDuration = 0.025f;
+	public static final float FPS_SCALE = 1 / 30.0f;
+	public static final float frameDuration = 0.0025f;
 
 	public static float posX = 100.0f;
 	public static float posY = 100.0f;
-	public static float speed = 1.0f;
+	public static float speed = 100.0f;
 
 	public static int defaultIndex = 0;
-	public static String currentMode = "idle";
+	public static String currentMode = "walk";
+
+	public static final float speedScale = 1.0f;
 
 	@Override
 	public void create() {
@@ -99,8 +104,7 @@ public class GameAdapter extends ApplicationAdapter {
 		bodyTypeSignature.put(0, null);
 		bodyTypeSignature.put(1, null);
 		bodyTypeSignature.put(2, new BodyProperty(BodyType.StaticBody, 0.0f, 0.0f, 0.0f, categoryBits[0], bitsMask[0]));
-		bodyTypeSignature.put(3,
-				new BodyProperty(BodyType.DynamicBody, 1.0f, 0.0f, 0.0f, categoryBits[1], bitsMask[1]));
+		bodyTypeSignature.put(3, new BodyProperty(BodyType.StaticBody, 0.0f, 0.0f, 0.0f, categoryBits[1], bitsMask[1]));
 
 		world = new World(mapDir, mapFname, mapId);
 
@@ -112,6 +116,13 @@ public class GameAdapter extends ApplicationAdapter {
 				currentMode);
 
 		player.initPlayer(FRAME_ROWS, FRAME_COLS, startKeys, endKeys, typeKeys, keysOrder);
+
+		// KinematicBody
+		PolygonShape shape = new PolygonShape();
+		shape.setAsBox(20.0f / GU, 20.0f / GU);
+		world2d.createKinematicBody(shape, World.BIT_PLAYER, World.BIT_GROUND, "player");
+
+		Body2D.debug(); // print bodies id.
 	}
 
 	@Override
@@ -121,6 +132,8 @@ public class GameAdapter extends ApplicationAdapter {
 
 			Gdx.app.exit();
 		}
+
+		player.handleInput(speedScale, true); // Player Input
 
 		Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
 

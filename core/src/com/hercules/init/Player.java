@@ -2,6 +2,9 @@
 
 package com.hercules.init;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
+
 public class Player extends Character {
 
 	/**
@@ -34,10 +37,10 @@ public class Player extends Character {
 	@Override
 	public void animate() {
 
-		this.animator[this.index].animate(this.currentMode, this.posX, this.posX, this.FPS_SCALE);
+		this.animator[this.index].animate(this.currentMode, this.posX, this.posY, this.FPS_SCALE);
 
-		// do something
-
+		this.currentMode = "idle";
+		this.index = 0;
 	}
 
 	/**
@@ -46,7 +49,46 @@ public class Player extends Character {
 	 *                       delta time.
 	 */
 	public void handleInput(float speedScale, boolean deltaTimeScale) {
-		// do something
+
+		float scale = deltaTimeScale ? Gdx.graphics.getDeltaTime() : 0.0f;
+		float speed = this.speed * scale * speedScale;
+
+		if (Gdx.input.isKeyPressed(Keys.RIGHT)) {
+			this.posX += speed;
+
+			this.currentMode = "walk";
+			this.index = 0;
+		}
+
+		if (Gdx.input.isKeyPressed(Keys.LEFT)) {
+
+			this.posX -= speed;
+
+			this.currentMode = "walk";
+			this.index = 1;
+		}
+
+		if (Gdx.input.isKeyPressed(Keys.UP)) {
+			// Jumping
+		}
+
+		if (Gdx.input.isKeyPressed(Keys.DOWN)) {
+			// Smashing
+		}
+
+		if (Gdx.input.isKeyPressed(Keys.SPACE)) {
+			// Attack
+
+			this.currentMode = "attack";
+		}
+
+		if (Gdx.input.isKeyPressed(Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Keys.SHIFT_RIGHT)) {
+			// Speed Up (Run)
+		}
+
+		if (Gdx.input.isKeyPressed(Keys.CONTROL_LEFT) || Gdx.input.isKeyPressed(Keys.CONTROL_RIGHT)) {
+			// Spying
+		}
 	}
 
 }

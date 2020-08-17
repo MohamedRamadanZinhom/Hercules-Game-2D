@@ -2,6 +2,8 @@
 
 package com.engine.world;
 
+import java.util.Vector;
+
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Shape;
@@ -50,6 +52,16 @@ public class DynamicBody2D extends Body2D {
 		fdef.filter.maskBits = bitsMask;
 
 		body.createFixture(fdef).setUserData(bodyId);
+
+		if (bodies.containsKey(bodyId)) {
+
+			bodies.get(bodyId).add(body);
+
+		} else {
+
+			bodies.put(bodyId, new Vector<Body>());
+			bodies.get(bodyId).add(body);
+		}
 	}
 
 	@Override
@@ -67,6 +79,16 @@ public class DynamicBody2D extends Body2D {
 		fdef.filter.maskBits = bitsMask;
 
 		body.createFixture(fdef).setUserData(bodyId);
+
+		if (bodies.containsKey(bodyId)) {
+
+			bodies.get(bodyId).add(body);
+
+		} else {
+
+			bodies.put(bodyId, new Vector<Body>());
+			bodies.get(bodyId).add(body);
+		}
 	}
 
 	public void setDynamicProperty(float restitution, float density, float friction) {

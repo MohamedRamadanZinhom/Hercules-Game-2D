@@ -114,4 +114,10 @@ public abstract class Character {
 	 */
 	abstract public void animate();
 
+	public void dispose() {
+
+		for (int i = 0; i < this.animator.length; i++) {
+			this.animator[i].dispose();
+		}
+	}
 }

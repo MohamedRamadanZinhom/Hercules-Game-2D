@@ -363,7 +363,7 @@ public class MapGenerator {
 	 * @param envCam : OrthographicCamera - The camera used to render the TiledMap
 	 *               with given id.
 	 */
-	public static void disposeAll() {
+	public static void dispose() {
 		Iterator<Entry<String, Map>> it = mapsRepo.entrySet().iterator();
 
 		while (it.hasNext()) {
