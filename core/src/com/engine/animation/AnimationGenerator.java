@@ -18,27 +18,31 @@ public class AnimationGenerator {
 
 	protected SpriteBatch spriteBatch;
 
-	protected Texture spriteSheet;
+	protected Texture[] spriteSheet;
 
-	public AnimationGenerator(String path) {
+	public AnimationGenerator(String[] path) {
 
 		animationRepo = new HashMap<String, Animation<TextureRegion>>();
 		spriteBatch = new SpriteBatch();
-		spriteSheet = new Texture(path);
+		spriteSheet = new Texture[path.length];
+
+		for (int i = 0; i < path.length; i++) {
+			spriteSheet[i] = new Texture(path[i]);
+		}
 
 		stateTime = 0.0f;
 	}
 
-	public void addAnimation(int nFrame, float frameDuration, int[] startKeys, int[] endKeys, String[] typeKeys,
-			String keysOrder) throws OverwriteException {
+	public void addAnimation(int ith, int FRAME_ROWS, int FRAME_COLS, float frameDuration, int[] startKeys,
+			int[] endKeys, String[] typeKeys, String keysOrder) throws OverwriteException {
 
 		/**
 		 * Create animation, of given sprite sheet, then put it inside the animation
 		 * repository.
 		 * 
-		 * @param name          : String - character name
-		 * @param path          : String - The path in which the sprite sheet file (ex.
-		 *                      png) located.
+		 * @param ith           : int - Character sprite index
+		 * @param FRAME_ROWS    : int - Sprite chunk step size (width)
+		 * @param FRAME_COLS    : int - Sprite chunk step size (height)
 		 * @param frameDuration : float
 		 * @param nFrame:       int - Number of horizontal frames.
 		 * @param startKeys:    [] int - array contains start key frame, for each
@@ -53,16 +57,16 @@ public class AnimationGenerator {
 		 *                          repository.
 		 */
 
-		int pixelStep = spriteSheet.getWidth() / nFrame;
-		int tileHeight = spriteSheet.getHeight();
+		int tileWidth = spriteSheet[ith].getWidth() / FRAME_COLS;
+		int tileHeight = spriteSheet[ith].getHeight() / FRAME_ROWS;
 
-		TextureRegion[][] temp = TextureRegion.split(spriteSheet, pixelStep, tileHeight);
+		TextureRegion[][] temp = TextureRegion.split(spriteSheet[ith], tileWidth, tileHeight);
 
 		if (keysOrder == "right") {
 			for (int i = 0; i < startKeys.length; i++) {
 
 				int start = startKeys[i];
-				int end = endKeys[i] + 1;
+				int end = endKeys[i];
 				String type = typeKeys[i];
 
 				TextureRegion[] frames = new TextureRegion[end - start];
@@ -106,7 +110,7 @@ public class AnimationGenerator {
 				else {
 
 					for (int j = start; j < end; j++) {
-						frames[j - start] = temp[0][(nFrame - 1) - j];
+						frames[j - start] = temp[0][(FRAME_COLS - 1) - j];
 					}
 
 					Animation<TextureRegion> animation = new Animation<TextureRegion>(frameDuration, frames);
@@ -122,9 +126,9 @@ public class AnimationGenerator {
 		}
 	}
 
-	public void animate(String mode, float x, float y) {
+	public void animate(String mode, float x, float y, float FPS_SCALE) {
 
-		stateTime += Gdx.graphics.getDeltaTime();
+		stateTime += Gdx.graphics.getDeltaTime() * FPS_SCALE;
 		TextureRegion currentFrame = animationRepo.get(mode).getKeyFrame(stateTime, true);
 
 		spriteBatch.begin();
@@ -137,9 +141,11 @@ public class AnimationGenerator {
 	 */
 	public void dispose() {
 
-		spriteSheet.dispose();
-		spriteBatch.dispose();
+		for (int i = 0; i < spriteSheet.length; i++) {
+			spriteSheet[i].dispose();
+		}
 
+		spriteBatch.dispose();
 		animationRepo.clear();
 	}
 
