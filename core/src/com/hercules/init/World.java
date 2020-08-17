@@ -15,6 +15,13 @@ import com.engine.world.World2D;
 
 public class World {
 
+	public static final short BIT_GROUND = 2;
+	public static final short BIT_PLAYER = 4;
+	public static final short BIT_ENEMY_T1 = 8;
+	public static final short BIT_ENEMY_T2 = 16;
+
+	public static final short BIT_RANDOM_OBJECTS = 32; // coins, health, ...etc
+
 	/**
 	 * @param mainDir
 	 * @param mapFname

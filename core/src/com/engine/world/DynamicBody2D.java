@@ -27,7 +27,7 @@ public class DynamicBody2D extends Body2D {
 	}
 
 	public void createBody(World world, float posX, float posY, Shape shape, boolean scale, short categoryBits,
-			short[] bitsMask) {
+			short bitsMask) {
 
 		Vector2 pos = new Vector2(posX, posY);
 
@@ -46,17 +46,13 @@ public class DynamicBody2D extends Body2D {
 		fdef.friction = this.friction;
 
 		fdef.filter.categoryBits = categoryBits;
-
-		for (int i = 0; i < bitsMask.length; i++) {
-
-			fdef.filter.maskBits |= bitsMask[i];
-		}
+		fdef.filter.maskBits = bitsMask;
 
 		body.createFixture(fdef);
 	}
 
 	public void createBody(World world, Shape shape, Vector2 position, float angle, short categoryBits,
-			short[] bitsMask) {
+			short bitsMask) {
 
 		Body body = world.createBody(bdef);
 
@@ -67,11 +63,7 @@ public class DynamicBody2D extends Body2D {
 		fdef.friction = this.friction;
 
 		fdef.filter.categoryBits = categoryBits;
-
-		for (int i = 0; i < bitsMask.length; i++) {
-
-			fdef.filter.maskBits |= bitsMask[i];
-		}
+		fdef.filter.maskBits = bitsMask;
 
 		body.createFixture(fdef);
 
@@ -79,7 +71,7 @@ public class DynamicBody2D extends Body2D {
 
 	}
 
-	public void createBody(World world, Shape shape, short categoryBits, short[] bitsMask) {
+	public void createBody(World world, Shape shape, short categoryBits, short bitsMask) {
 
 		Body body = world.createBody(bdef);
 
@@ -90,11 +82,7 @@ public class DynamicBody2D extends Body2D {
 		fdef.friction = this.friction;
 
 		fdef.filter.categoryBits = categoryBits;
-
-		for (int i = 0; i < bitsMask.length; i++) {
-
-			fdef.filter.maskBits |= bitsMask[i];
-		}
+		fdef.filter.maskBits = bitsMask;
 
 		body.createFixture(fdef);
 

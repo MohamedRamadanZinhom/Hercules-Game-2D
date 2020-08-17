@@ -12,10 +12,10 @@ public class BodyProperty {
 	private float friction;
 
 	private short categoryBits;
-	private short[] bitsMask;
+	private short bitsMask;
 
 	public BodyProperty(BodyType bdtype, float restitution, float density, float friction, short categoryBits,
-			short[] bitsMask) {
+			short bitsMask) {
 
 		this.setBdtype(bdtype);
 
@@ -107,14 +107,14 @@ public class BodyProperty {
 	/**
 	 * @return the bitsMask
 	 */
-	public short[] getBitsMask() {
+	public short getBitsMask() {
 		return bitsMask;
 	}
 
 	/**
 	 * @param bitsMask the bitsMask to set
 	 */
-	public void setBitsMask(short[] bitsMask) {
+	public void setBitsMask(short bitsMask) {
 		this.bitsMask = bitsMask;
 	}
 

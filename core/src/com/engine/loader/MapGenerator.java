@@ -321,7 +321,7 @@ public class MapGenerator {
 
 				BodyType bodyType = bdProp.getBdtype();
 				short categoryBits = bdProp.getCategoryBits();
-				short[] bitsMask = bdProp.getBitsMask();
+				short bitsMask = bdProp.getBitsMask();
 
 				float restitution = bdProp.getRestitution();
 				float density = bdProp.getDensity();

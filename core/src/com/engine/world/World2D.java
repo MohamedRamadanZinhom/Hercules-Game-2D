@@ -35,41 +35,41 @@ public class World2D {
 		World2D.GU = GU;
 	}
 
-	public void createStaticBody(Shape shape, short categoryBits, short[] bitsMask) {
+	public void createStaticBody(Shape shape, short categoryBits, short bitsMask) {
 
 		StaticBody2D body = new StaticBody2D();
 		body.createBody(world, shape, categoryBits, bitsMask);
 	}
 
 	public void createStaticBody(float posX, float posY, Shape shape, boolean scale, short categoryBits,
-			short[] bitsMask) {
+			short bitsMask) {
 
 		StaticBody2D body = new StaticBody2D();
 		body.createBody(world, posX, posY, shape, scale, categoryBits, bitsMask);
 	}
 
-	public void createDynamicBody(Shape shape, short categoryBits, short[] bitsMask) {
+	public void createDynamicBody(Shape shape, short categoryBits, short bitsMask) {
 
 		DynamicBody2D body = new DynamicBody2D(0.0f, 0.0f, 0.0f);
 		body.createBody(world, shape, categoryBits, bitsMask);
 	}
 
 	public void createDynamicBody(float posX, float posY, Shape shape, boolean scale, short categoryBits,
-			short[] bitsMask) {
+			short bitsMask) {
 
 		DynamicBody2D body = new DynamicBody2D(0.0f, 0.0f, 0.0f);
 		body.createBody(world, posX, posY, shape, scale, categoryBits, bitsMask);
 	}
 
 	public void createDynamicBody(Shape shape, float restitution, float density, float friction, short categoryBits,
-			short[] bitsMask) {
+			short bitsMask) {
 
 		DynamicBody2D body = new DynamicBody2D(restitution, density, friction);
 		body.createBody(world, shape, categoryBits, bitsMask);
 	}
 
 	public void createDynamicBody(float posX, float posY, Shape shape, boolean scale, float restitution, float density,
-			float friction, short categoryBits, short[] bitsMask) {
+			float friction, short categoryBits, short bitsMask) {
 
 		DynamicBody2D body = new DynamicBody2D(restitution, density, friction);
 		body.createBody(world, posX, posY, shape, scale, categoryBits, bitsMask);

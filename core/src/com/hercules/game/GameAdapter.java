@@ -34,8 +34,8 @@ public class GameAdapter extends ApplicationAdapter {
 	World world;
 	public static final float gravityX = 0.0f;
 	public static final float gravityY = -9.81f;
-	public static final short[] categoryBits = { 2, 8 };
-	public static final short[][] bitsMask = { { 2 }, { 2 } };
+	public static final short[] categoryBits = { World.BIT_GROUND, World.BIT_RANDOM_OBJECTS };
+	public static final short[] bitsMask = { World.BIT_RANDOM_OBJECTS, World.BIT_GROUND };
 
 	HashMap<Integer, BodyProperty> bodyTypeSignature;
 

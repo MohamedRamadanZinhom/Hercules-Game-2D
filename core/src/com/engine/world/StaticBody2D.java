@@ -18,7 +18,7 @@ public class StaticBody2D extends Body2D {
 	}
 
 	public void createBody(World world, float posX, float posY, Shape shape, boolean scale, short categoryBits,
-			short[] bitsMask) {
+			short bitsMask) {
 
 		Vector2 pos = new Vector2(posX, posY);
 
@@ -31,27 +31,21 @@ public class StaticBody2D extends Body2D {
 		Body body = world.createBody(bdef);
 
 		fdef.shape = shape;
+
 		fdef.filter.categoryBits = categoryBits;
-
-		for (int i = 0; i < bitsMask.length; i++) {
-
-			fdef.filter.maskBits |= bitsMask[i];
-		}
+		fdef.filter.maskBits = bitsMask;
 
 		body.createFixture(fdef);
 	}
 
-	public void createBody(World world, Shape shape, short categoryBits, short[] bitsMask) {
+	public void createBody(World world, Shape shape, short categoryBits, short bitsMask) {
 
 		Body body = world.createBody(bdef);
 
 		fdef.shape = shape;
+
 		fdef.filter.categoryBits = categoryBits;
-
-		for (int i = 0; i < bitsMask.length; i++) {
-
-			fdef.filter.maskBits |= bitsMask[i];
-		}
+		fdef.filter.maskBits = bitsMask;
 
 		body.createFixture(fdef);
 	}
