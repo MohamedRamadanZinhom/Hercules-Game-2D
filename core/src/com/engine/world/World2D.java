@@ -14,6 +14,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.ChainShape;
 import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
@@ -35,48 +36,52 @@ public class World2D {
 		World2D.GU = GU;
 	}
 
-	public void createStaticBody(Shape shape, short categoryBits, short bitsMask) {
+	public void createStaticBody(Shape shape, short categoryBits, short bitsMask, String bodyId) {
 
 		StaticBody2D body = new StaticBody2D();
-		body.createBody(world, shape, categoryBits, bitsMask);
+		body.createBody(world, shape, categoryBits, bitsMask, bodyId);
 	}
 
-	public void createStaticBody(float posX, float posY, Shape shape, boolean scale, short categoryBits,
-			short bitsMask) {
+	public void createStaticBody(float posX, float posY, Shape shape, boolean scale, short categoryBits, short bitsMask,
+			String bodyId) {
 
 		StaticBody2D body = new StaticBody2D();
-		body.createBody(world, posX, posY, shape, scale, categoryBits, bitsMask);
+		body.createBody(world, posX, posY, shape, scale, categoryBits, bitsMask, bodyId);
 	}
 
-	public void createDynamicBody(Shape shape, short categoryBits, short bitsMask) {
+	public void createDynamicBody(Shape shape, short categoryBits, short bitsMask, String bodyId) {
 
 		DynamicBody2D body = new DynamicBody2D(0.0f, 0.0f, 0.0f);
-		body.createBody(world, shape, categoryBits, bitsMask);
+		body.createBody(world, shape, categoryBits, bitsMask, bodyId);
 	}
 
 	public void createDynamicBody(float posX, float posY, Shape shape, boolean scale, short categoryBits,
-			short bitsMask) {
+			short bitsMask, String bodyId) {
 
 		DynamicBody2D body = new DynamicBody2D(0.0f, 0.0f, 0.0f);
-		body.createBody(world, posX, posY, shape, scale, categoryBits, bitsMask);
+		body.createBody(world, posX, posY, shape, scale, categoryBits, bitsMask, bodyId);
 	}
 
 	public void createDynamicBody(Shape shape, float restitution, float density, float friction, short categoryBits,
-			short bitsMask) {
+			short bitsMask, String bodyId) {
 
 		DynamicBody2D body = new DynamicBody2D(restitution, density, friction);
-		body.createBody(world, shape, categoryBits, bitsMask);
+		body.createBody(world, shape, categoryBits, bitsMask, bodyId);
 	}
 
 	public void createDynamicBody(float posX, float posY, Shape shape, boolean scale, float restitution, float density,
-			float friction, short categoryBits, short bitsMask) {
+			float friction, short categoryBits, short bitsMask, String bodyId) {
 
 		DynamicBody2D body = new DynamicBody2D(restitution, density, friction);
-		body.createBody(world, posX, posY, shape, scale, categoryBits, bitsMask);
+		body.createBody(world, posX, posY, shape, scale, categoryBits, bitsMask, bodyId);
 	}
 
 	public void update(float deltaTime, int velocityIterations, int positionIterations) {
 		world.step(deltaTime, velocityIterations, positionIterations);
+	}
+
+	public void setContactListener(ContactListener listener) {
+		world.setContactListener(listener);
 	}
 
 	/**

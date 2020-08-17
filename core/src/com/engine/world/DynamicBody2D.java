@@ -27,7 +27,7 @@ public class DynamicBody2D extends Body2D {
 	}
 
 	public void createBody(World world, float posX, float posY, Shape shape, boolean scale, short categoryBits,
-			short bitsMask) {
+			short bitsMask, String bodyId) {
 
 		Vector2 pos = new Vector2(posX, posY);
 
@@ -48,11 +48,11 @@ public class DynamicBody2D extends Body2D {
 		fdef.filter.categoryBits = categoryBits;
 		fdef.filter.maskBits = bitsMask;
 
-		body.createFixture(fdef);
+		body.createFixture(fdef).setUserData(bodyId);
 	}
 
-	public void createBody(World world, Shape shape, Vector2 position, float angle, short categoryBits,
-			short bitsMask) {
+	public void createBody(World world, Shape shape, Vector2 position, float angle, short categoryBits, short bitsMask,
+			String bodyId) {
 
 		Body body = world.createBody(bdef);
 
@@ -65,13 +65,13 @@ public class DynamicBody2D extends Body2D {
 		fdef.filter.categoryBits = categoryBits;
 		fdef.filter.maskBits = bitsMask;
 
-		body.createFixture(fdef);
+		body.createFixture(fdef).setUserData(bodyId);
 
 		body.setTransform(position, angle);
 
 	}
 
-	public void createBody(World world, Shape shape, short categoryBits, short bitsMask) {
+	public void createBody(World world, Shape shape, short categoryBits, short bitsMask, String bodyId) {
 
 		Body body = world.createBody(bdef);
 
@@ -84,8 +84,7 @@ public class DynamicBody2D extends Body2D {
 		fdef.filter.categoryBits = categoryBits;
 		fdef.filter.maskBits = bitsMask;
 
-		body.createFixture(fdef);
-
+		body.createFixture(fdef).setUserData(bodyId);
 	}
 
 	public void setDynamicProperty(float restitution, float density, float friction) {

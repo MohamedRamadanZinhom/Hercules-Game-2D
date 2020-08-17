@@ -287,6 +287,8 @@ public class MapGenerator {
 
 			MapObjects objects = layers.get(layerIndex).getObjects();
 
+			String layerName = layers.get(layerIndex).getName();
+
 			for (MapObject object : objects) {
 
 				if (object instanceof TextureMapObject) {
@@ -323,16 +325,24 @@ public class MapGenerator {
 				short categoryBits = bdProp.getCategoryBits();
 				short bitsMask = bdProp.getBitsMask();
 
+				String bodyId = "?";
+
+				if (object.getName() != null) {
+					bodyId = object.getName();
+				} else if (layerName != null) {
+					bodyId = layerName;
+				}
+
 				float restitution = bdProp.getRestitution();
 				float density = bdProp.getDensity();
 				float friction = bdProp.getFriction();
 
 				if (bodyType == BodyType.StaticBody) {
-					world.createStaticBody(shape, categoryBits, bitsMask);
+					world.createStaticBody(shape, categoryBits, bitsMask, bodyId);
 				}
 
 				else if (bodyType == BodyType.DynamicBody) {
-					world.createDynamicBody(shape, restitution, density, friction, categoryBits, bitsMask);
+					world.createDynamicBody(shape, restitution, density, friction, categoryBits, bitsMask, bodyId);
 
 				}
 			}

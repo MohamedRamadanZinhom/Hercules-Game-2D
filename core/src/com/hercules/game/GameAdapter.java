@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.engine.world.BodyProperty;
 import com.engine.world.World2D;
+import com.hercules.init.CollisionSignal;
 import com.hercules.init.World;
 
 public class GameAdapter extends ApplicationAdapter {
@@ -34,6 +35,7 @@ public class GameAdapter extends ApplicationAdapter {
 	World world;
 	public static final float gravityX = 0.0f;
 	public static final float gravityY = -9.81f;
+
 	public static final short[] categoryBits = { World.BIT_GROUND, World.BIT_RANDOM_OBJECTS };
 	public static final short[] bitsMask = { World.BIT_RANDOM_OBJECTS, World.BIT_GROUND };
 
@@ -72,6 +74,7 @@ public class GameAdapter extends ApplicationAdapter {
 		world = new World(mapDir, mapFname, mapId);
 
 		world2d = world.getWorldFromMap("1", bodyTypeSignature, gravityX, gravityY, true, GU);
+		world2d.setContactListener(new CollisionSignal());
 
 		// Player
 	}
