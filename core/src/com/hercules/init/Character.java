@@ -7,6 +7,7 @@ import com.engine.exception.OverwriteException;
 
 public abstract class Character {
 
+	private final int[] spriteCount;
 	private final float frameDuration;
 
 	protected String name;
@@ -28,7 +29,8 @@ public abstract class Character {
 
 	/**
 	 * @param spritesDirname: String [][] - 2d array, each index specifies, array of
-	 *                        sprite sheets to create an animation key from it
+	 *                        sprite sheets to create an animation key from it -
+	 *                        key: {@link #index}
 	 * 
 	 * @param name:           String - Character Id
 	 * @param posX:           float - Character initial position - X
@@ -62,8 +64,13 @@ public abstract class Character {
 
 		animator = new AnimationGenerator[spritesDirname.length]; // ex. 2: 0 - right, 1-left
 
+		this.spriteCount = new int[spritesDirname.length];
+
 		for (int i = 0; i < spritesDirname.length; i++) {
+
 			animator[i] = new AnimationGenerator(spritesDirname[i]);
+
+			this.spriteCount[i] = spritesDirname[i].length;
 		}
 
 	}
@@ -83,15 +90,18 @@ public abstract class Character {
 	 * 
 	 * @param keysOrder  : 1d array ("right" or "left" index order).
 	 */
-	public void initCharacter(int[] FRAME_ROWS, int[] FRAME_COLS, int[][] startKeys, int[][] endKeys,
+	protected void initCharacter(int[] FRAME_ROWS, int[] FRAME_COLS, int[][] startKeys, int[][] endKeys,
 			String[][] typeKeys, String[] keysOrder) {
 
 		try {
 
 			for (int i = 0; i < animator.length; i++) {
 
-				animator[i].addAnimation(i, FRAME_ROWS[i], FRAME_COLS[i], this.frameDuration, startKeys[i], endKeys[i],
-						typeKeys[i], keysOrder[i]);
+				for (int j = 0; j < this.spriteCount[i]; j++) {
+
+					animator[i].addAnimation(j, FRAME_ROWS[i], FRAME_COLS[i], this.frameDuration, startKeys[i],
+							endKeys[i], typeKeys[i], keysOrder[i]);
+				}
 			}
 
 		} catch (OverwriteException error) {

@@ -47,6 +47,27 @@ abstract public class Body2D {
 		body.createFixture(fdef).setUserData(bodyId);
 	}
 
+	public void createBody(World world, float posX, float posY, Shape shape, boolean scale, short categoryBits,
+			short bitsMask, Object object) {
+
+		Vector2 pos = new Vector2(posX, posY);
+
+		if (scale) {
+			Vec.div2D(pos, World2D.GU);
+		}
+
+		bdef.position.set(pos);
+
+		Body body = world.createBody(bdef);
+
+		fdef.shape = shape;
+
+		fdef.filter.categoryBits = categoryBits;
+		fdef.filter.maskBits = bitsMask;
+
+		body.createFixture(fdef).setUserData(object);
+	}
+
 	public void createBody(World world, Shape shape, boolean scale, Vector2 position, float angle, short categoryBits,
 			short bitsMask, String bodyId) {
 
@@ -67,6 +88,26 @@ abstract public class Body2D {
 
 	}
 
+	public void createBody(World world, Shape shape, boolean scale, Vector2 position, float angle, short categoryBits,
+			short bitsMask, Object object) {
+
+		if (scale) {
+			Vec.div2D(position, World2D.GU);
+		}
+
+		Body body = world.createBody(bdef);
+
+		fdef.shape = shape;
+
+		fdef.filter.categoryBits = categoryBits;
+		fdef.filter.maskBits = bitsMask;
+
+		body.createFixture(fdef).setUserData(object);
+
+		body.setTransform(position, angle);
+
+	}
+
 	public void createBody(World world, Shape shape, short categoryBits, short bitsMask, String bodyId) {
 
 		Body body = world.createBody(bdef);
@@ -77,6 +118,19 @@ abstract public class Body2D {
 		fdef.filter.maskBits = bitsMask;
 
 		body.createFixture(fdef).setUserData(bodyId);
+	}
+
+	// Bind object with Box2D body
+	public void createBody(World world, Shape shape, short categoryBits, short bitsMask, Object object) {
+
+		Body body = world.createBody(bdef);
+
+		fdef.shape = shape;
+
+		fdef.filter.categoryBits = categoryBits;
+		fdef.filter.maskBits = bitsMask;
+
+		body.createFixture(fdef).setUserData(object);
 	}
 
 }

@@ -13,6 +13,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.engine.world.BodyProperty;
 import com.engine.world.World2D;
 import com.hercules.events.CollisionSignal;
+import com.hercules.init.Player;
 import com.hercules.init.World;
 
 public class GameAdapter extends ApplicationAdapter {
@@ -47,6 +48,36 @@ public class GameAdapter extends ApplicationAdapter {
 	OrthographicCamera playerCam;
 	OrthographicCamera box2dCam; // debug
 
+	// Test Player | Enemy
+	Player player;
+	public static final String playerName = "m-zayan";
+	public static final String[][] spritesDirname = { { "./sprite-sheets/demon.png" },
+			{ "./sprite-sheets/demon-left.png" } };
+
+	public static final int[] FRAME_ROWS = { 1, 1 };
+	public static final int[] FRAME_COLS = { 21, 21 };
+
+	/**
+	 * Use the same keys: pass reversed key order parameter - {@link #keysOrder)}
+	 */
+	public static final int[][] startKeys = { { 0, 2, 8, 12, 14 }, { 0, 2, 8, 12, 14 } };
+	public static final int[][] endKeys = { { 2, 8, 12, 14, 20 }, { 2, 8, 12, 14, 20 } };
+
+	public static final String[][] typeKeys = { { "idle", "walk", "attack", "hurt", "die" },
+			{ "idle", "walk", "attack", "hurt", "die" } };
+
+	public static final String[] keysOrder = { "right", "left" };
+
+	public static final float FPS_SCALE = 1.0f;
+	public static final float frameDuration = 0.025f;
+
+	public static float posX = 100.0f;
+	public static float posY = 100.0f;
+	public static float speed = 1.0f;
+
+	public static int defaultIndex = 0;
+	public static String currentMode = "idle";
+
 	@Override
 	public void create() {
 
@@ -64,12 +95,12 @@ public class GameAdapter extends ApplicationAdapter {
 
 		bodyTypeSignature = new HashMap<Integer, BodyProperty>();
 
-		// bodyTypeSignature: for each layer
+		// bodyTypeSignature: for each layer (in order, bottom-up)
 		bodyTypeSignature.put(0, null);
 		bodyTypeSignature.put(1, null);
 		bodyTypeSignature.put(2, new BodyProperty(BodyType.StaticBody, 0.0f, 0.0f, 0.0f, categoryBits[0], bitsMask[0]));
 		bodyTypeSignature.put(3,
-				new BodyProperty(BodyType.KinematicBody, 1.0f, 0.0f, 0.0f, categoryBits[1], bitsMask[1]));
+				new BodyProperty(BodyType.DynamicBody, 1.0f, 0.0f, 0.0f, categoryBits[1], bitsMask[1]));
 
 		world = new World(mapDir, mapFname, mapId);
 
@@ -77,7 +108,10 @@ public class GameAdapter extends ApplicationAdapter {
 		world2d.setContactListener(new CollisionSignal());
 
 		// Player
+		player = new Player(spritesDirname, playerName, posX, posY, speed, FPS_SCALE, frameDuration, defaultIndex,
+				currentMode);
 
+		player.initPlayer(FRAME_ROWS, FRAME_COLS, startKeys, endKeys, typeKeys, keysOrder);
 	}
 
 	@Override
@@ -97,6 +131,10 @@ public class GameAdapter extends ApplicationAdapter {
 		world2d.update(FPS, 6, 2);
 
 		box2dCam.update();
+
+		// player
+
+		player.animate();
 	}
 
 	@Override

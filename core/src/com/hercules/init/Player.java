@@ -26,6 +26,11 @@ public class Player extends Character {
 		super(spritesDirname, name, posX, posY, speed, FPS_SCALE, frameDuration, defaultIndex, currentMode);
 	}
 
+	public void initPlayer(int[] FRAME_ROWS, int[] FRAME_COLS, int[][] startKeys, int[][] endKeys, String[][] typeKeys,
+			String[] keysOrder) {
+		this.initCharacter(FRAME_ROWS, FRAME_COLS, startKeys, endKeys, typeKeys, keysOrder);
+	}
+
 	@Override
 	public void animate() {
 
