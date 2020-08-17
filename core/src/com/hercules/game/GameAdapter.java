@@ -12,7 +12,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.engine.world.BodyProperty;
 import com.engine.world.World2D;
-import com.hercules.init.CollisionSignal;
+import com.hercules.events.CollisionSignal;
 import com.hercules.init.World;
 
 public class GameAdapter extends ApplicationAdapter {
@@ -77,6 +77,7 @@ public class GameAdapter extends ApplicationAdapter {
 		world2d.setContactListener(new CollisionSignal());
 
 		// Player
+		
 	}
 
 	@Override

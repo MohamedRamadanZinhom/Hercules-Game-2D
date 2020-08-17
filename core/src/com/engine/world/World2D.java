@@ -76,6 +76,19 @@ public class World2D {
 		body.createBody(world, posX, posY, shape, scale, categoryBits, bitsMask, bodyId);
 	}
 
+	public void createKinematicBody(float posX, float posY, Shape shape, boolean scale, short categoryBits,
+			short bitsMask, String bodyId) {
+
+		KinematicBody body = new KinematicBody();
+		body.createBody(world, posX, posY, shape, scale, categoryBits, bitsMask, bodyId);
+	}
+
+	public void createKinematicBody(Shape shape, short categoryBits, short bitsMask, String bodyId) {
+
+		KinematicBody body = new KinematicBody();
+		body.createBody(world, shape, categoryBits, bitsMask, bodyId);
+	}
+
 	public void update(float deltaTime, int velocityIterations, int positionIterations) {
 		world.step(deltaTime, velocityIterations, positionIterations);
 	}
