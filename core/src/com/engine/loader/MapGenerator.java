@@ -286,7 +286,9 @@ public class MapGenerator {
 			}
 
 			MapObjects objects = layers.get(layerIndex).getObjects();
-
+			
+			System.out.println(layers.get(layerIndex).getName()); // debug
+			
 			float tileWidth = getTileWidth(id, layerIndex);
 			float tileHeight = getTileHeight(id, layerIndex);
 

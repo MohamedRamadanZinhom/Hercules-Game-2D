@@ -2,6 +2,7 @@
 
 package com.engine.world;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
@@ -58,7 +59,10 @@ public class World2D {
 	 */
 	public void renderBox2dDebug(Matrix4 projMatrix) {
 
+		float deltaTime = Gdx.graphics.getDeltaTime();
+
 		World2D.b2dr.render(world, projMatrix);
+		this.update(deltaTime, 6, 2);
 	}
 
 	public void dispose() {
