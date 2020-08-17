@@ -10,7 +10,6 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.engine.world.BodyProperty;
 import com.engine.world.World2D;
 import com.hercules.init.World;
@@ -23,7 +22,7 @@ public class GameAdapter extends ApplicationAdapter {
 	public static final int V_HEIGHT = 540; // Center Y
 	public static final int SCALE = 2; // Center Scale
 
-	public static final float GU = 1.0f; // Box2D Game-Unit Scaler
+	public static final float GU = 100.0f; // Box2D Game-Unit Scaler
 	public static final float FPS = 1 / 60f; // Frame per second (Delta Time)
 
 	// Test World
@@ -36,13 +35,15 @@ public class GameAdapter extends ApplicationAdapter {
 	public static final float gravityX = 0.0f;
 	public static final float gravityY = -9.81f;
 	public static final short[] categoryBits = { 2, 8 };
-	public static final short[][] bitsMask = { { 4 }, { 2 }, { 12 } };
+	public static final short[][] bitsMask = { { 2 }, { 2 } };
 
 	HashMap<Integer, BodyProperty> bodyTypeSignature;
 
 	World2D world2d; // game world
 
 	OrthographicCamera envCam;
+	OrthographicCamera playerCam;
+	OrthographicCamera box2dCam; // debug
 
 	@Override
 	public void create() {
@@ -50,8 +51,14 @@ public class GameAdapter extends ApplicationAdapter {
 		float width = Gdx.graphics.getWidth() / GU;
 		float height = Gdx.graphics.getHeight() / GU;
 
-		envCam = new OrthographicCamera(width, height);
+		envCam = new OrthographicCamera();
 		envCam.setToOrtho(false);
+
+		box2dCam = new OrthographicCamera(width, height); // box2d debugging camera
+
+		box2dCam.position.x = V_WIDTH / GU;
+		box2dCam.position.y = V_HEIGHT / GU;
+		box2dCam.update();
 
 		bodyTypeSignature = new HashMap<Integer, BodyProperty>();
 
@@ -65,6 +72,8 @@ public class GameAdapter extends ApplicationAdapter {
 		world = new World(mapDir, mapFname, mapId);
 
 		world2d = world.getWorldFromMap("1", bodyTypeSignature, gravityX, gravityY, true, GU);
+
+		// Player
 	}
 
 	@Override
@@ -80,8 +89,10 @@ public class GameAdapter extends ApplicationAdapter {
 		world.renderMap("1", envCam);
 		envCam.update();
 
-		world2d.renderBox2dDebug(envCam.combined);
+		world2d.renderBox2dDebug(box2dCam.combined);
 		world2d.update(FPS, 6, 2);
+
+		box2dCam.update();
 	}
 
 	@Override

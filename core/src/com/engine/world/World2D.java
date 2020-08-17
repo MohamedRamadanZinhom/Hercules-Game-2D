@@ -98,10 +98,13 @@ public class World2D {
 	}
 
 	public static PolygonShape getRectangle(RectangleMapObject rectangleObject) {
+
 		Rectangle rectangle = rectangleObject.getRectangle();
 		PolygonShape polygon = new PolygonShape();
+
 		Vector2 size = new Vector2((rectangle.x + rectangle.width * 0.5f) / World2D.GU,
 				(rectangle.y + rectangle.height * 0.5f) / World2D.GU);
+
 		polygon.setAsBox(rectangle.width * 0.5f / World2D.GU, rectangle.height * 0.5f / World2D.GU, size, 0.0f);
 		return polygon;
 	}
@@ -121,7 +124,6 @@ public class World2D {
 		float[] worldVertices = new float[vertices.length];
 
 		for (int i = 0; i < vertices.length; ++i) {
-			System.out.println(vertices[i]);
 			worldVertices[i] = vertices[i] / World2D.GU;
 		}
 
