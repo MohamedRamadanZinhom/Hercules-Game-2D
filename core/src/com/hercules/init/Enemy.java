@@ -40,7 +40,7 @@ public class Enemy extends Character {
 
 	}
 
-	public void attack() {
+	public void update(boolean deltaTimeScale) {
 		// do something
 	}
 }

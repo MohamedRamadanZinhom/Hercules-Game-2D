@@ -128,6 +128,15 @@ public abstract class Character {
 	 */
 	abstract public void animate();
 
+	/**
+	 * Movements, States
+	 * 
+	 * @param speedScale     : float - Player speed scale
+	 * @param deltaTimeScale : boolean - If true, scale character's movements, by
+	 *                       delta time.
+	 */
+	abstract public void update(boolean deltaTimeScale);
+
 	public void dispose() {
 
 		for (int i = 0; i < this.animator.length; i++) {

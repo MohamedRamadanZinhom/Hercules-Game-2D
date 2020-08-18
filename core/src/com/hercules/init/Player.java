@@ -69,11 +69,14 @@ public class Player extends Character {
 	}
 
 	/**
+	 * Movements, States
+	 * 
 	 * @param speedScale     : float - Player speed scale
 	 * @param deltaTimeScale : boolean - If true, scale character's movements, by
 	 *                       delta time.
 	 */
-	public void handleInput(boolean deltaTimeScale) {
+	@Override
+	public void update(boolean deltaTimeScale) {
 
 		float scale = deltaTimeScale ? Gdx.graphics.getDeltaTime() + 0.6f : 1.0f;
 
@@ -113,16 +116,16 @@ public class Player extends Character {
 			currentMode = "attack";
 		}
 
-		if (Gdx.input.isKeyPressed(Keys.SHIFT_LEFT)
-				|| Gdx.input.isKeyPressed(Keys.SHIFT_RIGHT) && Gdx.input.isKeyPressed(Keys.RIGHT)) {
+		if (Gdx.input.isKeyPressed(Keys.RIGHT)
+				&& (Gdx.input.isKeyPressed(Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Keys.SHIFT_RIGHT))) {
 
 			this.posX += runScale;
 
 			currentMode = "run";
 		}
 
-		if (Gdx.input.isKeyPressed(Keys.SHIFT_LEFT)
-				|| Gdx.input.isKeyPressed(Keys.SHIFT_RIGHT) && Gdx.input.isKeyPressed(Keys.LEFT)) {
+		if (Gdx.input.isKeyPressed(Keys.LEFT)
+				&& (Gdx.input.isKeyPressed(Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Keys.SHIFT_RIGHT))) {
 
 			this.posX -= runScale;
 
