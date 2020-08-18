@@ -2,17 +2,21 @@
 
 package com.hercules.init;
 
+import com.badlogic.gdx.math.Vector2;
+//import com.badlogic.gdx.physics.box2d.Body;
 import com.engine.animation.AnimationGenerator;
+import com.engine.exception.InconsistentSpriteSheetException;
 import com.engine.exception.OverwriteException;
+import com.engine.world.World2D;
 
 public abstract class Character {
 
-	private final int[] spriteCount;
-	private final float frameDuration;
+	private final String[][] spritesDirname;
+
+	protected final float frameDuration;
+	protected final float FPS_SCALE;
 
 	protected String name;
-
-	protected final float FPS_SCALE;
 
 	protected float posX;
 	protected float posY;
@@ -45,12 +49,13 @@ public abstract class Character {
 	 * @param currentMode     : String - Initial animation key
 	 */
 	public Character(String[][] spritesDirname, String name, float posX, float posY, float speed, float FPS_SCALE,
-			float frameDuration, int defaultIndex, String currentMode) {
+			float frameDuration, int defaultIndex, String currentMode, boolean scale) {
 
+		this.spritesDirname = spritesDirname;
 		this.name = name;
 
-		this.posX = posX;
-		this.posY = posY;
+		this.posX = scale ? posX / World2D.GU : posX;
+		this.posY = scale ? posY / World2D.GU : posY;
 		this.speed = speed;
 
 		this.index = defaultIndex;
@@ -61,17 +66,6 @@ public abstract class Character {
 
 		this.FPS_SCALE = FPS_SCALE;
 		this.frameDuration = frameDuration;
-
-		animator = new AnimationGenerator[spritesDirname.length]; // ex. 2: 0 - right, 1-left
-
-		this.spriteCount = new int[spritesDirname.length];
-
-		for (int i = 0; i < spritesDirname.length; i++) {
-
-			animator[i] = new AnimationGenerator(spritesDirname[i]);
-
-			this.spriteCount[i] = spritesDirname[i].length;
-		}
 
 	}
 
@@ -93,20 +87,40 @@ public abstract class Character {
 	protected void initCharacter(int[] FRAME_ROWS, int[] FRAME_COLS, int[][] startKeys, int[][] endKeys,
 			String[][] typeKeys, String[] keysOrder) {
 
-		try {
+		this.animator = new AnimationGenerator[keysOrder.length]; // ex. 2: 0 - right, 1-left
 
-			for (int i = 0; i < animator.length; i++) {
+		for (int i = 0; i < this.spritesDirname.length; i++) {
 
-				for (int j = 0; j < this.spriteCount[i]; j++) {
+			animator[i] = new AnimationGenerator(this.spritesDirname[i]);
 
-					animator[i].addAnimation(j, FRAME_ROWS[i], FRAME_COLS[i], this.frameDuration, startKeys[i],
-							endKeys[i], typeKeys[i], keysOrder[i]);
+			for (int j = 0; j < this.spritesDirname[i].length; j++) {
+
+				try {
+
+					animator[i].addAnimation(j, FRAME_ROWS[j], FRAME_COLS[j], this.frameDuration, startKeys[j],
+							endKeys[j], typeKeys[j], keysOrder[i]);
+
+				} catch (OverwriteException | InconsistentSpriteSheetException error) {
+
+					error.printStackTrace();
 				}
 			}
-
-		} catch (OverwriteException error) {
-			error.printStackTrace();
 		}
+
+	}
+
+	protected void initActor(World2D world, Vector2 size, short bitMask, String actorId) {
+
+		// KinematicBody
+//		PolygonShape shape = new PolygonShape();
+//		shape.setAsBox(20.0f / World2D.GU, 5.0f / World2D.GU);
+//
+//		world2d.createDynamicBody(shape, World.BIT_PLAYER, bitMask, actorId);
+//
+//		playerActor = Body2D.bodies.get("player").get(0);
+//		playerActor.setTransform(new Vector2(player.getPosX() / GU * 2 - 0.04f, player.getPosY() / GU * 2 - 0.3f),
+//				0.0f);
+
 	}
 
 	/**
@@ -127,5 +141,13 @@ public abstract class Character {
 
 	public float getPosY() {
 		return this.posY;
+	}
+
+	public float getTileWidth() {
+		return this.animator[this.index].getTileWidth();
+	}
+
+	public float getTileHeight() {
+		return this.animator[this.index].getTileHeight();
 	}
 }

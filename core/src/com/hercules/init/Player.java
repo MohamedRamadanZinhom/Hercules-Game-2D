@@ -7,6 +7,32 @@ import com.badlogic.gdx.Input.Keys;
 
 public class Player extends Character {
 
+	public static final String mainDir = "./sprite-sheets/player/";
+
+	public static final String[][] spritesDirname = { { mainDir + "iwr.png", mainDir + "jhad.png" },
+			{ mainDir + "iwr-left.png", mainDir + "jhad-left.png" } };
+
+	public static final float FPS_SCALE = 1 / 20.0f;
+	public static final float frameDuration = 0.0025f;
+
+	public static final int[] FRAME_ROWS = { 1, 1 };
+	public static final int[] FRAME_COLS = { 30, 40 };
+
+	/**
+	 * Use the same keys: pass reversed key order parameter - {@link #keysOrder)}
+	 */
+	public static final int[][] startKeys = { { 0, 9, 19 }, { 0, 9, 19, 29 } };
+	public static final int[][] endKeys = { { 9, 19, 29 }, { 9, 19, 29, 39 } };
+
+	public static final String[][] typeKeys = { { "idle", "walk", "run" }, { "jump", "attack", "hurt", "die" } };
+
+	public static final String[] keysOrder = { "right", "left" };
+
+	public static int index = 0;
+	public static String currentMode = "idle";
+
+	public static final float runScale = 5.0f;
+
 	/**
 	 * @param spritesDirname: String [][] - 2d array, each index specifies, array of
 	 *                        sprite sheets to create an animation key from it
@@ -23,23 +49,23 @@ public class Player extends Character {
 	 * 
 	 * @param currentMode     : String - Initial animation key
 	 */
-	public Player(String[][] spritesDirname, String name, float posX, float posY, float speed, float FPS_SCALE,
-			float frameDuration, int defaultIndex, String currentMode) {
+	public Player(String name, float posX, float posY, float speed) {
 
-		super(spritesDirname, name, posX, posY, speed, FPS_SCALE, frameDuration, defaultIndex, currentMode);
+		super(spritesDirname, name, posX, posY, speed, FPS_SCALE, frameDuration, index, currentMode, true);
+
 	}
 
-	public void initPlayer(int[] FRAME_ROWS, int[] FRAME_COLS, int[][] startKeys, int[][] endKeys, String[][] typeKeys,
-			String[] keysOrder) {
+	public void initPlayer() {
+
 		this.initCharacter(FRAME_ROWS, FRAME_COLS, startKeys, endKeys, typeKeys, keysOrder);
 	}
 
 	@Override
 	public void animate() {
 
-		this.animator[this.index].animate(this.currentMode, this.posX, this.posY, this.FPS_SCALE);
+		this.animator[index].animate(currentMode, this.posX, this.posY, FPS_SCALE);
 
-		this.currentMode = "idle";
+		currentMode = "idle";
 	}
 
 	/**
@@ -47,28 +73,34 @@ public class Player extends Character {
 	 * @param deltaTimeScale : boolean - If true, scale character's movements, by
 	 *                       delta time.
 	 */
-	public void handleInput(float speedScale, boolean deltaTimeScale) {
+	public void handleInput(boolean deltaTimeScale) {
 
-		float scale = deltaTimeScale ? Gdx.graphics.getDeltaTime() : 0.0f;
-		float speed = this.speed * scale * speedScale;
+		float scale = deltaTimeScale ? Gdx.graphics.getDeltaTime() + 0.6f : 1.0f;
+
+		float xStep = this.speed * scale;
+		float yStep = 10.0f * scale;
 
 		if (Gdx.input.isKeyPressed(Keys.RIGHT)) {
-			this.posX += speed;
 
-			this.currentMode = "walk";
-			this.index = 0;
+			this.posX += xStep;
+
+			currentMode = "walk";
+			index = 0;
 		}
 
 		if (Gdx.input.isKeyPressed(Keys.LEFT)) {
 
-			this.posX -= speed;
+			this.posX -= xStep;
 
-			this.currentMode = "walk";
-			this.index = 1;
+			currentMode = "walk";
+			index = 1;
 		}
 
 		if (Gdx.input.isKeyPressed(Keys.UP)) {
-			// Jumping
+
+			this.posY += yStep;
+
+			currentMode = "jump";
 		}
 
 		if (Gdx.input.isKeyPressed(Keys.DOWN)) {
@@ -78,11 +110,23 @@ public class Player extends Character {
 		if (Gdx.input.isKeyPressed(Keys.SPACE)) {
 			// Attack
 
-			this.currentMode = "attack";
+			currentMode = "attack";
 		}
 
-		if (Gdx.input.isKeyPressed(Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Keys.SHIFT_RIGHT)) {
-			// Speed Up (Run)
+		if (Gdx.input.isKeyPressed(Keys.SHIFT_LEFT)
+				|| Gdx.input.isKeyPressed(Keys.SHIFT_RIGHT) && Gdx.input.isKeyPressed(Keys.RIGHT)) {
+
+			this.posX += runScale;
+
+			currentMode = "run";
+		}
+
+		if (Gdx.input.isKeyPressed(Keys.SHIFT_LEFT)
+				|| Gdx.input.isKeyPressed(Keys.SHIFT_RIGHT) && Gdx.input.isKeyPressed(Keys.LEFT)) {
+
+			this.posX -= runScale;
+
+			currentMode = "run";
 		}
 
 		if (Gdx.input.isKeyPressed(Keys.CONTROL_LEFT) || Gdx.input.isKeyPressed(Keys.CONTROL_RIGHT)) {

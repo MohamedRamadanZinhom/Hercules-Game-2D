@@ -47,7 +47,10 @@ abstract public class Body2D {
 		fdef.shape = shape;
 
 		fdef.filter.categoryBits = categoryBits;
-		fdef.filter.maskBits = bitsMask;
+
+		if (bitsMask != -1) {
+			fdef.filter.maskBits = bitsMask;
+		}
 
 		body.createFixture(fdef).setUserData(bodyId);
 
@@ -78,7 +81,10 @@ abstract public class Body2D {
 		fdef.shape = shape;
 
 		fdef.filter.categoryBits = categoryBits;
-		fdef.filter.maskBits = bitsMask;
+
+		if (bitsMask != -1) {
+			fdef.filter.maskBits = bitsMask;
+		}
 
 		body.createFixture(fdef).setUserData(object);
 	}
@@ -95,7 +101,10 @@ abstract public class Body2D {
 		fdef.shape = shape;
 
 		fdef.filter.categoryBits = categoryBits;
-		fdef.filter.maskBits = bitsMask;
+
+		if (bitsMask != -1) {
+			fdef.filter.maskBits = bitsMask;
+		}
 
 		body.createFixture(fdef).setUserData(bodyId);
 
@@ -124,7 +133,10 @@ abstract public class Body2D {
 		fdef.shape = shape;
 
 		fdef.filter.categoryBits = categoryBits;
-		fdef.filter.maskBits = bitsMask;
+
+		if (bitsMask != -1) {
+			fdef.filter.maskBits = bitsMask;
+		}
 
 		body.createFixture(fdef).setUserData(object);
 
@@ -139,7 +151,10 @@ abstract public class Body2D {
 		fdef.shape = shape;
 
 		fdef.filter.categoryBits = categoryBits;
-		fdef.filter.maskBits = bitsMask;
+
+		if (bitsMask != -1) {
+			fdef.filter.maskBits = bitsMask;
+		}
 
 		body.createFixture(fdef).setUserData(bodyId);
 
@@ -162,7 +177,10 @@ abstract public class Body2D {
 		fdef.shape = shape;
 
 		fdef.filter.categoryBits = categoryBits;
-		fdef.filter.maskBits = bitsMask;
+
+		if (bitsMask != -1) {
+			fdef.filter.maskBits = bitsMask;
+		}
 
 		body.createFixture(fdef).setUserData(object);
 	}

@@ -23,7 +23,7 @@ public class Enemy extends Character {
 	public Enemy(String[][] spritesDirname, String name, float posX, float posY, float speed, float FPS_SCALE,
 			float frameDuration, int defaultIndex, String currentMode) {
 
-		super(spritesDirname, name, posX, posY, speed, FPS_SCALE, frameDuration, defaultIndex, currentMode);
+		super(spritesDirname, name, posX, posY, speed, FPS_SCALE, frameDuration, defaultIndex, currentMode, true);
 	}
 
 	public void initEnemy(int[] FRAME_ROWS, int[] FRAME_COLS, int[][] startKeys, int[][] endKeys, String[][] typeKeys,

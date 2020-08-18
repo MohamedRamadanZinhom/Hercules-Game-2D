@@ -14,18 +14,19 @@ public class CollisionSignal implements ContactListener {
 		Fixture fa = contact.getFixtureA();
 		Fixture fb = contact.getFixtureB();
 
-		if (fa.getUserData() != null && fa.getUserData() == "player") {
-
-			if (fb.getUserData() != null && fb.getUserData() == "Ground_Mask") {
-
-				System.out.println("Player : On The Ground");
-			}
-
-			else {
-
-				System.out.println("Player : Begin Contact");
-			}
-		}
+		System.out.println("beginContact :" + fa.getUserData() + ", " + fb.getUserData());
+//		if (fa.getUserData() != null && fa.getUserData() == "player") {
+//
+//			if (fb.getUserData() != null && fb.getUserData() == "Ground_Mask") {
+//
+//				System.out.println("Player : On The Ground");
+//			}
+//
+//			else {
+//
+//				System.out.println("Player : Begin Contact");
+//			}
+//		}
 	}
 
 	@Override

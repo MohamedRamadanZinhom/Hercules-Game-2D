@@ -9,10 +9,14 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.engine.exception.InconsistentSpriteSheetException;
 import com.engine.exception.OverwriteException;
 
 // AnimationGenerator : handle only horizontal sprite sheets
 public class AnimationGenerator {
+
+	private float tileWidth;
+	private float tileHeight;
 
 	static protected float stateTime;
 
@@ -36,7 +40,8 @@ public class AnimationGenerator {
 	}
 
 	public void addAnimation(int ith, int FRAME_ROWS, int FRAME_COLS, float frameDuration, int[] startKeys,
-			int[] endKeys, String[] typeKeys, String keysOrder) throws OverwriteException {
+			int[] endKeys, String[] typeKeys, String keysOrder)
+			throws OverwriteException, InconsistentSpriteSheetException {
 
 		/**
 		 * Create animation, of given sprite sheet, then put it inside the animation
@@ -59,8 +64,15 @@ public class AnimationGenerator {
 		 *                          repository.
 		 */
 
+		if ((spriteSheet[ith].getWidth() % FRAME_COLS != 0) || (spriteSheet[ith].getHeight() % FRAME_ROWS != 0)) {
+			throw new InconsistentSpriteSheetException("Tile Size: Sprite Sheet/s Splits are not Equal");
+		}
+
 		int tileWidth = spriteSheet[ith].getWidth() / FRAME_COLS;
 		int tileHeight = spriteSheet[ith].getHeight() / FRAME_ROWS;
+
+		this.setTileWidth(tileWidth);
+		this.setTileHeight(tileHeight);
 
 		TextureRegion[][] temp = TextureRegion.split(spriteSheet[ith], tileWidth, tileHeight);
 
@@ -139,6 +151,36 @@ public class AnimationGenerator {
 	}
 
 	/**
+	 * @return the tileWidth
+	 */
+	public float getTileWidth() {
+		return tileWidth;
+	}
+
+	/**
+	 * @param tileWidth the tileWidth to set
+	 */
+	protected void setTileWidth(float tileWidth) {
+
+		this.tileWidth = tileWidth;
+	}
+
+	/**
+	 * @return the tileHeight
+	 */
+	public float getTileHeight() {
+		return tileHeight;
+	}
+
+	/**
+	 * @param tileHeight the tileHeight to set
+	 */
+	protected void setTileHeight(float tileHeight) {
+
+		this.tileHeight = tileHeight;
+	}
+
+	/**
 	 * Dispose, SpriteBatch, Texture
 	 */
 	public void dispose() {
@@ -150,5 +192,4 @@ public class AnimationGenerator {
 		spriteBatch.dispose();
 		animationRepo.clear();
 	}
-
 }

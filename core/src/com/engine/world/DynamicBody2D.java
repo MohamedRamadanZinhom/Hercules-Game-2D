@@ -49,7 +49,10 @@ public class DynamicBody2D extends Body2D {
 		fdef.friction = this.friction;
 
 		fdef.filter.categoryBits = categoryBits;
-		fdef.filter.maskBits = bitsMask;
+
+		if (bitsMask != -1) {
+			fdef.filter.maskBits = bitsMask;
+		}
 
 		body.createFixture(fdef).setUserData(bodyId);
 
@@ -76,7 +79,10 @@ public class DynamicBody2D extends Body2D {
 		fdef.friction = this.friction;
 
 		fdef.filter.categoryBits = categoryBits;
-		fdef.filter.maskBits = bitsMask;
+
+		if (bitsMask != -1) {
+			fdef.filter.maskBits = bitsMask;
+		}
 
 		body.createFixture(fdef).setUserData(bodyId);
 
