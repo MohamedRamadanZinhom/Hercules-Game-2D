@@ -9,6 +9,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.engine.world.Body2D;
@@ -123,6 +124,7 @@ public class GameAdapter extends ApplicationAdapter {
 		world2d.createKinematicBody(shape, World.BIT_PLAYER, World.BIT_GROUND, "player");
 
 		Body2D.debug(); // print bodies id.
+
 	}
 
 	@Override
@@ -147,6 +149,8 @@ public class GameAdapter extends ApplicationAdapter {
 
 		// player
 
+		Body2D.bodies.get("player").get(0).setTransform(new Vector2(player.getPosX() / GU, player.getPosY() / GU),
+				0.0f); // Collision - Actor
 		player.animate();
 	}
 

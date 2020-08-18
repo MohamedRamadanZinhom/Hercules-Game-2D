@@ -120,4 +120,12 @@ public abstract class Character {
 			this.animator[i].dispose();
 		}
 	}
+
+	public float getPosX() {
+		return this.posX;
+	}
+
+	public float getPosY() {
+		return this.posY;
+	}
 }

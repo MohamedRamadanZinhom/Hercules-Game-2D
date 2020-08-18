@@ -40,7 +40,6 @@ public class Player extends Character {
 		this.animator[this.index].animate(this.currentMode, this.posX, this.posY, this.FPS_SCALE);
 
 		this.currentMode = "idle";
-		this.index = 0;
 	}
 
 	/**
@@ -90,5 +89,4 @@ public class Player extends Character {
 			// Spying
 		}
 	}
-
 }
