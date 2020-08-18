@@ -17,7 +17,7 @@ public class CollisionSignal implements ContactListener {
 
 		if (fb.getUserData() != null && fb.getUserData().equals("player")) {
 
-			if (fa.getUserData() != null && fa.getUserData().equals("DynamicGround")) {
+			if (fa.getUserData() != null && fa.getUserData().equals("Ground")) {
 
 				Player.OnGround = true;
 
@@ -33,6 +33,25 @@ public class CollisionSignal implements ContactListener {
 
 	@Override
 	public void endContact(Contact contact) {
+
+		Fixture fa = contact.getFixtureA();
+		Fixture fb = contact.getFixtureB();
+
+		if (fb.getUserData() != null && fb.getUserData().equals("player")) {
+
+			if (fa.getUserData() != null && fa.getUserData().equals("Ground")) {
+
+				Player.OnGround = false;
+
+				System.out.println("Player : On The Ground");
+			}
+
+			else {
+
+				System.out.println("Player : Begin Contact :" + fa.getUserData());
+			}
+		}
+
 		System.out.println("End :");
 	}
 

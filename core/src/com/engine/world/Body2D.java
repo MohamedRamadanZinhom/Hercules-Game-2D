@@ -32,7 +32,7 @@ abstract public class Body2D {
 	}
 
 	public void createBody(World world, float posX, float posY, Shape shape, boolean scale, short categoryBits,
-			short bitsMask, String bodyId) {
+			short bitsMask, boolean isSensor, String bodyId) {
 
 		Vector2 pos = new Vector2(posX, posY);
 
@@ -51,6 +51,8 @@ abstract public class Body2D {
 		if (bitsMask != -1) {
 			fdef.filter.maskBits = bitsMask;
 		}
+
+		fdef.isSensor = isSensor;
 
 		body.createFixture(fdef).setUserData(bodyId);
 
@@ -66,7 +68,7 @@ abstract public class Body2D {
 	}
 
 	public void createBody(World world, float posX, float posY, Shape shape, boolean scale, short categoryBits,
-			short bitsMask, Object object) {
+			short bitsMask, boolean isSensor, Object object) {
 
 		Vector2 pos = new Vector2(posX, posY);
 
@@ -85,12 +87,14 @@ abstract public class Body2D {
 		if (bitsMask != -1) {
 			fdef.filter.maskBits = bitsMask;
 		}
+		
+		fdef.isSensor = isSensor;
 
 		body.createFixture(fdef).setUserData(object);
 	}
 
 	public void createBody(World world, Shape shape, boolean scale, Vector2 position, float angle, short categoryBits,
-			short bitsMask, String bodyId) {
+			short bitsMask, boolean isSensor, String bodyId) {
 
 		if (scale) {
 			Vec.div2D(position, World2D.GU);
@@ -105,6 +109,8 @@ abstract public class Body2D {
 		if (bitsMask != -1) {
 			fdef.filter.maskBits = bitsMask;
 		}
+		
+		fdef.isSensor = isSensor;
 
 		body.createFixture(fdef).setUserData(bodyId);
 
@@ -122,7 +128,7 @@ abstract public class Body2D {
 	}
 
 	public void createBody(World world, Shape shape, boolean scale, Vector2 position, float angle, short categoryBits,
-			short bitsMask, Object object) {
+			short bitsMask, boolean isSensor, Object object) {
 
 		if (scale) {
 			Vec.div2D(position, World2D.GU);
@@ -138,13 +144,15 @@ abstract public class Body2D {
 			fdef.filter.maskBits = bitsMask;
 		}
 
+		fdef.isSensor = isSensor;
+
 		body.createFixture(fdef).setUserData(object);
 
 		body.setTransform(position, angle);
 
 	}
 
-	public void createBody(World world, Shape shape, short categoryBits, short bitsMask, String bodyId) {
+	public void createBody(World world, Shape shape, short categoryBits, short bitsMask, boolean isSensor, String bodyId) {
 
 		Body body = world.createBody(bdef);
 
@@ -155,6 +163,8 @@ abstract public class Body2D {
 		if (bitsMask != -1) {
 			fdef.filter.maskBits = bitsMask;
 		}
+		
+		fdef.isSensor = isSensor;
 
 		body.createFixture(fdef).setUserData(bodyId);
 
@@ -170,13 +180,15 @@ abstract public class Body2D {
 	}
 
 	// Bind object with Box2D body
-	public void createBody(World world, Shape shape, short categoryBits, short bitsMask, Object object) {
+	public void createBody(World world, Shape shape, short categoryBits, short bitsMask, boolean isSensor, Object object) {
 
 		Body body = world.createBody(bdef);
 
 		fdef.shape = shape;
 
 		fdef.filter.categoryBits = categoryBits;
+		
+		fdef.isSensor = isSensor;
 
 		if (bitsMask != -1) {
 			fdef.filter.maskBits = bitsMask;

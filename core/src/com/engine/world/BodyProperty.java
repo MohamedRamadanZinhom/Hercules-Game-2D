@@ -14,8 +14,10 @@ public class BodyProperty {
 	private short categoryBits;
 	private short bitsMask;
 
+	private boolean isSensor;
+
 	public BodyProperty(BodyType bdtype, float restitution, float density, float friction, short categoryBits,
-			short bitsMask) {
+			short bitsMask, boolean isSensor) {
 
 		this.setBdtype(bdtype);
 
@@ -32,6 +34,7 @@ public class BodyProperty {
 		this.setFriction(friction);
 		this.setCategoryBits(categoryBits);
 		this.setBitsMask(bitsMask);
+		this.setSensor(isSensor);
 	}
 
 	/**
@@ -116,6 +119,20 @@ public class BodyProperty {
 	 */
 	public void setBitsMask(short bitsMask) {
 		this.bitsMask = bitsMask;
+	}
+
+	/**
+	 * @return the isSensor
+	 */
+	public boolean isSensor() {
+		return isSensor;
+	}
+
+	/**
+	 * @param isSensor the isSensor to set
+	 */
+	public void setSensor(boolean isSensor) {
+		this.isSensor = isSensor;
 	}
 
 }

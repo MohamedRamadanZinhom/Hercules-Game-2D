@@ -39,9 +39,6 @@ public class GameAdapter extends ApplicationAdapter {
 	public static final float gravityX = 0.0f;
 	public static final float gravityY = -9.81f;
 
-	public static final short[] categoryBits = { World.BIT_GROUND, World.BIT_RANDOM_OBJECTS };
-	public static final short[] bitsMask = { -1, -1 };
-
 	HashMap<Integer, BodyProperty> bodyTypeSignature;
 
 	World2D world2d; // game world
@@ -78,11 +75,12 @@ public class GameAdapter extends ApplicationAdapter {
 
 		bodyTypeSignature = new HashMap<Integer, BodyProperty>();
 
+		BodyProperty ground = new BodyProperty(BodyType.StaticBody, 0.0f, 0.0f, 0.0f, World.BIT_GROUND, (short) -1,
+				false);
+
 		// bodyTypeSignature: for each layer (in order, bottom-up)
 		bodyTypeSignature.put(0, null);
-		bodyTypeSignature.put(1, new BodyProperty(BodyType.StaticBody, 0.0f, 0.0f, 0.0f, categoryBits[0], bitsMask[0]));
-		bodyTypeSignature.put(2,
-				new BodyProperty(BodyType.DynamicBody, 0.0f, 0.0f, 0.0f, categoryBits[1], bitsMask[1]));
+		bodyTypeSignature.put(1, ground);
 
 		world = new World(mapDir, mapFname, mapId);
 
@@ -121,7 +119,7 @@ public class GameAdapter extends ApplicationAdapter {
 		box2dCam.update();
 
 		// Player
-		player.animate();
+//		player.animate();
 	}
 
 	@Override

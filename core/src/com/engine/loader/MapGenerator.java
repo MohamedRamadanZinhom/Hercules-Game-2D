@@ -337,17 +337,19 @@ public class MapGenerator {
 				float density = bdProp.getDensity();
 				float friction = bdProp.getFriction();
 
+				boolean isSensor = bdProp.isSensor();
+
 				if (bodyType == BodyType.StaticBody) {
-					world.createStaticBody(shape, categoryBits, bitsMask, bodyId);
+					world.createStaticBody(shape, categoryBits, bitsMask, isSensor, bodyId);
 				}
 
 				else if (bodyType == BodyType.DynamicBody) {
-					world.createDynamicBody(shape, restitution, density, friction, categoryBits, bitsMask, bodyId);
+					world.createDynamicBody(shape, restitution, density, friction, categoryBits, bitsMask, isSensor, bodyId);
 
 				}
 
 				else if (bodyType == BodyType.KinematicBody) {
-					world.createKinematicBody(shape, categoryBits, bitsMask, bodyId);
+					world.createKinematicBody(shape, categoryBits, bitsMask, isSensor, bodyId);
 				}
 			}
 		}

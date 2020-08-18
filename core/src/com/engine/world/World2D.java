@@ -35,71 +35,71 @@ public class World2D {
 
 		World2D.GU = GU;
 	}
-
-	public void createStaticBody(Shape shape, short categoryBits, short bitsMask, String bodyId) {
+	
+	public void createStaticBody(Shape shape, short categoryBits, short bitsMask, boolean isSensor, String bodyId) {
 
 		StaticBody2D body = new StaticBody2D();
-		body.createBody(world, shape, categoryBits, bitsMask, bodyId);
+		body.createBody(world, shape, categoryBits, bitsMask, isSensor, bodyId);
 	}
 
 	public void createStaticBody(float posX, float posY, Shape shape, boolean scale, short categoryBits, short bitsMask,
-			String bodyId) {
+			boolean isSensor, String bodyId) {
 
 		StaticBody2D body = new StaticBody2D();
-		body.createBody(world, posX, posY, shape, scale, categoryBits, bitsMask, bodyId);
+		body.createBody(world, posX, posY, shape, scale, categoryBits, bitsMask, isSensor, bodyId);
 	}
 
-	public void createDynamicBody(Shape shape, short categoryBits, short bitsMask, String bodyId) {
+	public void createDynamicBody(Shape shape, short categoryBits, short bitsMask, boolean isSensor, String bodyId) {
 
 		DynamicBody2D body = new DynamicBody2D(0.0f, 0.0f, 0.0f);
-		body.createBody(world, shape, categoryBits, bitsMask, bodyId);
+		body.createBody(world, shape, categoryBits, bitsMask, isSensor, bodyId);
 	}
 
 	public void createDynamicBody(float posX, float posY, Shape shape, boolean scale, short categoryBits,
-			short bitsMask, String bodyId) {
+			short bitsMask, boolean isSensor, String bodyId) {
 
 		DynamicBody2D body = new DynamicBody2D(0.0f, 0.0f, 0.0f);
-		body.createBody(world, posX, posY, shape, scale, categoryBits, bitsMask, bodyId);
+		body.createBody(world, posX, posY, shape, scale, categoryBits, bitsMask, isSensor, bodyId);
 	}
 
 	public void createDynamicBody(Shape shape, float restitution, float density, float friction, short categoryBits,
-			short bitsMask, String bodyId) {
+			short bitsMask, boolean isSensor, String bodyId) {
 
 		DynamicBody2D body = new DynamicBody2D(restitution, density, friction);
-		body.createBody(world, shape, categoryBits, bitsMask, bodyId);
+		body.createBody(world, shape, categoryBits, bitsMask, isSensor, bodyId);
 	}
 
 	public void createDynamicBody(float posX, float posY, Shape shape, boolean scale, float restitution, float density,
-			float friction, short categoryBits, short bitsMask, String bodyId) {
+			float friction, short categoryBits, short bitsMask, boolean isSensor, String bodyId) {
 
 		DynamicBody2D body = new DynamicBody2D(restitution, density, friction);
-		body.createBody(world, posX, posY, shape, scale, categoryBits, bitsMask, bodyId);
+		body.createBody(world, posX, posY, shape, scale, categoryBits, bitsMask, isSensor, bodyId);
 	}
 
 	public void createKinematicBody(float posX, float posY, Shape shape, boolean scale, short categoryBits,
-			short bitsMask, String bodyId) {
+			short bitsMask, boolean isSensor, String bodyId) {
 
 		KinematicBody body = new KinematicBody();
-		body.createBody(world, posX, posY, shape, scale, categoryBits, bitsMask, bodyId);
+		body.createBody(world, posX, posY, shape, scale, categoryBits, bitsMask, isSensor, bodyId);
 	}
 
 	public void createKinematicBody(float posX, float posY, Shape shape, boolean scale, short categoryBits,
-			short bitsMask, Object object) {
+			short bitsMask, boolean isSensor, Object object) {
 
 		KinematicBody body = new KinematicBody();
-		body.createBody(world, posX, posY, shape, scale, categoryBits, bitsMask, object);
+		body.createBody(world, posX, posY, shape, scale, categoryBits, bitsMask, isSensor, object);
 	}
 
-	public void createKinematicBody(Shape shape, short categoryBits, short bitsMask, String bodyId) {
+	public void createKinematicBody(Shape shape, short categoryBits, short bitsMask, boolean isSensor, String bodyId) {
 
 		KinematicBody body = new KinematicBody();
-		body.createBody(world, shape, categoryBits, bitsMask, bodyId);
+		body.createBody(world, shape, categoryBits, bitsMask, isSensor, bodyId);
 	}
 
-	public void createKinematicBody(Shape shape, short categoryBits, short bitsMask, Object bodyId) {
+	public void createKinematicBody(Shape shape, short categoryBits, short bitsMask, boolean isSensor, Object object) {
 
 		KinematicBody body = new KinematicBody();
-		body.createBody(world, shape, categoryBits, bitsMask, bodyId);
+		body.createBody(world, shape, categoryBits, bitsMask, isSensor, object);
 	}
 
 	public void update(float deltaTime, int velocityIterations, int positionIterations) {

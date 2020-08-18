@@ -75,7 +75,7 @@ public class Player extends Character {
 
 		short mask = -1;
 
-		world.createKinematicBody(shape, World.BIT_PLAYER, mask, "player");
+		world.createDynamicBody(shape, World.BIT_PLAYER, mask, false, "player");
 
 		playerActor = Body2D.bodies.get("player").get(0);
 		playerActor.setTransform(new Vector2(65.0f / World2D.GU, 115.0f / World2D.GU), 0.0f);
@@ -120,15 +120,17 @@ public class Player extends Character {
 			index = 1;
 		}
 
-		if (Gdx.input.isKeyPressed(Keys.UP)) {
+		if (Gdx.input.isKeyPressed(Keys.UP) && Player.OnGround) {
 
 			yStep = jumpScale * scale;
+			Player.playerActor.applyForceToCenter(0.0f, yStep * World2D.GU, true);
 
 			currentMode = "jump";
 		}
 
 		if (Gdx.input.isKeyPressed(Keys.DOWN)) {
 			// Smashing
+			yStep = -jumpScale * scale;
 		}
 
 		if (Gdx.input.isKeyPressed(Keys.SPACE)) {
@@ -163,7 +165,6 @@ public class Player extends Character {
 		Vector2 actorPos = playerActor.getPosition();
 
 		actorPos.x += xStep / World2D.GU;
-		actorPos.y += yStep / World2D.GU;
 
 		playerActor.setTransform(actorPos, 0.0f);
 	}
