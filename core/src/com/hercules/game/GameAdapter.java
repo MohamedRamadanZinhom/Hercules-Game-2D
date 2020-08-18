@@ -52,7 +52,7 @@ public class GameAdapter extends ApplicationAdapter {
 
 	public static final String playerName = "m-zayan";
 
-	public static float posX = -70.0f;
+	public static float posX = 10.0f;
 	public static float posY = 30.0f;
 	public static float speed = 3.0f;
 	// =============
@@ -119,7 +119,8 @@ public class GameAdapter extends ApplicationAdapter {
 		box2dCam.update();
 
 		// Player
-//		player.animate();
+		player.animate();
+
 	}
 
 	@Override

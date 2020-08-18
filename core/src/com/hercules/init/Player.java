@@ -39,7 +39,7 @@ public class Player extends Character {
 	public static final float frameDuration = 0.0025f;
 
 	public static final float runScale = 5.0f;
-	public static final float jumpScale = 2.0f;
+	public static final float jumpScale = 120.0f;
 
 	public static Body playerActor;
 
@@ -71,20 +71,23 @@ public class Player extends Character {
 
 		// Player Actor
 		PolygonShape shape = new PolygonShape();
-		shape.setAsBox(20.0f / World2D.GU, 5.0f / World2D.GU);
+		shape.setAsBox(25.0f / World2D.GU, 5.0f / World2D.GU);
 
 		short mask = -1;
 
 		world.createDynamicBody(shape, World.BIT_PLAYER, mask, false, "player");
 
 		playerActor = Body2D.bodies.get("player").get(0);
-		playerActor.setTransform(new Vector2(65.0f / World2D.GU, 115.0f / World2D.GU), 0.0f);
+		playerActor.setTransform(new Vector2(110.0f / World2D.GU, 115.0f / World2D.GU), 0.0f);
 	}
 
 	@Override
 	public void animate() {
 
-		this.animator[index].animate(currentMode, this.posX, this.posY, FPS_SCALE);
+		float x = playerActor.getPosition().x * World2D.GU - this.getTileWidth() / 2 + this.posX;
+		float y = playerActor.getPosition().y * World2D.GU - this.getTileHeight() / 2 + this.posY;
+
+		this.animator[index].animate(currentMode, x, y, FPS_SCALE);
 
 		currentMode = "idle";
 	}
@@ -123,9 +126,9 @@ public class Player extends Character {
 		if (Gdx.input.isKeyPressed(Keys.UP) && Player.OnGround) {
 
 			yStep = jumpScale * scale;
-			Player.playerActor.applyForceToCenter(0.0f, yStep * World2D.GU, true);
-
 			currentMode = "jump";
+
+			playerActor.applyForceToCenter(0.0f, yStep, true);
 		}
 
 		if (Gdx.input.isKeyPressed(Keys.DOWN)) {
@@ -158,9 +161,6 @@ public class Player extends Character {
 		if (Gdx.input.isKeyPressed(Keys.CONTROL_LEFT) || Gdx.input.isKeyPressed(Keys.CONTROL_RIGHT)) {
 			// Spying
 		}
-
-		this.posX += xStep;
-		this.posY += yStep;
 
 		Vector2 actorPos = playerActor.getPosition();
 
