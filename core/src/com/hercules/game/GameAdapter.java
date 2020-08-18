@@ -9,11 +9,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.engine.world.Body2D;
+import com.engine.loader.MapGenerator;
 import com.engine.world.BodyProperty;
 import com.engine.world.World2D;
 import com.hercules.events.CollisionSignal;
@@ -55,18 +52,18 @@ public class GameAdapter extends ApplicationAdapter {
 
 	// ============ Player
 	Player player;
-	Body playerActor;
 
 	public static final String playerName = "m-zayan";
 
-	public static float posX = 100.0f;
-	public static float posY = 100.0f;
+	public static float posX = -70.0f;
+	public static float posY = 30.0f;
 	public static float speed = 3.0f;
 	// =============
 
 	@Override
 	public void create() {
 
+		// Environment
 		float width = Gdx.graphics.getWidth() / GU;
 		float height = Gdx.graphics.getHeight() / GU;
 
@@ -83,9 +80,9 @@ public class GameAdapter extends ApplicationAdapter {
 
 		// bodyTypeSignature: for each layer (in order, bottom-up)
 		bodyTypeSignature.put(0, null);
-		bodyTypeSignature.put(1, null);
-		bodyTypeSignature.put(2, new BodyProperty(BodyType.StaticBody, 0.0f, 0.0f, 0.0f, categoryBits[0], bitsMask[0]));
-		bodyTypeSignature.put(3, new BodyProperty(BodyType.StaticBody, 0.0f, 0.0f, 0.0f, categoryBits[1], bitsMask[1]));
+		bodyTypeSignature.put(1, new BodyProperty(BodyType.StaticBody, 0.0f, 0.0f, 0.0f, categoryBits[0], bitsMask[0]));
+		bodyTypeSignature.put(2,
+				new BodyProperty(BodyType.DynamicBody, 0.0f, 0.0f, 0.0f, categoryBits[1], bitsMask[1]));
 
 		world = new World(mapDir, mapFname, mapId);
 
@@ -94,21 +91,10 @@ public class GameAdapter extends ApplicationAdapter {
 
 		// Player
 		player = new Player(playerName, posX, posY, speed);
-
-		player.initPlayer();
+		player.initPlayer(world2d);
 
 //		Body2D.debug(); // print bodies id.
 
-//		// Player Actor
-		PolygonShape shape = new PolygonShape();
-		shape.setAsBox(20.0f / GU, 5.0f / GU);
-
-		short mask = -1;
-
-		world2d.createStaticBody(shape, World.BIT_PLAYER, mask, "player");
-
-		playerActor = Body2D.bodies.get("player").get(0);
-		playerActor.setTransform(new Vector2(player.getPosX(), player.getPosY()), 0.0f);
 	}
 
 	@Override
@@ -135,12 +121,14 @@ public class GameAdapter extends ApplicationAdapter {
 		box2dCam.update();
 
 		// Player
-		player.animate();
+//		player.animate();
 	}
 
 	@Override
 	public void dispose() {
 		player.dispose();
+		world2d.dispose();
+		MapGenerator.dispose();
 	}
 
 }

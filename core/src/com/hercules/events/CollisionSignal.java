@@ -5,6 +5,7 @@ import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
+import com.hercules.init.Player;
 
 public class CollisionSignal implements ContactListener {
 
@@ -14,24 +15,25 @@ public class CollisionSignal implements ContactListener {
 		Fixture fa = contact.getFixtureA();
 		Fixture fb = contact.getFixtureB();
 
-		System.out.println("beginContact :" + fa.getUserData() + ", " + fb.getUserData());
-//		if (fa.getUserData() != null && fa.getUserData() == "player") {
-//
-//			if (fb.getUserData() != null && fb.getUserData() == "Ground_Mask") {
-//
-//				System.out.println("Player : On The Ground");
-//			}
-//
-//			else {
-//
-//				System.out.println("Player : Begin Contact");
-//			}
-//		}
+		if (fb.getUserData() != null && fb.getUserData().equals("player")) {
+
+			if (fa.getUserData() != null && fa.getUserData().equals("DynamicGround")) {
+
+				Player.OnGround = true;
+
+				System.out.println("Player : On The Ground");
+			}
+
+			else {
+
+				System.out.println("Player : Begin Contact :" + fa.getUserData());
+			}
+		}
 	}
 
 	@Override
 	public void endContact(Contact contact) {
-
+		System.out.println("End :");
 	}
 
 	@Override
