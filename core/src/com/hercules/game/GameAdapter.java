@@ -53,13 +53,15 @@ public class GameAdapter extends ApplicationAdapter {
 	public static final String playerName = "m-zayan";
 
 	public static float posX = 10.0f;
-	public static float posY = 30.0f;
+	public static float posY = 40.0f;
 	public static float speed = 3.0f;
 	// =============
 
 	@Override
 	public void create() {
-
+		
+		// Player playerCam
+		
 		// Environment
 		float width = Gdx.graphics.getWidth() / GU;
 		float height = Gdx.graphics.getHeight() / GU;
@@ -117,7 +119,8 @@ public class GameAdapter extends ApplicationAdapter {
 		world2d.update(FPS, 6, 2);
 
 		box2dCam.update();
-
+		
+		
 		// Player
 		player.animate();
 

@@ -12,7 +12,8 @@ import com.engine.world.World2D;
 
 public class Player extends Character {
 
-	public static boolean OnGround = true;
+	public static boolean onGround = true;
+	public static boolean hit = false; // if true: enemy health --> decrease
 
 	public static final String mainDir = "./sprite-sheets/player/";
 
@@ -42,6 +43,9 @@ public class Player extends Character {
 	public static final float jumpScale = 120.0f;
 
 	public static Body playerActor;
+
+	public static Body swordR;
+	public static Body swordL;
 
 	/**
 	 * @param spritesDirname: String [][] - 2d array, each index specifies, array of
@@ -73,12 +77,28 @@ public class Player extends Character {
 		PolygonShape shape = new PolygonShape();
 		shape.setAsBox(25.0f / World2D.GU, 5.0f / World2D.GU);
 
-		short mask = -1;
-
-		world.createDynamicBody(shape, World.BIT_PLAYER, mask, false, "player");
+		world.createDynamicBody(shape, World.BIT_PLAYER, (short) -1, false, "player");
 
 		playerActor = Body2D.bodies.get("player").get(0);
 		playerActor.setTransform(new Vector2(110.0f / World2D.GU, 115.0f / World2D.GU), 0.0f);
+
+		// Player swordR
+		PolygonShape swordShapeR = new PolygonShape();
+		swordShapeR.setAsBox(10.0f / World2D.GU, 10.0f / World2D.GU);
+
+		world.createStaticBody(swordShapeR, World.BIT_PLAYER, (short) -1, false, "sword");
+
+		swordR = Body2D.bodies.get("sword").get(0);
+		swordR.setTransform(new Vector2(220.0f / World2D.GU, 150.0f / World2D.GU), 0.0f);
+
+		// Player swordL
+		PolygonShape swordShapeL = new PolygonShape();
+		swordShapeL.setAsBox(10.0f / World2D.GU, 10.0f / World2D.GU);
+
+		world.createStaticBody(swordShapeL, World.BIT_PLAYER, (short) -1, false, "sword");
+
+		swordL = Body2D.bodies.get("sword").get(1);
+		swordL.setTransform(new Vector2(10.0f / World2D.GU, 150.0f / World2D.GU), 0.0f);
 	}
 
 	@Override
@@ -123,7 +143,7 @@ public class Player extends Character {
 			index = 1;
 		}
 
-		if (Gdx.input.isKeyPressed(Keys.UP) && Player.OnGround) {
+		if (Gdx.input.isKeyPressed(Keys.UP) && Player.onGround) {
 
 			yStep = jumpScale * scale;
 			currentMode = "jump";
@@ -164,8 +184,17 @@ public class Player extends Character {
 
 		Vector2 actorPos = playerActor.getPosition();
 
+		Vector2 swordPosR = swordR.getPosition();
+		Vector2 swordPosL = swordL.getPosition();
+
 		actorPos.x += xStep / World2D.GU;
 
+		swordPosR.x += xStep / World2D.GU;
+		swordPosL.x += xStep / World2D.GU;
+
 		playerActor.setTransform(actorPos, 0.0f);
+
+		swordR.setTransform(swordPosR, 0.0f);
+		swordL.setTransform(swordPosL, 0.0f);
 	}
 }

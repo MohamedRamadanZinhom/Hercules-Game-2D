@@ -19,9 +19,24 @@ public class CollisionSignal implements ContactListener {
 
 			if (fa.getUserData() != null && fa.getUserData().equals("Ground")) {
 
-				Player.OnGround = true;
+				Player.onGround = true;
 
 				System.out.println("Player : On The Ground");
+			}
+
+			else {
+
+				System.out.println("Player : Begin Contact :" + fa.getUserData());
+			}
+		}
+
+		else if (fb.getUserData() != null && fb.getUserData().equals("sword")) {
+
+			if (fa.getUserData() != null && fa.getUserData().equals("enemy")) {
+
+				Player.hit = true;
+
+				System.out.println("Player : Hit");
 			}
 
 			else {
@@ -41,7 +56,7 @@ public class CollisionSignal implements ContactListener {
 
 			if (fa.getUserData() != null && fa.getUserData().equals("Ground")) {
 
-				Player.OnGround = false;
+				Player.onGround = false;
 
 				System.out.println("Player : On The Ground");
 			}
@@ -52,19 +67,29 @@ public class CollisionSignal implements ContactListener {
 			}
 		}
 
-		System.out.println("End :");
+		else if (fb.getUserData() != null && fb.getUserData().equals("sword")) {
+
+			if (fa.getUserData() != null && fa.getUserData().equals("enemy")) {
+
+				Player.hit = false;
+
+				System.out.println("Player : Hit");
+			}
+
+			else {
+
+				System.out.println("Player : Begin Contact :" + fa.getUserData());
+			}
+		}
 	}
 
 	@Override
 	public void preSolve(Contact contact, Manifold oldManifold) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void postSolve(Contact contact, ContactImpulse impulse) {
-		// TODO Auto-generated method stub
-
 	}
 
 }
