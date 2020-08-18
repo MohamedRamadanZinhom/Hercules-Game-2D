@@ -39,8 +39,9 @@ public class Player extends Character {
 	public static final float frameDuration = 0.0025f;
 
 	public static final float runScale = 5.0f;
+	public static final float jumpScale = 2.0f;
 
-	Body playerActor;
+	public static Body playerActor;
 
 	/**
 	 * @param spritesDirname: String [][] - 2d array, each index specifies, array of
@@ -67,7 +68,7 @@ public class Player extends Character {
 	public void initPlayer(World2D world) {
 
 		this.initCharacter(FRAME_ROWS, FRAME_COLS, startKeys, endKeys, typeKeys, keysOrder);
-		
+
 		// Player Actor
 		PolygonShape shape = new PolygonShape();
 		shape.setAsBox(20.0f / World2D.GU, 5.0f / World2D.GU);
@@ -100,12 +101,12 @@ public class Player extends Character {
 
 		float scale = deltaTimeScale ? Gdx.graphics.getDeltaTime() + 0.6f : 1.0f;
 
-		float xStep = this.speed * scale;
-		float yStep = 10.0f * scale;
+		float xStep = 0.0f; // this.speed * scale
+		float yStep = 0.0f; // 10.0f * scale;
 
 		if (Gdx.input.isKeyPressed(Keys.RIGHT)) {
 
-			this.posX += xStep;
+			xStep = this.speed * scale;
 
 			currentMode = "walk";
 			index = 0;
@@ -113,7 +114,7 @@ public class Player extends Character {
 
 		if (Gdx.input.isKeyPressed(Keys.LEFT)) {
 
-			this.posX -= xStep;
+			xStep = -this.speed * scale;
 
 			currentMode = "walk";
 			index = 1;
@@ -121,14 +122,13 @@ public class Player extends Character {
 
 		if (Gdx.input.isKeyPressed(Keys.UP)) {
 
-			this.posY += yStep;
+			yStep = jumpScale * scale;
 
 			currentMode = "jump";
 		}
 
 		if (Gdx.input.isKeyPressed(Keys.DOWN)) {
 			// Smashing
-			this.posY -= yStep;
 		}
 
 		if (Gdx.input.isKeyPressed(Keys.SPACE)) {
@@ -140,7 +140,7 @@ public class Player extends Character {
 		if (Gdx.input.isKeyPressed(Keys.RIGHT)
 				&& (Gdx.input.isKeyPressed(Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Keys.SHIFT_RIGHT))) {
 
-			this.posX += runScale;
+			xStep += runScale;
 
 			currentMode = "run";
 		}
@@ -148,7 +148,7 @@ public class Player extends Character {
 		if (Gdx.input.isKeyPressed(Keys.LEFT)
 				&& (Gdx.input.isKeyPressed(Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Keys.SHIFT_RIGHT))) {
 
-			this.posX -= runScale;
+			xStep -= runScale;
 
 			currentMode = "run";
 		}
@@ -156,5 +156,15 @@ public class Player extends Character {
 		if (Gdx.input.isKeyPressed(Keys.CONTROL_LEFT) || Gdx.input.isKeyPressed(Keys.CONTROL_RIGHT)) {
 			// Spying
 		}
+
+		this.posX += xStep;
+		this.posY += yStep;
+
+		Vector2 actorPos = playerActor.getPosition();
+
+		actorPos.x += xStep / World2D.GU;
+		actorPos.y += yStep / World2D.GU;
+
+		playerActor.setTransform(actorPos, 0.0f);
 	}
 }

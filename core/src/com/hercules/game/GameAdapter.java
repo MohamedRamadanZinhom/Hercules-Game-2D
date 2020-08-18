@@ -121,7 +121,7 @@ public class GameAdapter extends ApplicationAdapter {
 		box2dCam.update();
 
 		// Player
-//		player.animate();
+		player.animate();
 	}
 
 	@Override
