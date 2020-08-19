@@ -25,12 +25,11 @@ public class CollisionSignal implements ContactListener {
 			}
 
 			else {
-
-				System.out.println("Player : Begin Contact :" + fa.getUserData());
+				// do something
 			}
 		}
 
-		else if (fb.getUserData() != null && fb.getUserData().equals("sword")) {
+		if (fb.getUserData() != null && fb.getUserData().equals("sword")) {
 
 			if (fa.getUserData() != null && fa.getUserData().equals("enemy")) {
 
@@ -41,7 +40,22 @@ public class CollisionSignal implements ContactListener {
 
 			else {
 
-				System.out.println("Player : Begin Contact :" + fa.getUserData());
+				// do something
+			}
+		}
+
+		if (fb.getUserData() != null && (fb.getUserData().equals("player") || fb.getUserData().equals("sword"))) {
+
+			if (fa.getUserData() != null && fa.getUserData().equals("Bounds")) {
+
+				Player.onBound = true;
+
+				System.out.println("Player : Bound");
+			}
+
+			else {
+
+				// do something
 			}
 		}
 	}
@@ -57,28 +71,39 @@ public class CollisionSignal implements ContactListener {
 			if (fa.getUserData() != null && fa.getUserData().equals("Ground")) {
 
 				Player.onGround = false;
-
-				System.out.println("Player : On The Ground");
 			}
 
 			else {
 
-				System.out.println("Player : Begin Contact :" + fa.getUserData());
+				// do something
 			}
 		}
 
-		else if (fb.getUserData() != null && fb.getUserData().equals("sword")) {
+		if (fb.getUserData() != null && fb.getUserData().equals("sword")) {
 
 			if (fa.getUserData() != null && fa.getUserData().equals("enemy")) {
 
 				Player.hit = false;
 
-				System.out.println("Player : Hit");
 			}
 
 			else {
 
-				System.out.println("Player : Begin Contact :" + fa.getUserData());
+				// do something
+			}
+		}
+
+		if (fb.getUserData() != null && (fb.getUserData().equals("player") || fb.getUserData().equals("sword"))) {
+
+			if (fa.getUserData() != null && fa.getUserData().equals("Bounds")) {
+
+				Player.onBound = false;
+
+			}
+
+			else {
+
+				// do something
 			}
 		}
 	}

@@ -15,6 +15,7 @@ public class Player extends Character {
 
 	public static boolean onGround = true;
 	public static boolean hit = false; // if true: enemy health --> decrease
+	public static boolean onBound = false;
 
 	public static final String mainDir = "./sprite-sheets/player/";
 
@@ -80,16 +81,16 @@ public class Player extends Character {
 		PolygonShape shape = new PolygonShape();
 		shape.setAsBox(25.0f / World2D.GU, 5.0f / World2D.GU);
 
-		world.createDynamicBody(shape, World.BIT_PLAYER, (short) -1, false, "player");
+		world.createDynamicBody(shape, World.BIT_PLAYER, World.BIT_ANY, false, "player");
 
 		this.playerActor = Body2D.bodies.get("player").get(0);
-		this.playerActor.setTransform(new Vector2(110.0f / World2D.GU, 115.0f / World2D.GU), 0.0f);
+		this.playerActor.setTransform(new Vector2(this.posX / World2D.GU, this.posY / World2D.GU), 0.0f);
 
 		// Player swordR
 		PolygonShape swordShapeR = new PolygonShape();
 		swordShapeR.setAsBox(10.0f / World2D.GU, 10.0f / World2D.GU);
 
-		world.createStaticBody(swordShapeR, World.BIT_PLAYER, (short) -1, true, "sword");
+		world.createDynamicBody(swordShapeR, World.BIT_PLAYER, World.BIT_ANY, true, "sword");
 
 		this.swordR = Body2D.bodies.get("sword").get(0);
 		this.swordR.setTransform(new Vector2(220.0f / World2D.GU, 150.0f / World2D.GU), 0.0f);
@@ -98,20 +99,22 @@ public class Player extends Character {
 		PolygonShape swordShapeL = new PolygonShape();
 		swordShapeL.setAsBox(10.0f / World2D.GU, 10.0f / World2D.GU);
 
-		world.createStaticBody(swordShapeL, World.BIT_PLAYER, (short) -1, true, "sword");
+		world.createDynamicBody(swordShapeL, World.BIT_PLAYER, World.BIT_ANY, true, "sword");
 
 		this.swordL = Body2D.bodies.get("sword").get(1);
 		this.swordL.setTransform(new Vector2(10.0f / World2D.GU, 150.0f / World2D.GU), 0.0f);
+
+		World2D.onDebugMode = true;
 	}
 
 	@Override
 	public void animate(OrthographicCamera camera) {
 
-		float x = this.getPosX() * World2D.GU - this.getTileWidth() / 2 + this.posX;
-		float y = this.getPosY() * World2D.GU - this.getTileHeight() / 2 + this.posY;
+		float x = this.getPosX() * World2D.GU - this.getTileWidth() / 2 + 10.0f;
+		float y = this.getPosY() * World2D.GU - this.getTileHeight() / 2 + 140.0f;
 
-//		camera.position.x = camera.viewportWidth / 2.0f + (x - this.getPosX());
-//		camera.position.y = camera.viewportHeight / 2.0f + (y - this.getPosY());
+//		camera.position.x = x;
+//		camera.position.y = y;
 //		camera.update();
 
 //		this.animator[index].getSpriteBatch().setProjectionMatrix(camera.combined);
@@ -137,6 +140,12 @@ public class Player extends Character {
 
 		float xStep = 0.0f; // this.speed * scale
 		float yStep = 0.0f; // 10.0f * scale;
+
+		float rXStep = 110.0f;
+		float rYStep = 30.0f;
+
+		float lXStep = 90.0f;
+		float lYStep = 30.0f;
 
 		if (Gdx.input.isKeyPressed(Keys.RIGHT)) {
 
@@ -193,20 +202,28 @@ public class Player extends Character {
 			// Spying
 		}
 
+		if (Player.onBound) {
+
+			xStep = 0f;
+		}
+
 		Vector2 actorPos = this.playerActor.getPosition();
 
-		Vector2 swordPosR = this.swordR.getPosition();
-		Vector2 swordPosL = this.swordL.getPosition();
-
 		actorPos.x += xStep / World2D.GU;
-
-		swordPosR.x += xStep / World2D.GU;
-		swordPosL.x += xStep / World2D.GU;
 
 		// Player Actor
 		this.playerActor.setTransform(actorPos, 0.0f);
 
 		// Sword
+		Vector2 swordPosR = new Vector2(this.playerActor.getPosition());
+		Vector2 swordPosL = new Vector2(this.playerActor.getPosition());
+
+		swordPosR.x += rXStep / World2D.GU;
+		swordPosR.y += rYStep / World2D.GU;
+
+		swordPosL.x -= lXStep / World2D.GU;
+		swordPosL.y += lYStep / World2D.GU;
+
 		this.swordR.setTransform(swordPosR, 0.0f);
 		this.swordL.setTransform(swordPosL, 0.0f);
 

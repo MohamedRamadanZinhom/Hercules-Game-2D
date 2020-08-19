@@ -56,7 +56,7 @@ public abstract class Character {
 
 		this.posX = scale ? posX / World2D.GU : posX;
 		this.posY = scale ? posY / World2D.GU : posY;
-		this.speed = speed;
+		this.speed = scale ? speed / World2D.GU : speed;
 
 		this.index = defaultIndex;
 		this.currentMode = currentMode;

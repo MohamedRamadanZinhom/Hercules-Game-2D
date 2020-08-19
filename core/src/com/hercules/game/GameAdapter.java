@@ -44,6 +44,7 @@ public class GameAdapter extends ApplicationAdapter {
 	World2D world2d; // game world
 
 	OrthographicCamera envCam;
+	OrthographicCamera playerCam;
 	OrthographicCamera box2dCam; // debug
 
 	// ============ Player
@@ -51,8 +52,8 @@ public class GameAdapter extends ApplicationAdapter {
 
 	public static final String playerName = "m-zayan";
 
-	public static float posX = 10.0f;
-	public static float posY = 140.0f;
+	public static float posX = 150.0f;
+	public static float posY = 115.0f;
 
 	public static float speed = 4.0f;
 	public static final float runScale = 5.0f;
@@ -65,13 +66,18 @@ public class GameAdapter extends ApplicationAdapter {
 
 		bodyTypeSignature = new HashMap<Integer, BodyProperty>();
 
-		BodyProperty ground = new BodyProperty(BodyType.StaticBody, 0.0f, 0.0f, 0.0f, World.BIT_GROUND, (short) -1,
+		BodyProperty bounds = new BodyProperty(BodyType.StaticBody, 0.0f, 0.0f, 0.0f, World.BIT_BOUNDS, World.BIT_ANY,
+				false);
+
+		BodyProperty ground = new BodyProperty(BodyType.StaticBody, 0.0f, 0.0f, 0.0f, World.BIT_GROUND, World.BIT_ANY,
 				false);
 
 		// bodyTypeSignature: for each layer (in order, bottom-up)
 		bodyTypeSignature.put(0, null);
-		bodyTypeSignature.put(1, ground);
+		bodyTypeSignature.put(1, bounds);
+		bodyTypeSignature.put(2, ground);
 
+		// Build map
 		world = new World(mapDir, mapFname, mapId);
 
 		world2d = world.getWorldFromMap("1", bodyTypeSignature, gravityX, gravityY, true, GU);
@@ -88,7 +94,7 @@ public class GameAdapter extends ApplicationAdapter {
 		box2dCam = new OrthographicCamera(width, height); // box2d debugging camera
 
 		box2dCam.position.x = box2dCam.viewportWidth / 2;
-		box2dCam.position.y = box2dCam.viewportHeight / 2 - 0.5f;
+		box2dCam.position.y = box2dCam.viewportHeight / 2 - 1.0f;
 		box2dCam.update();
 
 		// Environment - Camera
@@ -97,6 +103,9 @@ public class GameAdapter extends ApplicationAdapter {
 		envCam.position.x = envCam.viewportWidth / 2;
 		envCam.position.y = envCam.viewportHeight / 2;
 		envCam.update();
+
+		// Player Camera
+//		GameLevel level = new GameLevel(0);
 	}
 
 	@Override

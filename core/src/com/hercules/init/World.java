@@ -21,6 +21,9 @@ public class World {
 	public static final short BIT_ENEMY_T2 = 16;
 
 	public static final short BIT_RANDOM_OBJECTS = 32; // coins, health, ...etc
+	public static final short BIT_BOUNDS = 64; // World BOUNDS
+
+	public static final short BIT_ANY = -1;
 
 	/**
 	 * @param mainDir

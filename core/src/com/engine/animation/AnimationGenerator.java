@@ -18,11 +18,11 @@ public class AnimationGenerator {
 	private float tileWidth;
 	private float tileHeight;
 
+	private SpriteBatch spriteBatch;
+
 	static protected float stateTime;
 
 	protected HashMap<String, Animation<TextureRegion>> animationRepo;
-
-	protected SpriteBatch spriteBatch;
 
 	protected Texture[] spriteSheet;
 
@@ -150,6 +150,14 @@ public class AnimationGenerator {
 		spriteBatch.end();
 	}
 
+	public TextureRegion animate(String mode, float FPS_SCALE) {
+
+		stateTime += Gdx.graphics.getDeltaTime() * FPS_SCALE;
+		TextureRegion currentFrame = animationRepo.get(mode).getKeyFrame(stateTime, true);
+
+		return currentFrame;
+	}
+
 	/**
 	 * @return the tileWidth
 	 */
@@ -178,11 +186,6 @@ public class AnimationGenerator {
 	protected void setTileHeight(float tileHeight) {
 
 		this.tileHeight = tileHeight;
-	}
-
-	public SpriteBatch getSpriteBatch() {
-
-		return this.spriteBatch;
 	}
 
 	/**
