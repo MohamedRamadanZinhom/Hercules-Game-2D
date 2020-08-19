@@ -20,7 +20,7 @@ public class GameLevel { // No. of Levels = 5
 
 	public static final String[] mapFname = { "level-1.tmx" };
 	public static final String[] mapId = { "1" };
-	public static final int[] nLayers = { 3 };
+	public static final int[] nLayers = { 4 };
 
 	public static final float gravityX = 0.0f;
 	public static final float gravityY = -9.81f;
@@ -90,10 +90,12 @@ public class GameLevel { // No. of Levels = 5
 
 			layerProperty[0] = null; // null - means, layer has no object property
 
-			layerProperty[1] = new BodyProperty(BodyType.StaticBody, 0.0f, 0.0f, 0.0f, World.BIT_BOUNDS, World.BIT_ANY,
+			layerProperty[1] = null;
+
+			layerProperty[2] = new BodyProperty(BodyType.StaticBody, 0.0f, 0.0f, 0.0f, World.BIT_BOUNDS, World.BIT_ANY,
 					false);
 
-			layerProperty[2] = new BodyProperty(BodyType.StaticBody, 0.0f, 0.0f, 0.0f, World.BIT_GROUND, World.BIT_ANY,
+			layerProperty[3] = new BodyProperty(BodyType.StaticBody, 0.0f, 0.0f, 0.0f, World.BIT_GROUND, World.BIT_ANY,
 					false);
 		}
 
