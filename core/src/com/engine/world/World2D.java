@@ -2,6 +2,8 @@
 
 package com.engine.world;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.objects.CircleMapObject;
 import com.badlogic.gdx.maps.objects.PolygonMapObject;
@@ -11,6 +13,7 @@ import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.ChainShape;
 import com.badlogic.gdx.physics.box2d.CircleShape;
@@ -22,6 +25,7 @@ import com.badlogic.gdx.physics.box2d.World;
 public class World2D {
 
 	private static Box2DDebugRenderer b2dr = new Box2DDebugRenderer();
+	public static boolean onDebugMode = false;
 
 	protected World world;
 	protected OrthographicCamera envCam;
@@ -35,7 +39,7 @@ public class World2D {
 
 		World2D.GU = GU;
 	}
-	
+
 	public void createStaticBody(Shape shape, short categoryBits, short bitsMask, boolean isSensor, String bodyId) {
 
 		StaticBody2D body = new StaticBody2D();
@@ -119,7 +123,13 @@ public class World2D {
 	 */
 	public void renderBox2dDebug(Matrix4 projMatrix) {
 
-		World2D.b2dr.render(world, projMatrix);
+		if (Gdx.input.isKeyJustPressed(Keys.D)) {
+			World2D.onDebugMode = !onDebugMode;
+		}
+
+		if (World2D.onDebugMode) {
+			World2D.b2dr.render(world, projMatrix);
+		}
 	}
 
 	public static PolygonShape getRectangle(RectangleMapObject rectangleObject) {
@@ -170,6 +180,34 @@ public class World2D {
 		ChainShape chain = new ChainShape();
 		chain.createChain(worldVertices);
 		return chain;
+	}
+
+	public static void boundCamera(OrthographicCamera camera, float startX, float startY, float width, float height) {
+
+		Vector3 cameraPos = camera.position;
+
+		if (cameraPos.x < startX) {
+
+			cameraPos.x = startX;
+		}
+
+		if (cameraPos.y < startY) {
+
+			cameraPos.y = startY;
+		}
+
+		if (cameraPos.x > startX + width) {
+
+			cameraPos.x = startX + width;
+		}
+
+		if (cameraPos.y > startY + height) {
+
+			cameraPos.y = startY + height;
+		}
+
+		camera.position.set(cameraPos);
+		camera.update();
 	}
 
 	public void dispose() {

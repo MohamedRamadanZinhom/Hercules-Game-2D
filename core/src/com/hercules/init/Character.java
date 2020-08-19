@@ -2,8 +2,8 @@
 
 package com.hercules.init;
 
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
-//import com.badlogic.gdx.physics.box2d.Body;
 import com.engine.animation.AnimationGenerator;
 import com.engine.exception.InconsistentSpriteSheetException;
 import com.engine.exception.OverwriteException;
@@ -126,7 +126,7 @@ public abstract class Character {
 	/**
 	 * Animate - character
 	 */
-	abstract public void animate();
+	abstract public void animate(OrthographicCamera camera);
 
 	/**
 	 * Movements, States
@@ -145,11 +145,11 @@ public abstract class Character {
 	}
 
 	public float getPosX() {
-		return this.posX;
+		return this.posY;
 	}
 
 	public float getPosY() {
-		return this.posY;
+		return this.posX;
 	}
 
 	public float getTileWidth() {

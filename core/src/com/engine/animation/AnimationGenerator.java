@@ -180,6 +180,11 @@ public class AnimationGenerator {
 		this.tileHeight = tileHeight;
 	}
 
+	public SpriteBatch getSpriteBatch() {
+
+		return this.spriteBatch;
+	}
+
 	/**
 	 * Dispose, SpriteBatch, Texture
 	 */

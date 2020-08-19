@@ -2,6 +2,8 @@
 
 package com.hercules.init;
 
+import com.badlogic.gdx.graphics.OrthographicCamera;
+
 public class Enemy extends Character {
 
 	/**
@@ -32,7 +34,7 @@ public class Enemy extends Character {
 	}
 
 	@Override
-	public void animate() {
+	public void animate(OrthographicCamera camera) {
 
 		this.animator[this.index].animate(this.currentMode, this.posX, this.posY, this.FPS_SCALE);
 

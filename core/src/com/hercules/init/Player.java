@@ -4,6 +4,7 @@ package com.hercules.init;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
@@ -39,13 +40,13 @@ public class Player extends Character {
 	public static final float FPS_SCALE = 1 / 20.0f;
 	public static final float frameDuration = 0.0025f;
 
-	public static final float runScale = 5.0f;
-	public static final float jumpScale = 120.0f;
+	public final float runScale;
+	public final float jumpScale;
 
-	public static Body playerActor;
+	public Body playerActor;
 
-	public static Body swordR;
-	public static Body swordL;
+	public Body swordR;
+	public Body swordL;
 
 	/**
 	 * @param spritesDirname: String [][] - 2d array, each index specifies, array of
@@ -63,10 +64,12 @@ public class Player extends Character {
 	 * 
 	 * @param currentMode     : String - Initial animation key
 	 */
-	public Player(String name, float posX, float posY, float speed) {
+	public Player(String name, float posX, float posY, float speed, float runScale, float jumpScale) {
 
 		super(spritesDirname, name, posX, posY, speed, FPS_SCALE, frameDuration, index, currentMode, false);
 
+		this.runScale = runScale;
+		this.jumpScale = jumpScale;
 	}
 
 	public void initPlayer(World2D world) {
@@ -79,36 +82,44 @@ public class Player extends Character {
 
 		world.createDynamicBody(shape, World.BIT_PLAYER, (short) -1, false, "player");
 
-		playerActor = Body2D.bodies.get("player").get(0);
-		playerActor.setTransform(new Vector2(110.0f / World2D.GU, 115.0f / World2D.GU), 0.0f);
+		this.playerActor = Body2D.bodies.get("player").get(0);
+		this.playerActor.setTransform(new Vector2(110.0f / World2D.GU, 115.0f / World2D.GU), 0.0f);
 
 		// Player swordR
 		PolygonShape swordShapeR = new PolygonShape();
 		swordShapeR.setAsBox(10.0f / World2D.GU, 10.0f / World2D.GU);
 
-		world.createStaticBody(swordShapeR, World.BIT_PLAYER, (short) -1, false, "sword");
+		world.createStaticBody(swordShapeR, World.BIT_PLAYER, (short) -1, true, "sword");
 
-		swordR = Body2D.bodies.get("sword").get(0);
-		swordR.setTransform(new Vector2(220.0f / World2D.GU, 150.0f / World2D.GU), 0.0f);
+		this.swordR = Body2D.bodies.get("sword").get(0);
+		this.swordR.setTransform(new Vector2(220.0f / World2D.GU, 150.0f / World2D.GU), 0.0f);
 
 		// Player swordL
 		PolygonShape swordShapeL = new PolygonShape();
 		swordShapeL.setAsBox(10.0f / World2D.GU, 10.0f / World2D.GU);
 
-		world.createStaticBody(swordShapeL, World.BIT_PLAYER, (short) -1, false, "sword");
+		world.createStaticBody(swordShapeL, World.BIT_PLAYER, (short) -1, true, "sword");
 
-		swordL = Body2D.bodies.get("sword").get(1);
-		swordL.setTransform(new Vector2(10.0f / World2D.GU, 150.0f / World2D.GU), 0.0f);
+		this.swordL = Body2D.bodies.get("sword").get(1);
+		this.swordL.setTransform(new Vector2(10.0f / World2D.GU, 150.0f / World2D.GU), 0.0f);
 	}
 
 	@Override
-	public void animate() {
+	public void animate(OrthographicCamera camera) {
 
-		float x = playerActor.getPosition().x * World2D.GU - this.getTileWidth() / 2 + this.posX;
-		float y = playerActor.getPosition().y * World2D.GU - this.getTileHeight() / 2 + this.posY;
+		float x = this.getPosX() * World2D.GU - this.getTileWidth() / 2 + this.posX;
+		float y = this.getPosY() * World2D.GU - this.getTileHeight() / 2 + this.posY;
 
+//		camera.position.x = camera.viewportWidth / 2.0f + (x - this.getPosX());
+//		camera.position.y = camera.viewportHeight / 2.0f + (y - this.getPosY());
+//		camera.update();
+
+//		this.animator[index].getSpriteBatch().setProjectionMatrix(camera.combined);
+
+		// Animate
 		this.animator[index].animate(currentMode, x, y, FPS_SCALE);
 
+		// re-init
 		currentMode = "idle";
 	}
 
@@ -145,15 +156,15 @@ public class Player extends Character {
 
 		if (Gdx.input.isKeyPressed(Keys.UP) && Player.onGround) {
 
-			yStep = jumpScale * scale;
+			yStep = this.jumpScale * scale;
 			currentMode = "jump";
 
-			playerActor.applyForceToCenter(0.0f, yStep, true);
+			this.playerActor.applyForceToCenter(0.0f, yStep, true);
 		}
 
 		if (Gdx.input.isKeyPressed(Keys.DOWN)) {
 			// Smashing
-			yStep = -jumpScale * scale;
+			yStep = -this.jumpScale * scale;
 		}
 
 		if (Gdx.input.isKeyPressed(Keys.SPACE)) {
@@ -165,7 +176,7 @@ public class Player extends Character {
 		if (Gdx.input.isKeyPressed(Keys.RIGHT)
 				&& (Gdx.input.isKeyPressed(Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Keys.SHIFT_RIGHT))) {
 
-			xStep += runScale;
+			xStep += this.runScale;
 
 			currentMode = "run";
 		}
@@ -173,7 +184,7 @@ public class Player extends Character {
 		if (Gdx.input.isKeyPressed(Keys.LEFT)
 				&& (Gdx.input.isKeyPressed(Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Keys.SHIFT_RIGHT))) {
 
-			xStep -= runScale;
+			xStep -= this.runScale;
 
 			currentMode = "run";
 		}
@@ -182,19 +193,33 @@ public class Player extends Character {
 			// Spying
 		}
 
-		Vector2 actorPos = playerActor.getPosition();
+		Vector2 actorPos = this.playerActor.getPosition();
 
-		Vector2 swordPosR = swordR.getPosition();
-		Vector2 swordPosL = swordL.getPosition();
+		Vector2 swordPosR = this.swordR.getPosition();
+		Vector2 swordPosL = this.swordL.getPosition();
 
 		actorPos.x += xStep / World2D.GU;
 
 		swordPosR.x += xStep / World2D.GU;
 		swordPosL.x += xStep / World2D.GU;
 
-		playerActor.setTransform(actorPos, 0.0f);
+		// Player Actor
+		this.playerActor.setTransform(actorPos, 0.0f);
 
-		swordR.setTransform(swordPosR, 0.0f);
-		swordL.setTransform(swordPosL, 0.0f);
+		// Sword
+		this.swordR.setTransform(swordPosR, 0.0f);
+		this.swordL.setTransform(swordPosL, 0.0f);
+
 	}
+
+	@Override
+	public float getPosX() {
+		return this.playerActor.getPosition().x;
+	}
+
+	@Override
+	public float getPosY() {
+		return this.playerActor.getPosition().y;
+	}
+
 }

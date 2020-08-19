@@ -44,7 +44,6 @@ public class GameAdapter extends ApplicationAdapter {
 	World2D world2d; // game world
 
 	OrthographicCamera envCam;
-	OrthographicCamera playerCam;
 	OrthographicCamera box2dCam; // debug
 
 	// ============ Player
@@ -53,27 +52,16 @@ public class GameAdapter extends ApplicationAdapter {
 	public static final String playerName = "m-zayan";
 
 	public static float posX = 10.0f;
-	public static float posY = 40.0f;
-	public static float speed = 3.0f;
+	public static float posY = 140.0f;
+
+	public static float speed = 4.0f;
+	public static final float runScale = 5.0f;
+	public static final float jumpScale = 160.0f;
+
 	// =============
 
 	@Override
 	public void create() {
-		
-		// Player playerCam
-		
-		// Environment
-		float width = Gdx.graphics.getWidth() / GU;
-		float height = Gdx.graphics.getHeight() / GU;
-
-		envCam = new OrthographicCamera();
-		envCam.setToOrtho(false);
-
-		box2dCam = new OrthographicCamera(width, height); // box2d debugging camera
-
-		box2dCam.position.x = V_WIDTH / GU;
-		box2dCam.position.y = V_HEIGHT / GU;
-		box2dCam.update();
 
 		bodyTypeSignature = new HashMap<Integer, BodyProperty>();
 
@@ -90,11 +78,25 @@ public class GameAdapter extends ApplicationAdapter {
 		world2d.setContactListener(new CollisionSignal());
 
 		// Player
-		player = new Player(playerName, posX, posY, speed);
+		player = new Player(playerName, posX, posY, speed, runScale, jumpScale);
 		player.initPlayer(world2d);
 
-//		Body2D.debug(); // print bodies id.
+		// Environment - Box2d Camera
+		float width = Gdx.graphics.getWidth() / GU;
+		float height = Gdx.graphics.getHeight() / GU;
 
+		box2dCam = new OrthographicCamera(width, height); // box2d debugging camera
+
+		box2dCam.position.x = box2dCam.viewportWidth / 2;
+		box2dCam.position.y = box2dCam.viewportHeight / 2 - 0.5f;
+		box2dCam.update();
+
+		// Environment - Camera
+
+		envCam = new OrthographicCamera(1200, 600);
+		envCam.position.x = envCam.viewportWidth / 2;
+		envCam.position.y = envCam.viewportHeight / 2;
+		envCam.update();
 	}
 
 	@Override
@@ -112,18 +114,15 @@ public class GameAdapter extends ApplicationAdapter {
 
 		// Map
 		world.renderMap("1", envCam);
-		envCam.update();
 
 		// Debug
 		world2d.renderBox2dDebug(box2dCam.combined);
 		world2d.update(FPS, 6, 2);
 
 		box2dCam.update();
-		
-		
-		// Player
-		player.animate();
 
+		// Player
+		player.animate(envCam);
 	}
 
 	@Override
