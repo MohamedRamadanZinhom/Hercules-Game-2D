@@ -11,9 +11,12 @@ public class DesktopLauncher {
 	public static void main(String[] arg) {
 
 		config.title = GameAdapter.TITEL;
-		config.width = GameAdapter.V_WIDTH * GameAdapter.SCALE;
-		config.height = GameAdapter.V_HEIGHT * GameAdapter.SCALE;
+
+		config.width = GameAdapter.V_WIDTH;
+		config.height = GameAdapter.V_HEIGHT;
+
 		config.fullscreen = true;
+
 		new LwjglApplication(new GameAdapter(), config);
 	}
 }

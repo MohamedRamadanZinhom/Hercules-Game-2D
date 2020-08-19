@@ -107,7 +107,6 @@ public class Player extends Character {
 		this.swordL = Body2D.bodies.get("sword").get(1);
 		this.swordL.setTransform(new Vector2(10.0f / World2D.GU, 150.0f / World2D.GU), 0.0f);
 
-		World2D.onDebugMode = true;
 	}
 
 	@Override
@@ -115,12 +114,6 @@ public class Player extends Character {
 
 		float x = this.getPosX() * World2D.GU - this.getTileWidth() / 2 + 10.0f;
 		float y = this.getPosY() * World2D.GU - this.getTileHeight() / 2 + 140.0f;
-
-//		camera.position.x = x;
-//		camera.position.y = y;
-//		camera.update();
-
-//		this.animator[index].getSpriteBatch().setProjectionMatrix(camera.combined);
 
 		// Animate
 		this.animator[index].animate(currentMode, x, y, FPS_SCALE);
@@ -237,6 +230,7 @@ public class Player extends Character {
 		this.swordL.setTransform(swordPosL, 0.0f);
 
 		if (Player.onBound) {
+			actorPrevPos.x += (actorPrevPos.x * 0.01);
 			this.playerActor.setTransform(actorPrevPos, 0.0f); // Set - Previous Position
 		}
 	}

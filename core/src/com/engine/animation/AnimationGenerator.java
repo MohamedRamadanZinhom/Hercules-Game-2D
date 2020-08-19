@@ -189,6 +189,13 @@ public class AnimationGenerator {
 	}
 
 	/**
+	 * @return the spriteBatch
+	 */
+	public SpriteBatch getSpriteBatch() {
+		return spriteBatch;
+	}
+
+	/**
 	 * Dispose, SpriteBatch, Texture
 	 */
 	public void dispose() {
