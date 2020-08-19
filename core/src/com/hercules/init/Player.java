@@ -202,13 +202,8 @@ public class Player extends Character {
 			// Spying
 		}
 
-		if (Player.onBound) {
-
-			xStep = 0f;
-		}
-
+		Vector2 actorPrevPos = new Vector2(this.playerActor.getPosition()); // copy
 		Vector2 actorPos = this.playerActor.getPosition();
-
 		actorPos.x += xStep / World2D.GU;
 
 		// Player Actor
@@ -227,6 +222,9 @@ public class Player extends Character {
 		this.swordR.setTransform(swordPosR, 0.0f);
 		this.swordL.setTransform(swordPosL, 0.0f);
 
+		if (Player.onBound) {
+			this.playerActor.setTransform(actorPrevPos, 0.0f); // Set - Previous Position
+		}
 	}
 
 	@Override

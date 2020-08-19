@@ -97,6 +97,8 @@ public class CollisionSignal implements ContactListener {
 
 			if (fa.getUserData() != null && fa.getUserData().equals("Bounds")) {
 
+				System.out.println("Player : Disconected");
+
 				Player.onBound = false;
 
 			}
