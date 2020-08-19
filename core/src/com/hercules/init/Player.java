@@ -43,6 +43,7 @@ public class Player extends Character {
 
 	public final float runScale;
 	public final float jumpScale;
+	public final float smashingScale;
 
 	public Body playerActor;
 
@@ -65,12 +66,14 @@ public class Player extends Character {
 	 * 
 	 * @param currentMode     : String - Initial animation key
 	 */
-	public Player(String name, float posX, float posY, float speed, float runScale, float jumpScale) {
+	public Player(String name, float posX, float posY, float speed, float runScale, float jumpScale,
+			float smashingScale) {
 
 		super(spritesDirname, name, posX, posY, speed, FPS_SCALE, frameDuration, index, currentMode, false);
 
 		this.runScale = runScale;
 		this.jumpScale = jumpScale;
+		this.smashingScale = smashingScale;
 	}
 
 	public void initPlayer(World2D world) {
@@ -147,6 +150,8 @@ public class Player extends Character {
 		float lXStep = 90.0f;
 		float lYStep = 30.0f;
 
+		float dir = (index == 0) ? 1 : -1;
+
 		if (Gdx.input.isKeyPressed(Keys.RIGHT)) {
 
 			xStep = this.speed * scale;
@@ -171,15 +176,22 @@ public class Player extends Character {
 			this.playerActor.applyForceToCenter(0.0f, yStep, true);
 		}
 
-		if (Gdx.input.isKeyPressed(Keys.DOWN)) {
+		if (Gdx.input.isKeyPressed(Keys.DOWN) && !Player.onGround) {
+
 			// Smashing
-			yStep = -this.jumpScale * scale;
+			xStep = dir * this.smashingScale * scale;
+			yStep = -this.smashingScale * scale;
+
+			this.playerActor.applyForceToCenter(0.0f, yStep, true);
+			currentMode = "attack";
 		}
 
 		if (Gdx.input.isKeyPressed(Keys.SPACE)) {
 			// Attack
 
 			currentMode = "attack";
+
+			// do somthing
 		}
 
 		if (Gdx.input.isKeyPressed(Keys.RIGHT)
@@ -200,6 +212,8 @@ public class Player extends Character {
 
 		if (Gdx.input.isKeyPressed(Keys.CONTROL_LEFT) || Gdx.input.isKeyPressed(Keys.CONTROL_RIGHT)) {
 			// Spying
+
+			// do somthing
 		}
 
 		Vector2 actorPrevPos = new Vector2(this.playerActor.getPosition()); // copy

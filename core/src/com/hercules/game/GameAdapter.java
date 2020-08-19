@@ -58,7 +58,7 @@ public class GameAdapter extends ApplicationAdapter {
 	public static float speed = 4.0f;
 	public static final float runScale = 5.0f;
 	public static final float jumpScale = 160.0f;
-
+	public static final float smashingScale = 20.0f;
 	// =============
 
 	@Override
@@ -84,7 +84,7 @@ public class GameAdapter extends ApplicationAdapter {
 		world2d.setContactListener(new CollisionSignal());
 
 		// Player
-		player = new Player(playerName, posX, posY, speed, runScale, jumpScale);
+		player = new Player(playerName, posX, posY, speed, runScale, jumpScale, smashingScale);
 		player.initPlayer(world2d);
 
 		// Environment - Box2d Camera
