@@ -9,6 +9,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.engine.exception.NotExistFileException;
+import com.engine.world.Camera2D;
 
 class Map {
 
@@ -34,7 +35,7 @@ class Map {
 
 	}
 
-	public void render(OrthographicCamera envCam) {
+	public void render(Camera2D envCam) {
 		map.setView(envCam);
 		map.render();
 	}

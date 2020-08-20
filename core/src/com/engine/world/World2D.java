@@ -4,7 +4,6 @@ package com.engine.world;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.objects.CircleMapObject;
 import com.badlogic.gdx.maps.objects.PolygonMapObject;
 import com.badlogic.gdx.maps.objects.PolylineMapObject;
@@ -13,7 +12,6 @@ import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.ChainShape;
 import com.badlogic.gdx.physics.box2d.CircleShape;
@@ -28,14 +26,14 @@ public class World2D {
 	public static boolean onDebugMode = false;
 
 	protected World world;
-	protected OrthographicCamera envCam;
+	protected Camera2D envCam;
 
 	public static float GU = 1.0f;
 
 	public World2D(float gravityX, float gravityY, float GU, boolean doSleep) {
 
 		this.world = new World(new Vector2(gravityX, gravityY), doSleep);
-		this.envCam = new OrthographicCamera();
+		this.envCam = new Camera2D();
 
 		World2D.GU = GU;
 	}
@@ -180,34 +178,6 @@ public class World2D {
 		ChainShape chain = new ChainShape();
 		chain.createChain(worldVertices);
 		return chain;
-	}
-
-	public static void boundCamera(OrthographicCamera camera, float startX, float startY, float width, float height) {
-
-		Vector3 cameraPos = camera.position;
-
-		if (cameraPos.x < startX) {
-
-			cameraPos.x = startX;
-		}
-
-		if (cameraPos.y < startY) {
-
-			cameraPos.y = startY;
-		}
-
-		if (cameraPos.x > startX + width) {
-
-			cameraPos.x = startX + width;
-		}
-
-		if (cameraPos.y > startY + height) {
-
-			cameraPos.y = startY + height;
-		}
-
-		camera.position.set(cameraPos);
-		camera.update();
 	}
 
 	public void dispose() {

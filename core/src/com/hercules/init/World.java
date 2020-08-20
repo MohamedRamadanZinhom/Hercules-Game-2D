@@ -6,11 +6,11 @@ import java.util.HashMap;
 
 import javax.xml.bind.ValidationException;
 
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.engine.exception.KeyException;
 import com.engine.exception.OverwriteException;
 import com.engine.loader.MapGenerator;
 import com.engine.world.BodyProperty;
+import com.engine.world.Camera2D;
 import com.engine.world.World2D;
 
 public class World {
@@ -74,7 +74,7 @@ public class World {
 		return world;
 	}
 
-	public void renderMap(String mapId, OrthographicCamera envCam) {
+	public void renderMap(String mapId, Camera2D envCam) {
 
 		try {
 

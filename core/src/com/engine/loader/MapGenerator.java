@@ -22,6 +22,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.engine.world.BodyProperty;
+import com.engine.world.Camera2D;
 import com.engine.world.World2D;
 import com.engine.exception.*;
 
@@ -111,7 +112,7 @@ public class MapGenerator {
 	 *               with given id.
 	 * @throws KeyException if id (key) doesn't exists in the maps repository.
 	 */
-	public static void renderMap(String id, OrthographicCamera envCam) throws KeyException {
+	public static void renderMap(String id, Camera2D envCam) throws KeyException {
 
 		if (mapsRepo.containsKey(id))
 			mapsRepo.get(id).render(envCam);

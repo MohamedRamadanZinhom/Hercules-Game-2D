@@ -4,11 +4,11 @@ package com.hercules.init;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.engine.world.Body2D;
+import com.engine.world.Camera2D;
 import com.engine.world.World2D;
 
 public class Player extends Character {
@@ -110,10 +110,12 @@ public class Player extends Character {
 	}
 
 	@Override
-	public void animate(OrthographicCamera camera) {
+	public void animate(Camera2D camera) {
 
 		float x = this.getPosX() * World2D.GU - this.getTileWidth() / 2 + 10.0f;
 		float y = this.getPosY() * World2D.GU - this.getTileHeight() / 2 + 140.0f;
+
+		this.animator[index].getSpriteBatch().setProjectionMatrix(camera.combined);
 
 		// Animate
 		this.animator[index].animate(currentMode, x, y, FPS_SCALE);

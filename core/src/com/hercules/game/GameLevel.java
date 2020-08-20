@@ -3,10 +3,10 @@ package com.hercules.game;
 import java.util.HashMap;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.engine.loader.MapGenerator;
 import com.engine.world.BodyProperty;
+import com.engine.world.Camera2D;
 import com.engine.world.World2D;
 import com.hercules.events.CollisionSignal;
 import com.hercules.events.Warning;
@@ -32,9 +32,9 @@ public class GameLevel { // No. of Levels = 5
 	public World gameMap;
 	public World2D world2d; // game world
 
-	public OrthographicCamera envCam;
-	public OrthographicCamera playerCam;
-	public OrthographicCamera box2dCam; // debug
+	public Camera2D envCam;
+	public Camera2D playerCam;
+	public Camera2D box2dCam; // debug
 
 	/**
 	 * @param level
@@ -66,14 +66,14 @@ public class GameLevel { // No. of Levels = 5
 		float width = Gdx.graphics.getWidth() / GU;
 		float height = Gdx.graphics.getHeight() / GU;
 
-		box2dCam = new OrthographicCamera(width, height); // box2d debugging camera
+		box2dCam = new Camera2D(width, height); // box2d debugging camera
 
 		box2dCam.position.x = box2dCam.viewportWidth / 2;
 		box2dCam.position.y = box2dCam.viewportHeight / 2 - 1.0f;
 		box2dCam.update();
 
 		// Environment - Camera
-		envCam = new OrthographicCamera(V_WIDTH, V_HEIGHT);
+		envCam = new Camera2D(V_WIDTH, V_HEIGHT);
 		envCam.position.x = envCam.viewportWidth / 2;
 		envCam.position.y = envCam.viewportHeight / 2;
 		envCam.update();
