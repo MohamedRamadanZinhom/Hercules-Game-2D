@@ -132,7 +132,7 @@ public class World2D {
 			World2D.onDebugMode = !onDebugMode;
 		}
 
-		if (Gdx.input.isKeyJustPressed(World2D.onPhysicsDebugKey) && !World2D.onDebugMode) {
+		if (Gdx.input.isKeyJustPressed(World2D.onPhysicsDebugKey) && (!World2D.onDebugMode || onPhysicsDebugMode)) {
 
 			World2D.onDebugMode = !onDebugMode;
 			World2D.onPhysicsDebugMode = !onPhysicsDebugMode;
