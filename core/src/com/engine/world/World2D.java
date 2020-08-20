@@ -22,7 +22,12 @@ import com.badlogic.gdx.physics.box2d.World;
 public class World2D {
 
 	private static Box2DDebugRenderer b2dr = new Box2DDebugRenderer();
+
 	public static boolean onDebugMode = false;
+	public static boolean onPhysicsDebugMode = false;
+
+	public static int onDebugKey = Keys.D;
+	public static int onPhysicsDebugKey = Keys.H;
 
 	protected World world;
 	protected Camera2D envCam;
@@ -123,8 +128,14 @@ public class World2D {
 	 */
 	public void renderBox2dDebug(Matrix4 projMatrix) {
 
-		if (Gdx.input.isKeyJustPressed(Keys.D)) {
+		if (Gdx.input.isKeyJustPressed(World2D.onDebugKey) && !World2D.onPhysicsDebugMode) {
 			World2D.onDebugMode = !onDebugMode;
+		}
+
+		if (Gdx.input.isKeyJustPressed(World2D.onPhysicsDebugKey)) {
+
+			World2D.onDebugMode = !onDebugMode;
+			World2D.onPhysicsDebugMode = !onPhysicsDebugMode;
 		}
 
 		if (World2D.onDebugMode) {

@@ -114,10 +114,15 @@ public class MapGenerator {
 	 */
 	public static void renderMap(String id, Camera2D envCam) throws KeyException {
 
-		if (mapsRepo.containsKey(id))
+		if (!World2D.onPhysicsDebugMode) {
+
+			if (!mapsRepo.containsKey(id)) {
+				throw new KeyException("There's no map with id :" + id);
+
+			}
+
 			mapsRepo.get(id).render(envCam);
-		else
-			throw new KeyException("There's no map with id :" + id);
+		}
 	}
 
 	/**
