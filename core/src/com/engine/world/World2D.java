@@ -6,7 +6,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.maps.objects.CircleMapObject;
 import com.badlogic.gdx.maps.objects.PolygonMapObject;
-import com.badlogic.gdx.maps.objects.PolylineMapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Matrix4;
@@ -153,34 +152,17 @@ public class World2D {
 		return circleShape;
 	}
 
-	public static PolygonShape getPolygon(PolygonMapObject polygonObject) {
+	public static ChainShape getPolyline(PolygonMapObject polygonObject) {
 
-		PolygonShape polygon = new PolygonShape();
+		ChainShape polygon = new ChainShape();
 		float[] vertices = polygonObject.getPolygon().getTransformedVertices();
 
-		float[] worldVertices = new float[vertices.length];
-
 		for (int i = 0; i < vertices.length; ++i) {
-			worldVertices[i] = vertices[i] / World2D.GU;
+			vertices[i] = vertices[i] / World2D.GU;
 		}
 
-		polygon.set(worldVertices);
+		polygon.createChain(vertices);
 		return polygon;
-	}
-
-	public static ChainShape getPolyline(PolylineMapObject polylineObject) {
-		float[] vertices = polylineObject.getPolyline().getTransformedVertices();
-		Vector2[] worldVertices = new Vector2[vertices.length / 2];
-
-		for (int i = 0; i < vertices.length / 2; ++i) {
-			worldVertices[i] = new Vector2();
-			worldVertices[i].x = vertices[i * 2] / World2D.GU;
-			worldVertices[i].y = vertices[i * 2 + 1] / World2D.GU;
-		}
-
-		ChainShape chain = new ChainShape();
-		chain.createChain(worldVertices);
-		return chain;
 	}
 
 	public void dispose() {

@@ -303,14 +303,9 @@ public class MapGenerator {
 					shape = World2D.getRectangle((RectangleMapObject) object);
 				}
 
-				else if (object instanceof PolygonMapObject) {
+				else if (object instanceof PolygonMapObject || object instanceof PolylineMapObject) {
 
-					shape = World2D.getPolygon((PolygonMapObject) object);
-				}
-
-				else if (object instanceof PolylineMapObject) {
-
-					shape = World2D.getPolyline((PolylineMapObject) object);
+					shape = World2D.getPolyline((PolygonMapObject) object);
 				}
 
 				else if (object instanceof CircleMapObject) {
@@ -345,7 +340,8 @@ public class MapGenerator {
 				}
 
 				else if (bodyType == BodyType.DynamicBody) {
-					world.createDynamicBody(shape, restitution, density, friction, categoryBits, bitsMask, isSensor, bodyId);
+					world.createDynamicBody(shape, restitution, density, friction, categoryBits, bitsMask, isSensor,
+							bodyId);
 
 				}
 

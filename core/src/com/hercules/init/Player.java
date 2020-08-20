@@ -148,7 +148,7 @@ public class Player extends Character {
 	@Override
 	public void update(boolean deltaTimeScale) {
 
-		float scale = deltaTimeScale ? Gdx.graphics.getDeltaTime() + 0.6f : 1.0f;
+		float scale = deltaTimeScale ? Gdx.graphics.getDeltaTime() + 1.0f : 1.0f;
 
 		float xStep = 0.0f; // this.speed * scale
 		float yStep = 0.0f; // 10.0f * scale;

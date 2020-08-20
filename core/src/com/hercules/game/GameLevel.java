@@ -19,7 +19,7 @@ public class GameLevel { // No. of Levels = 5
 
 	public static final String[] mapFname = { "level-1.tmx" };
 	public static final String[] mapId = { "1" };
-	public static final int[] nLayers = { 5 };
+	public static final int[] nLayers = { 4 };
 
 	public static final float gravityX = 0.0f;
 	public static final float gravityY = -9.81f;
@@ -59,7 +59,7 @@ public class GameLevel { // No. of Levels = 5
 		this.initLevel(); // fill - bodyTypeSignature
 
 		this.world2d = gameMap.getWorldFromMap(mapId[this.level], this.bodyTypeSignature, gravityX, gravityY, true, GU);
-		this.world2d.setContactListener(new CollisionSignal());
+		this.world2d.setContactListener(new CollisionSignal()); // Collision Signal
 
 		// Environment - Box2d Camera
 		float width = V_WIDTH / GU;
@@ -95,9 +95,6 @@ public class GameLevel { // No. of Levels = 5
 					false);
 
 			layerProperty[3] = new BodyProperty(BodyType.StaticBody, 0.0f, 0.0f, 0.0f, World.BIT_GROUND, World.BIT_ANY,
-					false);
-
-			layerProperty[4] = new BodyProperty(BodyType.StaticBody, 0.0f, 0.0f, 0.0f, World.BIT_GROUND, World.BIT_ANY,
 					false);
 		}
 

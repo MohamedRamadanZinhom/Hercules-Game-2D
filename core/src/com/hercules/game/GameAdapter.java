@@ -62,7 +62,7 @@ public class GameAdapter extends ApplicationAdapter {
 		}
 
 		// Input
-		player.update(false);
+		player.update(true);
 
 		Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
