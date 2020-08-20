@@ -88,7 +88,7 @@ public abstract class Character {
 
 		this.animator = new AnimationGenerator[keysOrder.length]; // ex. 2: 0 - right, 1-left
 
-		for (int i = 0; i < this.spritesDirname.length; i++) {
+		for (int i = 0; i < keysOrder.length; i++) {
 
 			animator[i] = new AnimationGenerator(this.spritesDirname[i]);
 
@@ -104,6 +104,7 @@ public abstract class Character {
 					error.printStackTrace();
 				}
 			}
+
 		}
 
 	}

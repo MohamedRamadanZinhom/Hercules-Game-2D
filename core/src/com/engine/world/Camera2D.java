@@ -17,18 +17,27 @@ public class Camera2D extends OrthographicCamera {
 		super(viewportWidth, viewportHeight);
 	}
 
-	public static void debugMode(Camera2D camera) {
+	private void debugMode() {
 
-		float width = camera.viewportWidth;
-		float height = camera.viewportHeight;
+		float width = this.viewportWidth;
+		float height = this.viewportHeight;
 
-		float x = camera.position.x - width / 2;
-		float y = camera.position.y - height / 2;
+		float x = this.position.x - width / 2;
+		float y = this.position.y - height / 2;
 
 		shapeRenderer.begin(ShapeType.Line);
-		shapeRenderer.setProjectionMatrix(camera.combined);
+		shapeRenderer.setProjectionMatrix(this.combined);
 		shapeRenderer.rect(x, y, width, height);
 		shapeRenderer.end();
+	}
+
+	@Override
+	public void update() {
+		update(true);
+
+		if (World2D.onDebugMode) {
+			this.debugMode();
+		}
 	}
 
 	public static void boundCamera(Camera2D camera, float startX, float startY, float width, float height) {

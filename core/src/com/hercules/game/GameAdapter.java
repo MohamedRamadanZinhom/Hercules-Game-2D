@@ -6,7 +6,7 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
-import com.engine.world.Camera2D;
+import com.hercules.init.Enemy;
 import com.hercules.init.Player;
 
 public class GameAdapter extends ApplicationAdapter {
@@ -15,6 +15,7 @@ public class GameAdapter extends ApplicationAdapter {
 
 	public static final int V_WIDTH = 1200; // Viewport - X
 	public static final int V_HEIGHT = 600; // Viewport - Y
+	public static final boolean FULLSCREEN = true;
 
 	public static final float GU = 100.0f; // Box2D Game-Unit Scaler
 
@@ -25,6 +26,7 @@ public class GameAdapter extends ApplicationAdapter {
 
 	// ============ Player
 	Player player;
+	Enemy demon;
 
 	public static final String playerName = "m-zayan";
 
@@ -46,6 +48,9 @@ public class GameAdapter extends ApplicationAdapter {
 		player = new Player(playerName, posX, posY, speed, runScale, jumpScale, smashingScale);
 		player.initPlayer(level.world2d);
 
+		// Enemy
+//		demon = new Enemy();
+
 	}
 
 	@Override
@@ -66,9 +71,6 @@ public class GameAdapter extends ApplicationAdapter {
 
 		// Player
 		player.animate();
-
-		Camera2D.debugMode(player.camera);
-
 	}
 
 	@Override

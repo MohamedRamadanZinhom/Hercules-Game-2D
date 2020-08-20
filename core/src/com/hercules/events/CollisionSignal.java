@@ -17,7 +17,7 @@ public class CollisionSignal implements ContactListener {
 
 		if (fb.getUserData() != null && fb.getUserData().equals("player")) {
 
-			if (fa.getUserData() != null && fa.getUserData().equals("Ground")) {
+			if (fa.getUserData() != null && (fa.getUserData().equals("Ground") | fa.getUserData().equals("Blocks"))) {
 
 				Player.onGround = true;
 
@@ -68,7 +68,7 @@ public class CollisionSignal implements ContactListener {
 
 		if (fb.getUserData() != null && fb.getUserData().equals("player")) {
 
-			if (fa.getUserData() != null && fa.getUserData().equals("Ground")) {
+			if (fa.getUserData() != null && (fa.getUserData().equals("Ground") | fa.getUserData().equals("Blocks"))) {
 
 				Player.onGround = false;
 			}

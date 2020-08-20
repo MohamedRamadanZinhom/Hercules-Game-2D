@@ -39,8 +39,8 @@ public class Player extends Character {
 	public static int index = 0;
 	public static String currentMode = "idle";
 
-	public static final float FPS_SCALE = 1 / 20.0f;
-	public static final float frameDuration = 0.0025f;
+	public static final float FPS_SCALE = 1 / 10.0f;
+	public static final float frameDuration = 0.009f;
 
 	public final float runScale;
 	public final float jumpScale;
@@ -92,12 +92,15 @@ public class Player extends Character {
 
 		// Player Actor
 		PolygonShape shape = new PolygonShape();
-		shape.setAsBox(25.0f / World2D.GU, 5.0f / World2D.GU);
+		shape.setAsBox(40.0f / World2D.GU, 5.0f / World2D.GU);
 
 		world.createDynamicBody(shape, World.BIT_PLAYER, World.BIT_ANY, false, "player");
 
+		float x = this.posX / World2D.GU + this.getTileWidth() / (2 * World2D.GU);
+		float y = this.posY / World2D.GU + this.getTileHeight() / (2 * World2D.GU);
+
 		this.playerActor = Body2D.bodies.get("player").get(0);
-		this.playerActor.setTransform(new Vector2(this.posX / World2D.GU, this.posY / World2D.GU), 0.0f);
+		this.playerActor.setTransform(new Vector2(x, y), 0.0f);
 
 		// Player swordR
 		PolygonShape swordShapeR = new PolygonShape();
@@ -106,7 +109,7 @@ public class Player extends Character {
 		world.createDynamicBody(swordShapeR, World.BIT_PLAYER, World.BIT_ANY, true, "sword");
 
 		this.swordR = Body2D.bodies.get("sword").get(0);
-		this.swordR.setTransform(new Vector2(220.0f / World2D.GU, 150.0f / World2D.GU), 0.0f);
+		this.swordR.setTransform(new Vector2(x + 0.5f, y + 0.5f), 0.0f);
 
 		// Player swordL
 		PolygonShape swordShapeL = new PolygonShape();
@@ -115,14 +118,14 @@ public class Player extends Character {
 		world.createDynamicBody(swordShapeL, World.BIT_PLAYER, World.BIT_ANY, true, "sword");
 
 		this.swordL = Body2D.bodies.get("sword").get(1);
-		this.swordL.setTransform(new Vector2(10.0f / World2D.GU, 150.0f / World2D.GU), 0.0f);
+		this.swordL.setTransform(new Vector2(x - 0.5f, y + 0.5f), 0.0f);
 
 	}
 
 	@Override
 	public void animate() {
 
-		float x = this.getPosX() * World2D.GU - this.getTileWidth() / 2 + 10.0f;
+		float x = this.getPosX() * World2D.GU - this.getTileWidth() / 2;
 		float y = this.getPosY() * World2D.GU - this.getTileHeight() / 2 + 40.0f;
 
 		this.animator[index].getSpriteBatch().setProjectionMatrix(this.camera.combined);
@@ -130,8 +133,9 @@ public class Player extends Character {
 		// Animate
 		this.animator[index].animate(currentMode, x, y, FPS_SCALE);
 
-		// re-init
-		currentMode = "idle";
+		if (Player.onGround) {
+			currentMode = "idle";
+		}
 	}
 
 	/**
@@ -149,11 +153,8 @@ public class Player extends Character {
 		float xStep = 0.0f; // this.speed * scale
 		float yStep = 0.0f; // 10.0f * scale;
 
-		float rXStep = 110.0f;
-		float rYStep = 30.0f;
-
-		float lXStep = 90.0f;
-		float lYStep = 30.0f;
+		float swordXStep = 90.0f;
+		float swordYStep = 30.0f;
 
 		float dir = (index == 0) ? 1 : -1;
 
@@ -161,7 +162,11 @@ public class Player extends Character {
 
 			xStep = this.speed * scale;
 
-			currentMode = "walk";
+			if (Player.onGround) {
+
+				currentMode = "walk";
+			}
+
 			index = 0;
 		}
 
@@ -169,7 +174,11 @@ public class Player extends Character {
 
 			xStep = -this.speed * scale;
 
-			currentMode = "walk";
+			if (Player.onGround) {
+
+				currentMode = "walk";
+			}
+
 			index = 1;
 		}
 
@@ -177,8 +186,6 @@ public class Player extends Character {
 
 			yStep = this.jumpScale * scale;
 			currentMode = "jump";
-
-			this.playerActor.applyForceToCenter(0.0f, yStep, true);
 		}
 
 		if (Gdx.input.isKeyPressed(Keys.DOWN) && !Player.onGround) {
@@ -187,8 +194,9 @@ public class Player extends Character {
 			xStep = dir * this.smashingScale * scale;
 			yStep = -this.smashingScale * scale;
 
-			this.playerActor.applyForceToCenter(0.0f, yStep, true);
-			currentMode = "attack";
+			if (Player.onGround) {
+				currentMode = "attack";
+			}
 		}
 
 		if (Gdx.input.isKeyPressed(Keys.SPACE)) {
@@ -232,11 +240,11 @@ public class Player extends Character {
 		Vector2 swordPosR = new Vector2(this.playerActor.getPosition());
 		Vector2 swordPosL = new Vector2(this.playerActor.getPosition());
 
-		swordPosR.x += rXStep / World2D.GU;
-		swordPosR.y += rYStep / World2D.GU;
+		swordPosR.x += swordXStep / World2D.GU;
+		swordPosR.y += swordYStep / World2D.GU;
 
-		swordPosL.x -= lXStep / World2D.GU;
-		swordPosL.y += lYStep / World2D.GU;
+		swordPosL.x -= swordXStep / World2D.GU;
+		swordPosL.y += swordYStep / World2D.GU;
 
 		this.swordR.setTransform(swordPosR, 0.0f);
 		this.swordL.setTransform(swordPosL, 0.0f);
@@ -245,6 +253,8 @@ public class Player extends Character {
 			actorPrevPos.x += (actorPrevPos.x * 0.01);
 			this.playerActor.setTransform(actorPrevPos, 0.0f); // Set - Previous Position
 		}
+
+		this.playerActor.applyForceToCenter(0.0f, yStep, true); // gravity
 	}
 
 	@Override
