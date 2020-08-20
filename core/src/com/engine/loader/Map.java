@@ -36,6 +36,7 @@ class Map {
 	}
 
 	public void render(Camera2D envCam) {
+
 		map.setView(envCam);
 		map.render();
 	}

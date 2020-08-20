@@ -35,7 +35,7 @@ public class GameAdapter extends ApplicationAdapter {
 
 	public static float speed = 4.0f;
 	public static final float runScale = 5.0f;
-	public static final float jumpScale = 160.0f;
+	public static final float jumpScale = 140.0f;
 	public static final float smashingScale = 20.0f;
 	// =============
 

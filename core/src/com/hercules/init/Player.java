@@ -14,7 +14,7 @@ import com.hercules.game.GameAdapter;
 
 public class Player extends Character {
 
-	public static boolean onGround = true;
+	public static boolean onGround = false;
 	public static boolean hit = false; // if true: enemy health --> decrease
 	public static boolean onBound = false;
 
@@ -94,7 +94,7 @@ public class Player extends Character {
 		PolygonShape shape = new PolygonShape();
 		shape.setAsBox(40.0f / World2D.GU, 5.0f / World2D.GU);
 
-		world.createDynamicBody(shape, World.BIT_PLAYER, World.BIT_ANY, false, "player");
+		world.createDynamicBody(shape, 0.0f, 0.0f, 1.0f, World.BIT_PLAYER, World.BIT_ANY, false, "player");
 
 		float x = this.posX / World2D.GU + this.getTileWidth() / (2 * World2D.GU);
 		float y = this.posY / World2D.GU + this.getTileHeight() / (2 * World2D.GU);
@@ -254,7 +254,8 @@ public class Player extends Character {
 			this.playerActor.setTransform(actorPrevPos, 0.0f); // Set - Previous Position
 		}
 
-		this.playerActor.applyForceToCenter(0.0f, yStep, true); // gravity
+		this.playerActor.applyForceToCenter(0.0f, yStep, true); // Y-axis
+
 	}
 
 	@Override
