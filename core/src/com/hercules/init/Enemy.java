@@ -2,8 +2,6 @@
 
 package com.hercules.init;
 
-import com.engine.world.Camera2D;
-
 public class Enemy extends Character {
 
 	/**
@@ -34,7 +32,7 @@ public class Enemy extends Character {
 	}
 
 	@Override
-	public void animate(Camera2D camera) {
+	public void animate() {
 
 		this.animator[this.index].animate(this.currentMode, this.posX, this.posY, this.FPS_SCALE);
 

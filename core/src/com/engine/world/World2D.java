@@ -28,6 +28,9 @@ public class World2D {
 	protected World world;
 	protected Camera2D envCam;
 
+	public static float SCREEN_WIDTH = Gdx.graphics.getWidth();
+	public static float SCREEN_HEIGHT = Gdx.graphics.getHeight();
+
 	public static float GU = 1.0f;
 
 	public World2D(float gravityX, float gravityY, float GU, boolean doSleep) {

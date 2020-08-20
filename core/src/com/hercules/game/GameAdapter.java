@@ -37,8 +37,6 @@ public class GameAdapter extends ApplicationAdapter {
 	public static final float smashingScale = 20.0f;
 	// =============
 
-	public static Camera2D playerCamera;
-
 	@Override
 	public void create() {
 
@@ -47,17 +45,6 @@ public class GameAdapter extends ApplicationAdapter {
 		// Player
 		player = new Player(playerName, posX, posY, speed, runScale, jumpScale, smashingScale);
 		player.initPlayer(level.world2d);
-
-		// Player Camera
-
-		// Environment - Box2d Camera
-		playerCamera = new Camera2D();
-		playerCamera.setToOrtho(false);
-
-		playerCamera.position.x = Gdx.graphics.getWidth() / 2;
-		playerCamera.position.y = Gdx.graphics.getHeight() / 2;
-
-		playerCamera.update();
 
 	}
 
@@ -78,9 +65,9 @@ public class GameAdapter extends ApplicationAdapter {
 		level.render();
 
 		// Player
-		player.animate(playerCamera);
+		player.animate();
 
-		Camera2D.debugMode(playerCamera);
+		Camera2D.debugMode(player.camera);
 
 	}
 

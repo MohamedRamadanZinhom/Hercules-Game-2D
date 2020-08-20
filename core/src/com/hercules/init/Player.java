@@ -10,6 +10,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.engine.world.Body2D;
 import com.engine.world.Camera2D;
 import com.engine.world.World2D;
+import com.hercules.game.GameAdapter;
 
 public class Player extends Character {
 
@@ -50,6 +51,8 @@ public class Player extends Character {
 	public Body swordR;
 	public Body swordL;
 
+	public Camera2D camera;
+
 	/**
 	 * @param spritesDirname: String [][] - 2d array, each index specifies, array of
 	 *                        sprite sheets to create an animation key from it
@@ -74,6 +77,13 @@ public class Player extends Character {
 		this.runScale = runScale;
 		this.jumpScale = jumpScale;
 		this.smashingScale = smashingScale;
+
+		this.camera = new Camera2D(GameAdapter.V_WIDTH, GameAdapter.V_HEIGHT);
+
+		this.camera.position.x = this.camera.viewportWidth / 2;
+		this.camera.position.y = this.camera.viewportHeight / 2;
+
+		this.camera.update();
 	}
 
 	public void initPlayer(World2D world) {
@@ -110,12 +120,12 @@ public class Player extends Character {
 	}
 
 	@Override
-	public void animate(Camera2D camera) {
+	public void animate() {
 
 		float x = this.getPosX() * World2D.GU - this.getTileWidth() / 2 + 10.0f;
-		float y = this.getPosY() * World2D.GU - this.getTileHeight() / 2 + 140.0f;
+		float y = this.getPosY() * World2D.GU - this.getTileHeight() / 2 + 40.0f;
 
-		this.animator[index].getSpriteBatch().setProjectionMatrix(camera.combined);
+		this.animator[index].getSpriteBatch().setProjectionMatrix(this.camera.combined);
 
 		// Animate
 		this.animator[index].animate(currentMode, x, y, FPS_SCALE);

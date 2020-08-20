@@ -6,7 +6,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.engine.animation.AnimationGenerator;
 import com.engine.exception.InconsistentSpriteSheetException;
 import com.engine.exception.OverwriteException;
-import com.engine.world.Camera2D;
 import com.engine.world.World2D;
 
 public abstract class Character {
@@ -126,7 +125,7 @@ public abstract class Character {
 	/**
 	 * Animate - character
 	 */
-	abstract public void animate(Camera2D camera);
+	abstract public void animate();
 
 	/**
 	 * Movements, States

@@ -2,7 +2,6 @@ package com.hercules.game;
 
 import java.util.HashMap;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.engine.loader.MapGenerator;
 import com.engine.world.BodyProperty;
@@ -63,13 +62,13 @@ public class GameLevel { // No. of Levels = 5
 		this.world2d.setContactListener(new CollisionSignal());
 
 		// Environment - Box2d Camera
-		float width = Gdx.graphics.getWidth() / GU;
-		float height = Gdx.graphics.getHeight() / GU;
+		float width = V_WIDTH / GU;
+		float height = V_HEIGHT / GU;
 
 		box2dCam = new Camera2D(width, height); // box2d debugging camera
 
 		box2dCam.position.x = box2dCam.viewportWidth / 2;
-		box2dCam.position.y = box2dCam.viewportHeight / 2 - 1.0f;
+		box2dCam.position.y = box2dCam.viewportHeight / 2;
 		box2dCam.update();
 
 		// Environment - Camera
