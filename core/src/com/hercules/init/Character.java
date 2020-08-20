@@ -2,6 +2,8 @@
 
 package com.hercules.init;
 
+import java.util.HashMap;
+
 import com.badlogic.gdx.math.Vector2;
 import com.engine.animation.AnimationGenerator;
 import com.engine.exception.InconsistentSpriteSheetException;
@@ -13,7 +15,7 @@ public abstract class Character {
 	private final String[][] spritesDirname;
 
 	protected final float frameDuration;
-	protected final float FPS_SCALE;
+	protected final HashMap<String, Float> FPS_SCALE;
 
 	protected String name;
 
@@ -47,8 +49,9 @@ public abstract class Character {
 	 * 
 	 * @param currentMode     : String - Initial animation key
 	 */
-	public Character(String[][] spritesDirname, String name, float posX, float posY, float speed, float FPS_SCALE,
-			float frameDuration, int defaultIndex, String currentMode, boolean scale) {
+	public Character(String[][] spritesDirname, String name, float posX, float posY, float speed,
+			HashMap<String, Float> FPS_SCALE, float frameDuration, int defaultIndex, String currentMode,
+			boolean scale) {
 
 		this.spritesDirname = spritesDirname;
 		this.name = name;

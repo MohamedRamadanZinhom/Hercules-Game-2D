@@ -2,6 +2,9 @@
 
 package com.hercules.init;
 
+import java.security.KeyException;
+import java.util.HashMap;
+
 public class Enemy extends Character {
 
 	/**
@@ -20,8 +23,8 @@ public class Enemy extends Character {
 	 * 
 	 * @param currentMode     : String - Initial animation key
 	 */
-	public Enemy(String[][] spritesDirname, String name, float posX, float posY, float speed, float FPS_SCALE,
-			float frameDuration, int defaultIndex, String currentMode) {
+	public Enemy(String[][] spritesDirname, String name, float posX, float posY, float speed,
+			HashMap<String, Float> FPS_SCALE, float frameDuration, int defaultIndex, String currentMode) {
 
 		super(spritesDirname, name, posX, posY, speed, FPS_SCALE, frameDuration, defaultIndex, currentMode, false);
 	}
@@ -34,7 +37,14 @@ public class Enemy extends Character {
 	@Override
 	public void animate() {
 
-		this.animator[this.index].animate(this.currentMode, this.posX, this.posY, this.FPS_SCALE);
+		try {
+
+			this.animator[this.index].animate(this.currentMode, this.posX, this.posY, this.FPS_SCALE);
+
+		} catch (KeyException error) {
+
+			error.printStackTrace();
+		}
 
 		// do something
 

@@ -21,9 +21,6 @@ public class GameLevel { // No. of Levels = 5
 	public static final String[] mapId = { "1" };
 	public static final int[] nLayers = { 4 };
 
-	public static final float gravityX = 0.0f;
-	public static final float gravityY = -9.81f;
-
 	public static final float FPS = 1 / 60f; // Frame per second (Delta Time)
 
 	public int level;
@@ -58,7 +55,9 @@ public class GameLevel { // No. of Levels = 5
 		this.bodyTypeSignature = new HashMap<Integer, BodyProperty>();
 		this.initLevel(); // fill - bodyTypeSignature
 
-		this.world2d = gameMap.getWorldFromMap(mapId[this.level], this.bodyTypeSignature, gravityX, gravityY, true, GU);
+		this.world2d = gameMap.getWorldFromMap(mapId[this.level], this.bodyTypeSignature, GameAdapter.gravityX,
+				GameAdapter.gravityY, true, GU);
+
 		this.world2d.setContactListener(new CollisionSignal()); // Collision Signal
 
 		// Environment - Box2d Camera

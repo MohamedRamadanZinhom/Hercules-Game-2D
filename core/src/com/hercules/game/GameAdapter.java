@@ -19,6 +19,11 @@ public class GameAdapter extends ApplicationAdapter {
 
 	public static final float GU = 100.0f; // Box2D Game-Unit Scaler
 
+	public static final float gravityX = 0.0f;
+	public static final float gravityY = -9.81f;
+
+	public static final float frameDuration = 0.015f; // Animation - Frame Duration
+
 	// ============ World
 	GameLevel level;
 
@@ -35,8 +40,8 @@ public class GameAdapter extends ApplicationAdapter {
 
 	public static float speed = 4.0f;
 	public static final float runScale = 5.0f;
-	public static final float jumpScale = 140.0f;
-	public static final float smashingScale = 20.0f;
+	public static final float jumpScale = 160.0f;
+	public static final float smashingScale = 15.0f;
 	// =============
 
 	@Override

@@ -2,6 +2,9 @@
 
 package com.hercules.init;
 
+import java.security.KeyException;
+import java.util.HashMap;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.math.Vector2;
@@ -39,8 +42,21 @@ public class Player extends Character {
 	public static int index = 0;
 	public static String currentMode = "idle";
 
-	public static final float FPS_SCALE = 1 / 10.0f;
-	public static final float frameDuration = 0.009f;
+	public static final HashMap<String, Float> FPS_SCALE = new HashMap<String, Float>() {
+
+		private static final long serialVersionUID = -1386435843423357563L;
+
+		{
+			put("idle", 0.3f);
+			put("walk", 0.3f);
+			put("run", 0.5f);
+			put("jump", 0.15f);
+			put("attack", 0.5f);
+			put("hurt", 0.5f);
+			put("die", 0.5f);
+
+		}
+	}; // Animation - Frame Key Speed
 
 	public final float runScale;
 	public final float jumpScale;
@@ -72,7 +88,7 @@ public class Player extends Character {
 	public Player(String name, float posX, float posY, float speed, float runScale, float jumpScale,
 			float smashingScale) {
 
-		super(spritesDirname, name, posX, posY, speed, FPS_SCALE, frameDuration, index, currentMode, false);
+		super(spritesDirname, name, posX, posY, speed, FPS_SCALE, GameAdapter.frameDuration, index, currentMode, false);
 
 		this.runScale = runScale;
 		this.jumpScale = jumpScale;
@@ -131,9 +147,17 @@ public class Player extends Character {
 		this.animator[index].getSpriteBatch().setProjectionMatrix(this.camera.combined);
 
 		// Animate
-		this.animator[index].animate(currentMode, x, y, FPS_SCALE);
+		try {
+
+			this.animator[index].animate(currentMode, x, y, FPS_SCALE);
+
+		} catch (KeyException error) {
+
+			error.printStackTrace();
+		}
 
 		if (Player.onGround) {
+
 			currentMode = "idle";
 		}
 	}

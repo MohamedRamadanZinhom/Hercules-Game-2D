@@ -2,6 +2,7 @@
 
 package com.engine.animation;
 
+import java.security.KeyException;
 import java.util.HashMap;
 
 import com.badlogic.gdx.Gdx;
@@ -140,9 +141,13 @@ public class AnimationGenerator {
 		}
 	}
 
-	public void animate(String mode, float x, float y, float FPS_SCALE) {
+	public void animate(String mode, float x, float y, HashMap<String, Float> FPS_SCALE) throws KeyException {
 
-		stateTime += Gdx.graphics.getDeltaTime() * FPS_SCALE;
+		if (!FPS_SCALE.containsKey(mode)) {
+			throw new KeyException("FPS_SCALE: Key = " + mode + " is Not Specified");
+		}
+
+		stateTime += Gdx.graphics.getDeltaTime() * FPS_SCALE.get(mode);
 		TextureRegion currentFrame = animationRepo.get(mode).getKeyFrame(stateTime, true);
 
 		spriteBatch.begin();
