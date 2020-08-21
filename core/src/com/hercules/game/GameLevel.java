@@ -1,14 +1,16 @@
+/** @author Z. Mohamed Osama */
+
 package com.hercules.game;
 
 import java.util.HashMap;
 
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.engine.loader.MapGenerator;
+import com.engine.ui.ConsoleLogger;
 import com.engine.world.BodyProperty;
 import com.engine.world.Camera2D;
 import com.engine.world.World2D;
 import com.hercules.events.CollisionSignal;
-import com.hercules.events.Warning;
 import com.hercules.init.World;
 
 public class GameLevel { // No. of Levels = 5
@@ -40,7 +42,7 @@ public class GameLevel { // No. of Levels = 5
 
 		if (level < 0 || level > mapFname.length) {
 
-			Warning.setWarning(GameLevel.class.getName(), "Invalid Game Level = " + Integer.toString(level));
+			ConsoleLogger.setWarning(GameLevel.class.getName(), "Invalid Game Level = " + Integer.toString(level));
 
 			this.level = 1;
 		}
@@ -100,6 +102,7 @@ public class GameLevel { // No. of Levels = 5
 		for (int i = 0; i < nLayers[level]; i++) {
 			bodyTypeSignature.put(i, layerProperty[i]);
 		}
+
 	}
 
 	public void render() {

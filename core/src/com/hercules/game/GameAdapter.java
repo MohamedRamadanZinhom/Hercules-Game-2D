@@ -54,8 +54,11 @@ public class GameAdapter extends ApplicationAdapter {
 		player.initPlayer(level.world2d);
 
 		// Enemy
-//		demon = new Enemy();
-
+		// demon = new Enemy();
+		
+		
+		// Physics simulation debugger initialization
+		level.world2d.initDebugMode(true); 
 	}
 
 	@Override
@@ -65,17 +68,18 @@ public class GameAdapter extends ApplicationAdapter {
 
 			Gdx.app.exit();
 		}
-
-		// Input
+//
+//		// Input
 		player.update(true);
-
+//
 		Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-		// World
+//
+//		// World
 		level.render();
 
 		// Player
 		player.animate();
+
 	}
 
 	@Override

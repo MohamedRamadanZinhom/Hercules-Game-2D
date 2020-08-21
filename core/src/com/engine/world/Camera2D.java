@@ -1,3 +1,5 @@
+/** @author Z. Mohamed Osama */
+
 package com.engine.world;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -33,6 +35,7 @@ public class Camera2D extends OrthographicCamera {
 
 	@Override
 	public void update() {
+
 		update(true);
 
 		if (World2D.onDebugMode) {

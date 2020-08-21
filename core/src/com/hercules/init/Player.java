@@ -141,24 +141,27 @@ public class Player extends Character {
 	@Override
 	public void animate() {
 
-		float x = this.getPosX() * World2D.GU - this.getTileWidth() / 2;
-		float y = this.getPosY() * World2D.GU - this.getTileHeight() / 2 + 40.0f;
+		if (!World2D.onPhysicsDebugMode) {
+			
+			float x = this.getPosX() * World2D.GU - this.getTileWidth() / 2;
+			float y = this.getPosY() * World2D.GU - this.getTileHeight() / 2 + 40.0f;
 
-		this.animator[index].getSpriteBatch().setProjectionMatrix(this.camera.combined);
+			this.animator[index].getSpriteBatch().setProjectionMatrix(this.camera.combined);
 
-		// Animate
-		try {
+			// Animate
+			try {
 
-			this.animator[index].animate(currentMode, x, y, FPS_SCALE);
+				this.animator[index].animate(currentMode, x, y, FPS_SCALE);
 
-		} catch (KeyException error) {
+			} catch (KeyException error) {
 
-			error.printStackTrace();
-		}
+				error.printStackTrace();
+			}
 
-		if (Player.onGround) {
+			if (Player.onGround) {
 
-			currentMode = "idle";
+				currentMode = "idle";
+			}
 		}
 	}
 

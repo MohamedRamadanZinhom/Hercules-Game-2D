@@ -305,17 +305,17 @@ public class MapGenerator {
 
 				if (object instanceof RectangleMapObject) {
 
-					shape = World2D.getRectangle((RectangleMapObject) object);
+					shape = World2D.getPolygonShape((RectangleMapObject) object);
 				}
 
 				else if (object instanceof PolygonMapObject || object instanceof PolylineMapObject) {
 
-					shape = World2D.getPolyline((PolygonMapObject) object);
+					shape = World2D.getChainShape((PolygonMapObject) object);
 				}
 
 				else if (object instanceof CircleMapObject) {
 
-					shape = World2D.getCircle((CircleMapObject) object);
+					shape = World2D.getCircleShape((CircleMapObject) object);
 				}
 
 				else {

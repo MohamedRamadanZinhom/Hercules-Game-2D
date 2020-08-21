@@ -1,3 +1,5 @@
+/** @author Z. Mohamed Osama */
+
 package com.hercules.events;
 
 import com.badlogic.gdx.physics.box2d.Contact;

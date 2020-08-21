@@ -18,19 +18,23 @@ import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.engine.ui.ConsoleLogger;
 
 public class World2D {
 
-	private static Box2DDebugRenderer b2dr = new Box2DDebugRenderer();
+	private Box2DDebugRenderer b2dr = new Box2DDebugRenderer();
+	private Debugger debugger;
+
+	private static boolean initDebug = false;
 
 	public static boolean onDebugMode = false;
 	public static boolean onPhysicsDebugMode = false;
 
-	public static int onDebugKey = Keys.D;
-	public static int onPhysicsDebugKey = Keys.H;
-
 	protected World world;
 	protected Camera2D envCam;
+
+	public static int onDebugKey = Keys.D;
+	public static int onPhysicsDebugKey = Keys.H;
 
 	public static float SCREEN_WIDTH = Gdx.graphics.getWidth();
 	public static float SCREEN_HEIGHT = Gdx.graphics.getHeight();
@@ -43,6 +47,10 @@ public class World2D {
 		this.envCam = new Camera2D();
 
 		World2D.GU = GU;
+
+		this.b2dr = new Box2DDebugRenderer();
+		this.debugger = new Debugger();
+
 	}
 
 	public void createStaticBody(Shape shape, short categoryBits, short bitsMask, boolean isSensor, String bodyId) {
@@ -119,6 +127,20 @@ public class World2D {
 		world.setContactListener(listener);
 	}
 
+	public void initDebugMode(boolean randomColor) {
+
+		if (this.debugger == null) {
+
+			ConsoleLogger.setWarning(Debugger.class.getName(), "Debugger initialization Failed");
+
+			return;
+		}
+
+		this.debugger.getAllFromBody2D(randomColor);
+
+		World2D.initDebug = true;
+	}
+
 	/**
 	 * Debug bodies and physical object, properties
 	 * --------------------------------------------
@@ -129,21 +151,31 @@ public class World2D {
 	public void renderBox2dDebug(Matrix4 projMatrix) {
 
 		if (Gdx.input.isKeyJustPressed(World2D.onDebugKey) && !World2D.onPhysicsDebugMode) {
+
 			World2D.onDebugMode = !onDebugMode;
 		}
 
-		if (Gdx.input.isKeyJustPressed(World2D.onPhysicsDebugKey) && (!World2D.onDebugMode || onPhysicsDebugMode)) {
+		if (Gdx.input.isKeyJustPressed(World2D.onPhysicsDebugKey)
+				&& (!World2D.onDebugMode || World2D.onPhysicsDebugMode)) {
 
 			World2D.onDebugMode = !onDebugMode;
 			World2D.onPhysicsDebugMode = !onPhysicsDebugMode;
+
 		}
 
 		if (World2D.onDebugMode) {
-			World2D.b2dr.render(world, projMatrix);
+
+			this.b2dr.render(world, projMatrix);
 		}
+
+		if (World2D.initDebug && (World2D.onDebugMode || World2D.onPhysicsDebugMode)) {
+
+			this.debugger.render();
+		}
+
 	}
 
-	public static PolygonShape getRectangle(RectangleMapObject rectangleObject) {
+	public static PolygonShape getPolygonShape(RectangleMapObject rectangleObject) {
 
 		Rectangle rectangle = rectangleObject.getRectangle();
 		PolygonShape polygon = new PolygonShape();
@@ -155,15 +187,18 @@ public class World2D {
 		return polygon;
 	}
 
-	public static CircleShape getCircle(CircleMapObject circleObject) {
+	public static CircleShape getCircleShape(CircleMapObject circleObject) {
+
 		Circle circle = circleObject.getCircle();
 		CircleShape circleShape = new CircleShape();
+
 		circleShape.setRadius(circle.radius / World2D.GU);
 		circleShape.setPosition(new Vector2(circle.x / World2D.GU, circle.y / World2D.GU));
+
 		return circleShape;
 	}
 
-	public static ChainShape getPolyline(PolygonMapObject polygonObject) {
+	public static ChainShape getChainShape(PolygonMapObject polygonObject) {
 
 		ChainShape polygon = new ChainShape();
 		float[] vertices = polygonObject.getPolygon().getTransformedVertices();
@@ -178,7 +213,8 @@ public class World2D {
 
 	public void dispose() {
 
-		b2dr.dispose();
-		world.dispose();
+		this.debugger.dispose();
+		this.b2dr.dispose();
+		this.world.dispose();
 	}
 }
