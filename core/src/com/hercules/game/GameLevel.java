@@ -61,6 +61,7 @@ public class GameLevel { // No. of Levels = 5
 				GameAdapter.gravityY, true, GU);
 
 		this.world2d.setContactListener(new CollisionSignal()); // Collision Signal
+		this.world2d.initDebugMode(false, false); // Physics simulation debugger initialization
 
 		// Environment - Box2d Camera
 		float width = V_WIDTH / GU;

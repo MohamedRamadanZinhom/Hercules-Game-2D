@@ -27,7 +27,13 @@ public class Debugger {
 
 	}
 
-	public void getAllFromBody2D(boolean randomColor) {
+	protected Debugger(float posX, float posY) {
+
+		this.debugDialog = new DialogBuilder(title, posX, posY);
+
+	}
+
+	public void getAllFromBody2D(boolean randomColor, boolean ingoreStatic) {
 
 		for (String key : Body2D.bodies.keySet()) {
 
@@ -41,9 +47,21 @@ public class Debugger {
 
 			for (int i = 0; i < bodies.size(); i++) {
 
+				if (ingoreStatic && bodies.get(i).getType() == BodyType.StaticBody) {
+
+					continue;
+				}
+
+				boolean setName = false;
+
+				if (bodies.get(i).getType() != BodyType.StaticBody) {
+					setName = true;
+				}
+
 				OrderedMap<String, String> info = this.getBodyState(bodies.get(i));
 				info.put("Name", key);
-				this.debugDialog.tableFromOrderedMap(info, color[colorChoice]);
+
+				this.debugDialog.tableFromOrderedMap(info, color[colorChoice], setName);
 			}
 		}
 	}
@@ -102,12 +120,28 @@ public class Debugger {
 		return info;
 	}
 
-	public void render() {
+	public void act() {
 
 		float deltaTime = Gdx.graphics.getDeltaTime();
 
-		this.debugDialog.renderDialog(deltaTime);
+		this.debugDialog.getStage().act(deltaTime);
+	}
 
+	public void render() {
+
+		this.debugDialog.renderDialog();
+
+	}
+
+	public void clear() {
+
+		this.debugDialog.dialog.clear();
+
+	}
+
+	public void reset() {
+
+		this.debugDialog.dialog.reset();
 	}
 
 	public void dispose() {

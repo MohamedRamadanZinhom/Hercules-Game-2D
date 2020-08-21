@@ -6,6 +6,7 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
+
 import com.hercules.init.Enemy;
 import com.hercules.init.Player;
 
@@ -55,10 +56,7 @@ public class GameAdapter extends ApplicationAdapter {
 
 		// Enemy
 		// demon = new Enemy();
-		
-		
-		// Physics simulation debugger initialization
-		level.world2d.initDebugMode(true); 
+
 	}
 
 	@Override
@@ -68,18 +66,20 @@ public class GameAdapter extends ApplicationAdapter {
 
 			Gdx.app.exit();
 		}
-//
-//		// Input
-		player.update(true);
-//
+
 		Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
-//
-//		// World
+		Gdx.gl20.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+
+		level.world2d.updateDebugInfo(1000L, false, true); // // Physics simulation update debugger debug Info
+
+		// Input
+		player.update(true);
+
+		// World
 		level.render();
 
 		// Player
 		player.animate();
-
 	}
 
 	@Override

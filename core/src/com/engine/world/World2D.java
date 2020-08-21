@@ -25,6 +25,11 @@ public class World2D {
 	private Box2DDebugRenderer b2dr = new Box2DDebugRenderer();
 	private Debugger debugger;
 
+	private static long debuggerUpdateTime = System.currentTimeMillis();
+
+	private static float posX = Gdx.graphics.getWidth() / 2;
+	private static float posY = 0.0f;
+
 	private static boolean initDebug = false;
 
 	public static boolean onDebugMode = false;
@@ -49,7 +54,7 @@ public class World2D {
 		World2D.GU = GU;
 
 		this.b2dr = new Box2DDebugRenderer();
-		this.debugger = new Debugger();
+		this.debugger = new Debugger(posX, posY);
 
 	}
 
@@ -127,18 +132,48 @@ public class World2D {
 		world.setContactListener(listener);
 	}
 
-	public void initDebugMode(boolean randomColor) {
+	public void initDebugMode(boolean randomColor, boolean ingoreStatic) {
 
-		if (this.debugger == null) {
+		try {
+
+			this.debugger.getAllFromBody2D(randomColor, ingoreStatic);
+
+			World2D.initDebug = true;
+
+		} catch (Exception e) {
+
+			World2D.initDebug = false;
 
 			ConsoleLogger.setWarning(Debugger.class.getName(), "Debugger initialization Failed");
 
-			return;
 		}
 
-		this.debugger.getAllFromBody2D(randomColor);
+	}
 
-		World2D.initDebug = true;
+	public void updateDebugInfo(long delay, boolean randomColor, boolean ingoreStatic) {
+
+		try {
+
+			long current_time = System.currentTimeMillis();
+
+			if (current_time - debuggerUpdateTime > delay) {
+
+				this.debugger.clear();
+				this.debugger.getAllFromBody2D(randomColor, ingoreStatic);
+
+				World2D.initDebug = true;
+
+				debuggerUpdateTime = current_time;
+			}
+
+		} catch (Exception e) {
+
+			World2D.initDebug = false;
+
+			ConsoleLogger.setWarning(Debugger.class.getName(), "Debugger reinitialization Failed");
+
+		}
+
 	}
 
 	/**
