@@ -5,6 +5,8 @@ package com.hercules.init;
 import java.security.KeyException;
 import java.util.HashMap;
 
+import com.engine.world.World2D;
+
 public class Enemy extends Character {
 
 	/**
@@ -23,15 +25,22 @@ public class Enemy extends Character {
 	 * 
 	 * @param currentMode     : String - Initial animation key
 	 */
-	public Enemy(String[][] spritesDirname, String name, float posX, float posY, float speed,
-			HashMap<String, Float> FPS_SCALE, float frameDuration, int defaultIndex, String currentMode) {
+	public Enemy(String[][] spritesDirname, String name, float posX, float posY, float speed, float runScale,
+			float jumpScale, float smashingScale, HashMap<String, Float> FPS_SCALE, float frameDuration,
+			int defaultIndex, String currentMode) {
 
-		super(spritesDirname, name, posX, posY, speed, FPS_SCALE, frameDuration, defaultIndex, currentMode, false);
+		super(spritesDirname, name, posX, posY, speed, runScale, jumpScale, smashingScale, FPS_SCALE, frameDuration,
+				defaultIndex, currentMode, false);
 	}
 
 	public void initEnemy(int[] FRAME_ROWS, int[] FRAME_COLS, int[][] startKeys, int[][] endKeys, String[][] typeKeys,
 			String[] keysOrder) {
 		this.initCharacter(FRAME_ROWS, FRAME_COLS, startKeys, endKeys, typeKeys, keysOrder);
+	}
+
+	@Override
+	public void initActor(World2D world) {
+		// do something
 	}
 
 	@Override
@@ -53,4 +62,5 @@ public class Enemy extends Character {
 	public void update(boolean deltaTimeScale) {
 		// do something
 	}
+
 }

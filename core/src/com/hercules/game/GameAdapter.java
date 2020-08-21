@@ -6,8 +6,7 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
-
-import com.hercules.init.Enemy;
+import com.hercules.init.Demon;
 import com.hercules.init.Player;
 
 public class GameAdapter extends ApplicationAdapter {
@@ -32,7 +31,6 @@ public class GameAdapter extends ApplicationAdapter {
 
 	// ============ Player
 	Player player;
-	Enemy demon;
 
 	public static final String playerName = "m-zayan";
 
@@ -45,6 +43,17 @@ public class GameAdapter extends ApplicationAdapter {
 	public static final float smashingScale = 15.0f;
 	// =============
 
+	// Enemy
+	Demon demon;
+
+	public static float posDemonX = 400.0f;
+	public static float posDemonY = 100.0f;
+
+	public static float speedDemon = 4.0f;
+	public static final float runScaleDemon = 5.0f;
+	public static final float jumpScaleDemon = 160.0f;
+	public static final float smashingScaleDemon = 15.0f;
+
 	@Override
 	public void create() {
 
@@ -52,10 +61,11 @@ public class GameAdapter extends ApplicationAdapter {
 
 		// Player
 		player = new Player(playerName, posX, posY, speed, runScale, jumpScale, smashingScale);
-		player.initPlayer(level.world2d);
+		player.initActor(level.world2d);
 
-		// Enemy
-		// demon = new Enemy();
+		// Enemy - Demon
+		demon = new Demon("demo-101", posDemonX, posDemonY, speedDemon, runScale, jumpScale, smashingScale);
+		demon.initActor(level.world2d);
 
 	}
 
@@ -74,19 +84,22 @@ public class GameAdapter extends ApplicationAdapter {
 
 		// Input
 		player.update(true);
+		demon.update(true);
 
 		// World
 		level.render();
 
 		// Player
 		player.animate();
+		demon.animate();
 	}
 
 	@Override
 	public void dispose() {
 
 		level.dispose();
-		player.dispose();
+		demon.dispose();
+//		player.dispose();
 	}
 
 }

@@ -4,11 +4,13 @@ package com.hercules.init;
 
 import java.util.HashMap;
 
-import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.engine.animation.AnimationGenerator;
 import com.engine.exception.InconsistentSpriteSheetException;
 import com.engine.exception.OverwriteException;
+import com.engine.world.Camera2D;
 import com.engine.world.World2D;
+import com.hercules.game.GameAdapter;
 
 public abstract class Character {
 
@@ -32,6 +34,17 @@ public abstract class Character {
 
 	protected AnimationGenerator[] animator;
 
+	static public Camera2D camera = new Camera2D(GameAdapter.V_WIDTH, GameAdapter.V_HEIGHT);
+
+	public float runScale;
+	public float jumpScale;
+	public float smashingScale;
+
+	public Body actor;
+
+	public Body weaponMaskR;
+	public Body weaponMaskL;
+
 	/**
 	 * @param spritesDirname: String [][] - 2d array, each index specifies, array of
 	 *                        sprite sheets to create an animation key from it -
@@ -49,9 +62,9 @@ public abstract class Character {
 	 * 
 	 * @param currentMode     : String - Initial animation key
 	 */
-	public Character(String[][] spritesDirname, String name, float posX, float posY, float speed,
-			HashMap<String, Float> FPS_SCALE, float frameDuration, int defaultIndex, String currentMode,
-			boolean scale) {
+	public Character(String[][] spritesDirname, String name, float posX, float posY, float speed, float runScale,
+			float jumpScale, float smashingScale, HashMap<String, Float> FPS_SCALE, float frameDuration,
+			int defaultIndex, String currentMode, boolean scale) {
 
 		this.spritesDirname = spritesDirname;
 		this.name = name;
@@ -68,6 +81,10 @@ public abstract class Character {
 
 		this.FPS_SCALE = FPS_SCALE;
 		this.frameDuration = frameDuration;
+
+		this.runScale = runScale;
+		this.jumpScale = jumpScale;
+		this.smashingScale = smashingScale;
 
 	}
 
@@ -110,21 +127,13 @@ public abstract class Character {
 
 		}
 
+		Character.camera.position.x = camera.viewportWidth / 2;
+		Character.camera.position.y = camera.viewportHeight / 2;
+
+		Character.camera.update();
 	}
 
-	protected void initActor(World2D world, Vector2 size, short bitMask, String actorId) {
-
-		// KinematicBody
-//		PolygonShape shape = new PolygonShape();
-//		shape.setAsBox(20.0f / World2D.GU, 5.0f / World2D.GU);
-//
-//		world2d.createDynamicBody(shape, World.BIT_PLAYER, bitMask, actorId);
-//
-//		playerActor = Body2D.bodies.get("player").get(0);
-//		playerActor.setTransform(new Vector2(player.getPosX() / GU * 2 - 0.04f, player.getPosY() / GU * 2 - 0.3f),
-//				0.0f);
-
-	}
+	public abstract void initActor(World2D world);
 
 	/**
 	 * Animate - character
@@ -148,11 +157,11 @@ public abstract class Character {
 	}
 
 	public float getPosX() {
-		return this.posY;
+		return this.actor.getPosition().x;
 	}
 
 	public float getPosY() {
-		return this.posX;
+		return this.actor.getPosition().y;
 	}
 
 	public float getTileWidth() {

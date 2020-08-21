@@ -8,7 +8,6 @@ import java.util.HashMap;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.engine.world.Body2D;
 import com.engine.world.Camera2D;
@@ -58,14 +57,7 @@ public class Player extends Character {
 		}
 	}; // Animation - Frame Key Speed
 
-	public final float runScale;
-	public final float jumpScale;
-	public final float smashingScale;
-
-	public Body playerActor;
-
-	public Body swordR;
-	public Body swordL;
+	public float smashingScale;
 
 	public Camera2D camera;
 
@@ -88,21 +80,13 @@ public class Player extends Character {
 	public Player(String name, float posX, float posY, float speed, float runScale, float jumpScale,
 			float smashingScale) {
 
-		super(spritesDirname, name, posX, posY, speed, FPS_SCALE, GameAdapter.frameDuration, index, currentMode, false);
+		super(spritesDirname, name, posX, posY, speed, runScale, jumpScale, smashingScale, FPS_SCALE,
+				GameAdapter.frameDuration, index, currentMode, false);
 
-		this.runScale = runScale;
-		this.jumpScale = jumpScale;
-		this.smashingScale = smashingScale;
-
-		this.camera = new Camera2D(GameAdapter.V_WIDTH, GameAdapter.V_HEIGHT);
-
-		this.camera.position.x = this.camera.viewportWidth / 2;
-		this.camera.position.y = this.camera.viewportHeight / 2;
-
-		this.camera.update();
 	}
 
-	public void initPlayer(World2D world) {
+	@Override
+	public void initActor(World2D world) {
 
 		this.initCharacter(FRAME_ROWS, FRAME_COLS, startKeys, endKeys, typeKeys, keysOrder);
 
@@ -115,8 +99,8 @@ public class Player extends Character {
 		float x = this.posX / World2D.GU + this.getTileWidth() / (2 * World2D.GU);
 		float y = this.posY / World2D.GU + this.getTileHeight() / (2 * World2D.GU);
 
-		this.playerActor = Body2D.bodies.get("player").get(0);
-		this.playerActor.setTransform(new Vector2(x, y), 0.0f);
+		this.actor = Body2D.bodies.get("player").get(0);
+		this.actor.setTransform(new Vector2(x, y), 0.0f);
 
 		// Player swordR
 		PolygonShape swordShapeR = new PolygonShape();
@@ -124,8 +108,8 @@ public class Player extends Character {
 
 		world.createDynamicBody(swordShapeR, World.BIT_PLAYER, World.BIT_ANY, true, "sword");
 
-		this.swordR = Body2D.bodies.get("sword").get(0);
-		this.swordR.setTransform(new Vector2(x + 0.5f, y + 0.5f), 0.0f);
+		this.weaponMaskR = Body2D.bodies.get("sword").get(0);
+		this.weaponMaskR.setTransform(new Vector2(x + 0.5f, y + 0.5f), 0.0f);
 
 		// Player swordL
 		PolygonShape swordShapeL = new PolygonShape();
@@ -133,8 +117,8 @@ public class Player extends Character {
 
 		world.createDynamicBody(swordShapeL, World.BIT_PLAYER, World.BIT_ANY, true, "sword");
 
-		this.swordL = Body2D.bodies.get("sword").get(1);
-		this.swordL.setTransform(new Vector2(x - 0.5f, y + 0.5f), 0.0f);
+		this.weaponMaskL = Body2D.bodies.get("sword").get(1);
+		this.weaponMaskL.setTransform(new Vector2(x - 0.5f, y + 0.5f), 0.0f);
 
 	}
 
@@ -142,11 +126,11 @@ public class Player extends Character {
 	public void animate() {
 
 		if (!World2D.onPhysicsDebugMode) {
-			
+
 			float x = this.getPosX() * World2D.GU - this.getTileWidth() / 2;
 			float y = this.getPosY() * World2D.GU - this.getTileHeight() / 2 + 40.0f;
 
-			this.animator[index].getSpriteBatch().setProjectionMatrix(this.camera.combined);
+			this.animator[index].getSpriteBatch().setProjectionMatrix(Character.camera.combined);
 
 			// Animate
 			try {
@@ -256,16 +240,16 @@ public class Player extends Character {
 			// do somthing
 		}
 
-		Vector2 actorPrevPos = new Vector2(this.playerActor.getPosition()); // copy
-		Vector2 actorPos = this.playerActor.getPosition();
+		Vector2 actorPrevPos = new Vector2(this.actor.getPosition()); // copy
+		Vector2 actorPos = this.actor.getPosition();
 		actorPos.x += xStep / World2D.GU;
 
 		// Player Actor
-		this.playerActor.setTransform(actorPos, 0.0f);
+		this.actor.setTransform(actorPos, 0.0f);
 
 		// Sword
-		Vector2 swordPosR = new Vector2(this.playerActor.getPosition());
-		Vector2 swordPosL = new Vector2(this.playerActor.getPosition());
+		Vector2 swordPosR = new Vector2(this.actor.getPosition());
+		Vector2 swordPosL = new Vector2(this.actor.getPosition());
 
 		swordPosR.x += swordXStep / World2D.GU;
 		swordPosR.y += swordYStep / World2D.GU;
@@ -273,26 +257,16 @@ public class Player extends Character {
 		swordPosL.x -= swordXStep / World2D.GU;
 		swordPosL.y += swordYStep / World2D.GU;
 
-		this.swordR.setTransform(swordPosR, 0.0f);
-		this.swordL.setTransform(swordPosL, 0.0f);
+		this.weaponMaskR.setTransform(swordPosR, 0.0f);
+		this.weaponMaskL.setTransform(swordPosL, 0.0f);
 
 		if (Player.onBound) {
 			actorPrevPos.x += (actorPrevPos.x * 0.01);
-			this.playerActor.setTransform(actorPrevPos, 0.0f); // Set - Previous Position
+			this.actor.setTransform(actorPrevPos, 0.0f); // Set - Previous Position
 		}
 
-		this.playerActor.applyForceToCenter(0.0f, yStep, true); // Y-axis
+		this.actor.applyForceToCenter(0.0f, yStep, true); // Y-axis
 
-	}
-
-	@Override
-	public float getPosX() {
-		return this.playerActor.getPosition().x;
-	}
-
-	@Override
-	public float getPosY() {
-		return this.playerActor.getPosition().y;
 	}
 
 }
