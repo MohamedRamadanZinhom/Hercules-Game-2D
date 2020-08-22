@@ -2,67 +2,19 @@
 
 package com.hercules.init;
 
-import java.security.KeyException;
-import java.util.HashMap;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.engine.world.Body2D;
-import com.engine.world.Camera2D;
 import com.engine.world.World2D;
-import com.hercules.game.GameAdapter;
 
 public class Player extends Character {
 
-	public static boolean onGround = false;
-	public static boolean hit = false; // if true: enemy health --> decrease
-	public static boolean onBound = false;
-
-	public static final String mainDir = "./sprite-sheets/player/";
-
-	public static final String[][] spritesDirname = { { mainDir + "iwr.png", mainDir + "jhad.png" },
-			{ mainDir + "iwr-left.png", mainDir + "jhad-left.png" } };
-
-	public static final int[] FRAME_ROWS = { 1, 1 };
-	public static final int[] FRAME_COLS = { 30, 40 };
+	private static final Resource res = ResourceManager.getPlayerResources();
 
 	/**
-	 * Use the same keys: pass reversed key order parameter - {@link #keysOrder)}
-	 */
-	public static final int[][] startKeys = { { 0, 9, 19 }, { 0, 9, 19, 29 } };
-	public static final int[][] endKeys = { { 9, 19, 29 }, { 9, 19, 29, 39 } };
-
-	public static final String[][] typeKeys = { { "idle", "walk", "run" }, { "jump", "attack", "hurt", "die" } };
-
-	public static final String[] keysOrder = { "right", "left" };
-
-	public static int index = 0;
-	public static String currentMode = "idle";
-
-	public static final HashMap<String, Float> FPS_SCALE = new HashMap<String, Float>() {
-
-		private static final long serialVersionUID = -1386435843423357563L;
-
-		{
-			put("idle", 0.3f);
-			put("walk", 0.3f);
-			put("run", 0.5f);
-			put("jump", 0.15f);
-			put("attack", 0.5f);
-			put("hurt", 0.5f);
-			put("die", 0.5f);
-
-		}
-	}; // Animation - Frame Key Speed
-
-	public float smashingScale;
-
-	public Camera2D camera;
-
-	/**
-	 * @param spritesDirname: String [][] - 2d array, each index specifies, array of
+	 * @param spritesDirname: String [][] - 2d array, each dir specifies, array of
 	 *                        sprite sheets to create an animation key from it
 	 * 
 	 * @param name:           String - Player Id
@@ -72,81 +24,52 @@ public class Player extends Character {
 	 * @param FPS_SCALE:      float - SCALE Animtion Frames
 	 * @param frameDuration:  float
 	 * 
-	 * @param defaultIndex    : int - Initial sprite sheet index (ex. left, right)
+	 * @param defaultdir      : int - Initial sprite sheet dir (ex. left, right)
 	 *                        {@link #path}
 	 * 
 	 * @param currentMode     : String - Initial animation key
 	 */
-	public Player(String name, float posX, float posY, float speed, float runScale, float jumpScale,
-			float smashingScale) {
+	public Player(String name, CharacterStatus status) {
 
-		super(spritesDirname, name, posX, posY, speed, runScale, jumpScale, smashingScale, FPS_SCALE,
-				GameAdapter.frameDuration, index, currentMode, false);
+		super("player", "sword", res.spritesDirname, res.FPS_SCALE, res.frameDuration, status, false);
 
 	}
 
 	@Override
 	public void initActor(World2D world) {
 
-		this.initCharacter(FRAME_ROWS, FRAME_COLS, startKeys, endKeys, typeKeys, keysOrder);
+		initCharacter(res.FRAME_ROWS, res.FRAME_COLS, res.startKeys, res.endKeys, res.typeKeys, res.keysOrder);
 
 		// Player Actor
 		PolygonShape shape = new PolygonShape();
 		shape.setAsBox(40.0f / World2D.GU, 5.0f / World2D.GU);
 
-		world.createDynamicBody(shape, 0.0f, 0.0f, 1.0f, World.BIT_PLAYER, World.BIT_ANY, false, "player");
+		world.createDynamicBody(shape, 0.0f, 0.0f, 1.0f, World.BIT_PLAYER, World.BIT_ANY, false, typeId);
 
-		float x = this.posX / World2D.GU + this.getTileWidth() / (2 * World2D.GU);
-		float y = this.posY / World2D.GU + this.getTileHeight() / (2 * World2D.GU);
+		float x = status.getStartingPosX() / World2D.GU + getTileWidth() / (2 * World2D.GU);
+		float y = status.getStartingPosY() / World2D.GU + getTileHeight() / (2 * World2D.GU);
 
-		this.actor = Body2D.bodies.get("player").get(0);
-		this.actor.setTransform(new Vector2(x, y), 0.0f);
+		actor = Body2D.bodies.get(typeId).get(0);
+		actor.setTransform(new Vector2(x, y), 0.0f);
 
 		// Player swordR
 		PolygonShape swordShapeR = new PolygonShape();
 		swordShapeR.setAsBox(10.0f / World2D.GU, 10.0f / World2D.GU);
 
-		world.createDynamicBody(swordShapeR, World.BIT_PLAYER, World.BIT_ANY, true, "sword");
+		world.createDynamicBody(swordShapeR, 0.0f, 0.0f, 0.0f, World.BIT_PLAYER, World.BIT_ANY, true, getWeaponId());
 
-		this.weaponMaskR = Body2D.bodies.get("sword").get(0);
-		this.weaponMaskR.setTransform(new Vector2(x + 0.5f, y + 0.5f), 0.0f);
+		weaponMaskR = Body2D.bodies.get(getWeaponId()).get(0);
+		weaponMaskR.setTransform(new Vector2(x + 0.5f, y + 0.5f), 0.0f);
 
 		// Player swordL
 		PolygonShape swordShapeL = new PolygonShape();
 		swordShapeL.setAsBox(10.0f / World2D.GU, 10.0f / World2D.GU);
 
-		world.createDynamicBody(swordShapeL, World.BIT_PLAYER, World.BIT_ANY, true, "sword");
+		world.createDynamicBody(swordShapeL, 0.0f, 0.0f, 0.0f, World.BIT_PLAYER, World.BIT_ANY, true, getWeaponId());
 
-		this.weaponMaskL = Body2D.bodies.get("sword").get(1);
-		this.weaponMaskL.setTransform(new Vector2(x - 0.5f, y + 0.5f), 0.0f);
+		weaponMaskL = Body2D.bodies.get(getWeaponId()).get(1);
+		weaponMaskL.setTransform(new Vector2(x - 0.5f, y + 0.5f), 0.0f);
 
-	}
-
-	@Override
-	public void animate() {
-
-		if (!World2D.onPhysicsDebugMode) {
-
-			float x = this.getPosX() * World2D.GU - this.getTileWidth() / 2;
-			float y = this.getPosY() * World2D.GU - this.getTileHeight() / 2 + 40.0f;
-
-			this.animator[index].getSpriteBatch().setProjectionMatrix(Character.camera.combined);
-
-			// Animate
-			try {
-
-				this.animator[index].animate(currentMode, x, y, FPS_SCALE);
-
-			} catch (KeyException error) {
-
-				error.printStackTrace();
-			}
-
-			if (Player.onGround) {
-
-				currentMode = "idle";
-			}
-		}
 	}
 
 	/**
@@ -161,59 +84,58 @@ public class Player extends Character {
 
 		float scale = deltaTimeScale ? Gdx.graphics.getDeltaTime() + 1.0f : 1.0f;
 
-		float xStep = 0.0f; // this.speed * scale
+		float xStep = 0.0f; // speed * scale
 		float yStep = 0.0f; // 10.0f * scale;
 
-		float swordXStep = 90.0f;
-		float swordYStep = 30.0f;
-
-		float dir = (index == 0) ? 1 : -1;
+		float weaponXStep = 90.0f;
+		float weaponYStep = 30.0f;
 
 		if (Gdx.input.isKeyPressed(Keys.RIGHT)) {
 
-			xStep = this.speed * scale;
+			xStep = status.getInitialVelocityX() * scale;
 
-			if (Player.onGround) {
+			if (status.isOnGround()) {
 
-				currentMode = "walk";
+				status.setCurrentMode("walk");
 			}
 
-			index = 0;
+			status.setDir(1);
 		}
 
 		if (Gdx.input.isKeyPressed(Keys.LEFT)) {
 
-			xStep = -this.speed * scale;
+			xStep = -status.getInitialVelocityX() * scale;
 
-			if (Player.onGround) {
+			if (status.isOnGround()) {
 
-				currentMode = "walk";
+				status.setCurrentMode("walk");
 			}
 
-			index = 1;
+			status.setDir(-1);
 		}
 
-		if (Gdx.input.isKeyPressed(Keys.UP) && Player.onGround) {
+		if (Gdx.input.isKeyPressed(Keys.UP) && status.isOnGround()) {
 
-			yStep = this.jumpScale * scale;
-			currentMode = "jump";
+			yStep = status.getJumpScale() * scale;
+			status.setCurrentMode("jump");
 		}
 
-		if (Gdx.input.isKeyPressed(Keys.DOWN) && !Player.onGround) {
+		if (Gdx.input.isKeyPressed(Keys.DOWN) && !status.isOnGround()) {
 
 			// Smashing
-			xStep = dir * this.smashingScale * scale;
-			yStep = -this.smashingScale * scale;
+			xStep = status.getDir() * status.getSmashingScale() * scale * 0.5f;
+			yStep = -status.getSmashingScale() * scale;
 
-			if (Player.onGround) {
-				currentMode = "attack";
+			if (status.isOnGround()) {
+
+				status.setCurrentMode("attack");
 			}
 		}
 
 		if (Gdx.input.isKeyPressed(Keys.SPACE)) {
 			// Attack
 
-			currentMode = "attack";
+			status.setCurrentMode("attack");
 
 			// do somthing
 		}
@@ -221,49 +143,68 @@ public class Player extends Character {
 		if (Gdx.input.isKeyPressed(Keys.RIGHT)
 				&& (Gdx.input.isKeyPressed(Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Keys.SHIFT_RIGHT))) {
 
-			xStep += this.runScale;
+			xStep += status.getRunScale();
 
-			currentMode = "run";
+			status.setCurrentMode("run");
+			status.setDir(1);
 		}
 
 		if (Gdx.input.isKeyPressed(Keys.LEFT)
 				&& (Gdx.input.isKeyPressed(Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Keys.SHIFT_RIGHT))) {
 
-			xStep -= this.runScale;
+			xStep -= status.getRunScale();
 
-			currentMode = "run";
+			status.setCurrentMode("run");
+			status.setDir(-1);
 		}
 
 		if (Gdx.input.isKeyPressed(Keys.CONTROL_LEFT) || Gdx.input.isKeyPressed(Keys.CONTROL_RIGHT)) {
-			// Spying
 
-			// do somthing
+			xStep *= 0.4f;
+
+			status.setCurrentMode("walk");
 		}
 
-		Vector2 actorPrevPos = new Vector2(this.actor.getPosition()); // copy
-		Vector2 actorPos = this.actor.getPosition();
+		if (status.isHit()) {
+			// decrease enemy health
+		}
+
+//		Vector2 actorPrevPos = new Vector2(actor.getPosition()); // copy
+//
+//		Vector2 rWeaponPrevPos = new Vector2(this.weaponMaskR.getPosition()); // copy
+//		Vector2 lWeaponPrevPos = new Vector2(this.weaponMaskL.getPosition()); // copy
+
+		// Actor
+		Vector2 actorPos = actor.getPosition();
 		actorPos.x += xStep / World2D.GU;
 
-		// Player Actor
-		this.actor.setTransform(actorPos, 0.0f);
+		actor.setTransform(actorPos, 0.0f);
 
 		// Sword
-		Vector2 swordPosR = new Vector2(this.actor.getPosition());
-		Vector2 swordPosL = new Vector2(this.actor.getPosition());
+		Vector2 rWeaponMaskPos = new Vector2(actor.getPosition());
+		Vector2 lWeaponMaskPos = new Vector2(actor.getPosition());
 
-		swordPosR.x += swordXStep / World2D.GU;
-		swordPosR.y += swordYStep / World2D.GU;
+		rWeaponMaskPos.x += weaponXStep / World2D.GU;
+		rWeaponMaskPos.y += weaponYStep / World2D.GU;
 
-		swordPosL.x -= swordXStep / World2D.GU;
-		swordPosL.y += swordYStep / World2D.GU;
+		lWeaponMaskPos.x -= weaponXStep / World2D.GU;
+		lWeaponMaskPos.y += weaponYStep / World2D.GU;
 
-		this.weaponMaskR.setTransform(swordPosR, 0.0f);
-		this.weaponMaskL.setTransform(swordPosL, 0.0f);
+		this.weaponMaskR.setTransform(rWeaponMaskPos, 0.0f);
+		this.weaponMaskL.setTransform(lWeaponMaskPos, 0.0f);
 
-		if (Player.onBound) {
-			actorPrevPos.x += (actorPrevPos.x * 0.01);
-			this.actor.setTransform(actorPrevPos, 0.0f); // Set - Previous Position
-		}
+//		if (status.isOnBound()) {
+//
+//			actorPrevPos.x += (actorPos.x * 0.01);
+//
+//			rWeaponPrevPos.x += (rWeaponMaskPos.x * 0.5);
+//			lWeaponPrevPos.x += (lWeaponMaskPos.x * 0.5);
+//
+//			actor.setTransform(actorPrevPos, 0.0f); // Set - Previous Position
+//
+//			weaponMaskR.setTransform(rWeaponPrevPos, 0.0f); // Set - Previous Position
+//			weaponMaskL.setTransform(lWeaponPrevPos, 0.0f); // Set - Previous Position
+//		}
 
 		this.actor.applyForceToCenter(0.0f, yStep, true); // Y-axis
 

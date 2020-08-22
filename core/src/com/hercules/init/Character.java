@@ -2,6 +2,7 @@
 
 package com.hercules.init;
 
+import java.security.KeyException;
 import java.util.HashMap;
 
 import com.badlogic.gdx.physics.box2d.Body;
@@ -14,31 +15,19 @@ import com.hercules.game.GameAdapter;
 
 public abstract class Character {
 
+	static public Camera2D camera = new Camera2D(GameAdapter.V_WIDTH, GameAdapter.V_HEIGHT);
+
+	public final String typeId;
+	public final String weaponName;
+
 	private final String[][] spritesDirname;
 
 	protected final float frameDuration;
 	protected final HashMap<String, Float> FPS_SCALE;
 
-	protected String name;
-
-	protected float posX;
-	protected float posY;
-	protected float speed;
-
-	// index: int - sprite index, ex. index: dir = 0 - is right dir sprite, dir
-	protected int index;
-	protected String currentMode;
-
-	protected float health;
-	protected boolean died;
+	protected CharacterStatus status;
 
 	protected AnimationGenerator[] animator;
-
-	static public Camera2D camera = new Camera2D(GameAdapter.V_WIDTH, GameAdapter.V_HEIGHT);
-
-	public float runScale;
-	public float jumpScale;
-	public float smashingScale;
 
 	public Body actor;
 
@@ -50,7 +39,6 @@ public abstract class Character {
 	 *                        sprite sheets to create an animation key from it -
 	 *                        key: {@link #index}
 	 * 
-	 * @param name:           String - Character Id
 	 * @param posX:           float - Character initial position - X
 	 * @param posY:           float - Character initial position - Y
 	 * @param speed:          float - Character initial Speed
@@ -62,29 +50,19 @@ public abstract class Character {
 	 * 
 	 * @param currentMode     : String - Initial animation key
 	 */
-	public Character(String[][] spritesDirname, String name, float posX, float posY, float speed, float runScale,
-			float jumpScale, float smashingScale, HashMap<String, Float> FPS_SCALE, float frameDuration,
-			int defaultIndex, String currentMode, boolean scale) {
+	public Character(String typeId, String weaponName, String[][] spritesDirname, HashMap<String, Float> FPS_SCALE,
+			float frameDuration, CharacterStatus status, boolean scaleByGU) {
 
 		this.spritesDirname = spritesDirname;
-		this.name = name;
-
-		this.posX = scale ? posX / World2D.GU : posX;
-		this.posY = scale ? posY / World2D.GU : posY;
-		this.speed = scale ? speed / World2D.GU : speed;
-
-		this.index = defaultIndex;
-		this.currentMode = currentMode;
-
-		this.health = 100.0f;
-		this.died = false;
 
 		this.FPS_SCALE = FPS_SCALE;
 		this.frameDuration = frameDuration;
+		this.status = status;
 
-		this.runScale = runScale;
-		this.jumpScale = jumpScale;
-		this.smashingScale = smashingScale;
+		this.typeId = typeId;
+		this.weaponName = weaponName;
+
+		CharacterStatus.statusRepo.put(typeId, status);
 
 	}
 
@@ -110,13 +88,13 @@ public abstract class Character {
 
 		for (int i = 0; i < keysOrder.length; i++) {
 
-			animator[i] = new AnimationGenerator(this.spritesDirname[i]);
+			this.animator[i] = new AnimationGenerator(this.spritesDirname[i]);
 
 			for (int j = 0; j < this.spritesDirname[i].length; j++) {
 
 				try {
 
-					animator[i].addAnimation(j, FRAME_ROWS[j], FRAME_COLS[j], this.frameDuration, startKeys[j],
+					this.animator[i].addAnimation(j, FRAME_ROWS[j], FRAME_COLS[j], this.frameDuration, startKeys[j],
 							endKeys[j], typeKeys[j], keysOrder[i]);
 
 				} catch (OverwriteException | InconsistentSpriteSheetException error) {
@@ -127,27 +105,59 @@ public abstract class Character {
 
 		}
 
-		Character.camera.position.x = camera.viewportWidth / 2;
-		Character.camera.position.y = camera.viewportHeight / 2;
+		camera.position.x = camera.viewportWidth / 2;
+		camera.position.y = camera.viewportHeight / 2;
 
-		Character.camera.update();
+		camera.update();
 	}
 
 	public abstract void initActor(World2D world);
 
 	/**
 	 * Animate - character
+	 * 
+	 * @param thresholdX : float - tuning x position, the relative position between
+	 *                   actor and sprite sprite_position_x = posX + thresholdX;
+	 * 
+	 * @param thresholdY : float - tuning y position, the relative position between
+	 *                   actor and sprite sprite_position_y = posY + thresholdY;
+	 * 
 	 */
-	abstract public void animate();
+	public void animate(float thresholdX, float thresholdY) {
+
+		if (!World2D.onPhysicsDebugMode) {
+
+			float x = this.getPosX() * World2D.GU - this.getTileWidth() / 2 + thresholdX;
+			float y = this.getPosY() * World2D.GU - this.getTileHeight() / 2 + thresholdY;
+
+			this.animator[this.status.getDir()].getSpriteBatch().setProjectionMatrix(Character.camera.combined);
+
+			// Animate
+			try {
+
+				this.animator[this.status.getDir()].animate(status.getCurrentMode(), x, y, this.FPS_SCALE);
+
+			} catch (KeyException error) {
+
+				error.printStackTrace();
+			}
+
+			if (this.status.isOnGround()) {
+
+				this.status.setCurrentMode("idle");
+			}
+		}
+	}
 
 	/**
-	 * Movements, States
+	 * Movements, Status
 	 * 
 	 * @param speedScale     : float - Player speed scale
 	 * @param deltaTimeScale : boolean - If true, scale character's movements, by
 	 *                       delta time.
 	 */
-	abstract public void update(boolean deltaTimeScale);
+
+	public abstract void update(boolean deltaTimeScale);
 
 	public void dispose() {
 
@@ -165,10 +175,32 @@ public abstract class Character {
 	}
 
 	public float getTileWidth() {
-		return this.animator[this.index].getTileWidth();
+		return this.animator[this.status.getDir()].getTileWidth();
 	}
 
 	public float getTileHeight() {
-		return this.animator[this.index].getTileHeight();
+		return this.animator[this.status.getDir()].getTileHeight();
 	}
+
+	/**
+	 * @return the typeId
+	 */
+	public String getTypeId() {
+		return typeId;
+	}
+
+	/**
+	 * @return the weaponName
+	 */
+	public String getWeaponName() {
+		return weaponName;
+	}
+
+	/**
+	 * @return the weaponName
+	 */
+	public String getWeaponId() {
+		return this.typeId + "-" + this.weaponName;
+	}
+
 }

@@ -7,8 +7,7 @@ import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
-import com.hercules.init.Demon;
-import com.hercules.init.Player;
+import com.hercules.init.CharacterStatus;
 
 public class CollisionSignal implements ContactListener {
 
@@ -18,76 +17,37 @@ public class CollisionSignal implements ContactListener {
 		Fixture fa = contact.getFixtureA();
 		Fixture fb = contact.getFixtureB();
 
-		if (fb.getUserData() != null && fb.getUserData().equals("player")) {
+		if (fb.getUserData() != null && fa.getUserData() != null && fa.getUserData() instanceof String
+				&& fb.getUserData() instanceof String) {
 
-			if (fa.getUserData() != null && fa.getUserData().equals("Ground")) {
+			String[] data = ((String) fb.getUserData()).split("-");
 
-				Player.onGround = true;
+			String typeId = data[0];
 
-				System.out.println("Player : On The Ground");
+			if (fa.getUserData().equals("Ground") && (typeId.equals("player") || typeId.equals("enemy"))) {
+
+				CharacterStatus.statusRepo.get(typeId).setOnGround(true);
+
 			}
 
-			else {
-				// do something
+			// data.length > 1: data[1] = weaponName
+			if (fa.getUserData().equals("Bounds") && (typeId.equals("player") || typeId.equals("enemy"))) {
+
+				CharacterStatus.statusRepo.get(typeId).setOnBound(true);
+
 			}
+
+			// data.length > 1: data[1] = weaponName
+			// true if : (player ---- hit ----> enemy | enemy ---- hit ----> player)
+			if (data.length > 1 && fa.getUserData().equals(data[1])
+					&& (typeId.equals("player") || typeId.equals("enemy"))
+					&& CharacterStatus.statusRepo.get(typeId).getCurrentMode().equals("attack")) {
+
+				CharacterStatus.statusRepo.get(typeId).setHit(true);
+			}
+
 		}
 
-		if (fb.getUserData() != null && fb.getUserData().equals("enemy")) {
-
-			if (fa.getUserData() != null && fa.getUserData().equals("Ground")) {
-
-				Demon.onGround = true;
-
-				System.out.println("Enemy: On The Ground");
-			}
-
-			else {
-				// do something
-			}
-		}
-
-		if (fb.getUserData() != null && fb.getUserData().equals("sword")) {
-
-			if (fa.getUserData() != null && fa.getUserData().equals("enemy")) {
-
-				Player.hit = true;
-
-				System.out.println("Player : Hit");
-			}
-
-			else {
-
-				// do something
-			}
-		}
-
-		if (fb.getUserData() != null && (fb.getUserData().equals("player") || fb.getUserData().equals("sword"))) {
-
-			if (fa.getUserData() != null && fa.getUserData().equals("Bounds")) {
-
-				Player.onBound = true;
-
-				System.out.println("Player : Bound");
-			}
-
-			else {
-
-				// do something
-			}
-		}
-
-		if (fb.getUserData() != null && (fb.getUserData().equals("enemy") || fb.getUserData().equals("enemy-weapon"))) {
-
-			if (fa.getUserData() != null && fa.getUserData().equals("Bounds")) {
-
-				Demon.onBound = true;
-			}
-
-			else {
-
-				// do something
-			}
-		}
 	}
 
 	@Override
@@ -95,71 +55,35 @@ public class CollisionSignal implements ContactListener {
 
 		Fixture fa = contact.getFixtureA();
 		Fixture fb = contact.getFixtureB();
-		if (fb.getUserData() != null && fb.getUserData().equals("player")) {
 
-			if (fa.getUserData() != null && fa.getUserData().equals("Ground")) {
+		if (fb.getUserData() != null && fa.getUserData() != null && fa.getUserData() instanceof String
+				&& fb.getUserData() instanceof String) {
 
-				Player.onGround = false;
+			String[] data = ((String) fb.getUserData()).split("-");
+
+			String typeId = data[0];
+
+			if (fa.getUserData().equals("Ground") && (typeId.equals("player") || typeId.equals("enemy"))) {
+
+				CharacterStatus.statusRepo.get(typeId).setOnGround(false);
 
 			}
 
-			else {
-				// do something
+			// data.length > 1: data[1] = weaponName
+			if (fa.getUserData().equals("Bounds") && (typeId.equals("player") || typeId.equals("enemy"))) {
+
+				CharacterStatus.statusRepo.get(typeId).setOnBound(false);
+
 			}
+
+			if (data.length > 1 && fa.getUserData().equals(data[1])
+					&& (typeId.equals("player") || typeId.equals("enemy"))) {
+
+				CharacterStatus.statusRepo.get(typeId).setHit(false);
+			}
+
 		}
 
-		if (fb.getUserData() != null && fb.getUserData().equals("enemy")) {
-
-			if (fa.getUserData() != null && fa.getUserData().equals("Ground")) {
-
-				Demon.onGround = false;
-
-			}
-
-			else {
-				// do something
-			}
-		}
-
-		if (fb.getUserData() != null && fb.getUserData().equals("sword")) {
-
-			if (fa.getUserData() != null && fa.getUserData().equals("enemy")) {
-
-				Player.hit = false;
-
-			}
-
-			else {
-
-				// do something
-			}
-		}
-
-		if (fb.getUserData() != null && (fb.getUserData().equals("player") || fb.getUserData().equals("sword"))) {
-
-			if (fa.getUserData() != null && fa.getUserData().equals("Bounds")) {
-
-				Player.onBound = false;
-			}
-
-			else {
-
-				// do something
-			}
-		}
-
-		if (fb.getUserData() != null && (fb.getUserData().equals("enemy") || fb.getUserData().equals("enemy-weapon"))) {
-
-			if (fa.getUserData() != null && fa.getUserData().equals("Bounds")) {
-
-				Demon.onBound = false;
-			}
-
-			else {
-
-				// do something
-			}
-		}
 	}
 
 	@Override
