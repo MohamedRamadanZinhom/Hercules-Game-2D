@@ -17,7 +17,7 @@ public class CollisionSignal implements ContactListener {
 		Fixture fa = contact.getFixtureA();
 		Fixture fb = contact.getFixtureB();
 
-		if (fb.getUserData() != null && fa.getUserData() != null && fa.getUserData() instanceof String
+		if (fa.getUserData() != null && fb.getUserData() != null && fa.getUserData() instanceof String
 				&& fb.getUserData() instanceof String) {
 
 			String[] data = ((String) fb.getUserData()).split("-");
@@ -31,7 +31,8 @@ public class CollisionSignal implements ContactListener {
 			}
 
 			// data.length > 1: data[1] = weaponName
-			if (fa.getUserData().equals("Bounds") && (typeId.equals("player") || typeId.equals("enemy"))) {
+			if (data.length > 1 && fa.getUserData().equals("Bounds")
+					&& (typeId.equals("player") || typeId.equals("enemy"))) {
 
 				CharacterStatus.statusRepo.get(typeId).setOnBound(true);
 
@@ -45,7 +46,6 @@ public class CollisionSignal implements ContactListener {
 
 				CharacterStatus.statusRepo.get(typeId).setHit(true);
 			}
-
 		}
 
 	}

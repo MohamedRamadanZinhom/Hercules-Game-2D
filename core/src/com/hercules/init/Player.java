@@ -56,7 +56,7 @@ public class Player extends Character {
 		PolygonShape swordShapeR = new PolygonShape();
 		swordShapeR.setAsBox(10.0f / World2D.GU, 10.0f / World2D.GU);
 
-		world.createDynamicBody(swordShapeR, 0.0f, 0.0f, 0.0f, World.BIT_PLAYER, World.BIT_ANY, true, getWeaponId());
+		world.createDynamicBody(swordShapeR, 0.0f, 0.0f, 0.0f, World.BIT_PLAYER, World.BIT_BOUNDS, true, getWeaponId());
 
 		weaponMaskR = Body2D.bodies.get(getWeaponId()).get(0);
 		weaponMaskR.setTransform(new Vector2(x + 0.5f, y + 0.5f), 0.0f);
@@ -65,7 +65,7 @@ public class Player extends Character {
 		PolygonShape swordShapeL = new PolygonShape();
 		swordShapeL.setAsBox(10.0f / World2D.GU, 10.0f / World2D.GU);
 
-		world.createDynamicBody(swordShapeL, 0.0f, 0.0f, 0.0f, World.BIT_PLAYER, World.BIT_ANY, true, getWeaponId());
+		world.createDynamicBody(swordShapeL, 0.0f, 0.0f, 0.0f, World.BIT_PLAYER, World.BIT_BOUNDS, true, getWeaponId());
 
 		weaponMaskL = Body2D.bodies.get(getWeaponId()).get(1);
 		weaponMaskL.setTransform(new Vector2(x - 0.5f, y + 0.5f), 0.0f);
@@ -90,124 +90,127 @@ public class Player extends Character {
 		float weaponXStep = 90.0f;
 		float weaponYStep = 30.0f;
 
-		if (Gdx.input.isKeyPressed(Keys.RIGHT)) {
-
-			xStep = status.getInitialVelocityX() * scale;
-
-			if (status.isOnGround()) {
-
-				status.setCurrentMode("walk");
-			}
-
-			status.setDir(1);
-		}
-
-		if (Gdx.input.isKeyPressed(Keys.LEFT)) {
-
-			xStep = -status.getInitialVelocityX() * scale;
-
-			if (status.isOnGround()) {
-
-				status.setCurrentMode("walk");
-			}
-
-			status.setDir(-1);
-		}
-
-		if (Gdx.input.isKeyPressed(Keys.UP) && status.isOnGround()) {
-
-			yStep = status.getJumpScale() * scale;
-			status.setCurrentMode("jump");
-		}
-
-		if (Gdx.input.isKeyPressed(Keys.DOWN) && !status.isOnGround()) {
-
-			// Smashing
-			xStep = status.getDir() * status.getSmashingScale() * scale * 0.5f;
-			yStep = -status.getSmashingScale() * scale;
-
-			if (status.isOnGround()) {
-
-				status.setCurrentMode("attack");
-			}
-		}
-
-		if (Gdx.input.isKeyPressed(Keys.SPACE)) {
-			// Attack
-
-			status.setCurrentMode("attack");
-
-			// do somthing
-		}
-
-		if (Gdx.input.isKeyPressed(Keys.RIGHT)
-				&& (Gdx.input.isKeyPressed(Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Keys.SHIFT_RIGHT))) {
-
-			xStep += status.getRunScale();
-
-			status.setCurrentMode("run");
-			status.setDir(1);
-		}
-
-		if (Gdx.input.isKeyPressed(Keys.LEFT)
-				&& (Gdx.input.isKeyPressed(Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Keys.SHIFT_RIGHT))) {
-
-			xStep -= status.getRunScale();
-
-			status.setCurrentMode("run");
-			status.setDir(-1);
-		}
-
-		if (Gdx.input.isKeyPressed(Keys.CONTROL_LEFT) || Gdx.input.isKeyPressed(Keys.CONTROL_RIGHT)) {
-
-			xStep *= 0.4f;
-
-			status.setCurrentMode("walk");
-		}
-
-		if (status.isHit()) {
-			// decrease enemy health
-		}
-
-//		Vector2 actorPrevPos = new Vector2(actor.getPosition()); // copy
-//
-//		Vector2 rWeaponPrevPos = new Vector2(this.weaponMaskR.getPosition()); // copy
-//		Vector2 lWeaponPrevPos = new Vector2(this.weaponMaskL.getPosition()); // copy
-
 		// Actor
 		Vector2 actorPos = actor.getPosition();
-		actorPos.x += xStep / World2D.GU;
-
-		actor.setTransform(actorPos, 0.0f);
 
 		// Sword
 		Vector2 rWeaponMaskPos = new Vector2(actor.getPosition());
 		Vector2 lWeaponMaskPos = new Vector2(actor.getPosition());
 
-		rWeaponMaskPos.x += weaponXStep / World2D.GU;
-		rWeaponMaskPos.y += weaponYStep / World2D.GU;
+		Vector2 actorPrevPos = new Vector2(actor.getPosition()); // copy
 
-		lWeaponMaskPos.x -= weaponXStep / World2D.GU;
-		lWeaponMaskPos.y += weaponYStep / World2D.GU;
+		Vector2 rWeaponPrevPos = new Vector2(this.weaponMaskR.getPosition()); // copy
+		Vector2 lWeaponPrevPos = new Vector2(this.weaponMaskL.getPosition()); // copy
 
-		this.weaponMaskR.setTransform(rWeaponMaskPos, 0.0f);
-		this.weaponMaskL.setTransform(lWeaponMaskPos, 0.0f);
+		if (!status.isOnBound()) {
 
-//		if (status.isOnBound()) {
-//
-//			actorPrevPos.x += (actorPos.x * 0.01);
-//
-//			rWeaponPrevPos.x += (rWeaponMaskPos.x * 0.5);
-//			lWeaponPrevPos.x += (lWeaponMaskPos.x * 0.5);
-//
-//			actor.setTransform(actorPrevPos, 0.0f); // Set - Previous Position
-//
-//			weaponMaskR.setTransform(rWeaponPrevPos, 0.0f); // Set - Previous Position
-//			weaponMaskL.setTransform(lWeaponPrevPos, 0.0f); // Set - Previous Position
-//		}
+			if (Gdx.input.isKeyPressed(Keys.RIGHT)) {
 
-		this.actor.applyForceToCenter(0.0f, yStep, true); // Y-axis
+				xStep = status.getInitialVelocityX() * scale;
 
+				if (status.isOnGround()) {
+
+					status.setCurrentMode("walk");
+				}
+
+				status.setDir(1);
+			}
+
+			if (Gdx.input.isKeyPressed(Keys.LEFT)) {
+
+				xStep = -status.getInitialVelocityX() * scale;
+
+				if (status.isOnGround()) {
+
+					status.setCurrentMode("walk");
+				}
+
+				status.setDir(-1);
+			}
+
+			if (Gdx.input.isKeyPressed(Keys.UP) && status.isOnGround()) {
+
+				yStep = status.getJumpScale() * scale;
+				status.setCurrentMode("jump");
+			}
+
+			if (Gdx.input.isKeyPressed(Keys.DOWN) && !status.isOnGround()) {
+
+				// Smashing
+				xStep += status.getDir() * status.getSmashingScale() * scale;
+				yStep = -status.getSmashingScale() * scale;
+
+				status.setCurrentMode("attack");
+			}
+
+			if (Gdx.input.isKeyPressed(Keys.SPACE)) {
+				// Attack
+
+				status.setCurrentMode("attack");
+
+				// do somthing
+			}
+
+			if (Gdx.input.isKeyPressed(Keys.RIGHT)
+					&& (Gdx.input.isKeyPressed(Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Keys.SHIFT_RIGHT))) {
+
+				xStep += status.getRunScale();
+
+				status.setCurrentMode("run");
+				status.setDir(1);
+			}
+
+			if (Gdx.input.isKeyPressed(Keys.LEFT)
+					&& (Gdx.input.isKeyPressed(Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Keys.SHIFT_RIGHT))) {
+
+				xStep -= status.getRunScale();
+
+				status.setCurrentMode("run");
+				status.setDir(-1);
+			}
+
+			if (Gdx.input.isKeyPressed(Keys.CONTROL_LEFT) || Gdx.input.isKeyPressed(Keys.CONTROL_RIGHT)) {
+
+				xStep *= 0.4f;
+
+				status.setCurrentMode("walk");
+			}
+
+			if (status.isHit()) {
+				// decrease enemy health
+			}
+
+			actorPos.x += xStep / World2D.GU;
+
+			actor.setTransform(actorPos, 0.0f);
+
+			rWeaponMaskPos.x += weaponXStep / World2D.GU;
+			rWeaponMaskPos.y += weaponYStep / World2D.GU;
+
+			lWeaponMaskPos.x -= weaponXStep / World2D.GU;
+			lWeaponMaskPos.y += weaponYStep / World2D.GU;
+
+			this.weaponMaskR.setTransform(rWeaponMaskPos, 0.0f);
+			this.weaponMaskL.setTransform(lWeaponMaskPos, 0.0f);
+
+			this.actor.applyForceToCenter(0.0f, yStep, true); // Y-axis
+
+		}
+
+		else {
+
+			actorPrevPos.x += (actorPrevPos.x * 0.4);
+
+			rWeaponPrevPos.x += (rWeaponPrevPos.x * 0.4);
+			lWeaponPrevPos.x += (rWeaponPrevPos.x * 0.4);
+
+			actor.setTransform(actorPrevPos, 0.0f); // Set - Previous Position
+
+			weaponMaskR.setTransform(rWeaponPrevPos, 0.0f); // Set - Previous Position
+			weaponMaskL.setTransform(lWeaponPrevPos, 0.0f); // Set - Previous Position
+
+			System.out.printf("%f, %f\n", actorPos.x, actorPrevPos.x);
+		}
 	}
 
 }

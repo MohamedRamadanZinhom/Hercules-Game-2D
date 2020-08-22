@@ -47,15 +47,15 @@ public class DynamicBody2D extends Body2D {
 		fdef.restitution = this.restitution;
 		fdef.density = this.density;
 		fdef.friction = this.friction;
-		
+
 		fdef.filter.categoryBits = categoryBits;
 
 		if (bitsMask != -1) {
 			fdef.filter.maskBits = bitsMask;
 		}
-		
+
 		fdef.isSensor = isSensor;
-		
+
 		body.createFixture(fdef).setUserData(bodyId);
 
 		if (bodies.containsKey(bodyId)) {
@@ -70,7 +70,8 @@ public class DynamicBody2D extends Body2D {
 	}
 
 	@Override
-	public void createBody(World world, Shape shape, short categoryBits, short bitsMask, boolean isSensor, String bodyId) {
+	public void createBody(World world, Shape shape, short categoryBits, short bitsMask, boolean isSensor,
+			String bodyId) {
 
 		Body body = world.createBody(bdef);
 

@@ -171,7 +171,7 @@ public class CharacterStatus {
 	 * @return the dir, if return 0; dir == 1, else if (dir == -1) return 1,
 	 *         otherwise return -2, and set warning
 	 */
-	public int getDir() {
+	public int isDirRight() {
 
 		if (this.dir == 1) {
 
@@ -188,6 +188,23 @@ public class CharacterStatus {
 
 			return -2;
 		}
+	}
+
+	/**
+	 * @return the dir, if return 0; dir == 1, else if (dir == -1) return 1,
+	 *         otherwise return -2, and set warning
+	 */
+	public int getDir() {
+
+		if (this.dir != 1 && this.dir != -1) {
+
+			ConsoleLogger.setWarning(CharacterStatus.class.getName(),
+					"Invaild Direction: dir = " + Integer.toString(this.dir));
+
+			return 0;
+		}
+
+		return this.dir;
 	}
 
 	/**

@@ -130,12 +130,12 @@ public abstract class Character {
 			float x = this.getPosX() * World2D.GU - this.getTileWidth() / 2 + thresholdX;
 			float y = this.getPosY() * World2D.GU - this.getTileHeight() / 2 + thresholdY;
 
-			this.animator[this.status.getDir()].getSpriteBatch().setProjectionMatrix(Character.camera.combined);
+			this.animator[this.status.isDirRight()].getSpriteBatch().setProjectionMatrix(Character.camera.combined);
 
 			// Animate
 			try {
 
-				this.animator[this.status.getDir()].animate(status.getCurrentMode(), x, y, this.FPS_SCALE);
+				this.animator[this.status.isDirRight()].animate(status.getCurrentMode(), x, y, this.FPS_SCALE);
 
 			} catch (KeyException error) {
 
@@ -175,11 +175,11 @@ public abstract class Character {
 	}
 
 	public float getTileWidth() {
-		return this.animator[this.status.getDir()].getTileWidth();
+		return this.animator[this.status.isDirRight()].getTileWidth();
 	}
 
 	public float getTileHeight() {
-		return this.animator[this.status.getDir()].getTileHeight();
+		return this.animator[this.status.isDirRight()].getTileHeight();
 	}
 
 	/**
