@@ -2,20 +2,15 @@
 
 package com.hercules.init;
 
-import java.security.KeyException;
 import java.util.HashMap;
 
 import com.badlogic.gdx.physics.box2d.Body;
 import com.engine.animation.AnimationGenerator;
 import com.engine.exception.InconsistentSpriteSheetException;
 import com.engine.exception.OverwriteException;
-import com.engine.world.Camera2D;
 import com.engine.world.World2D;
-import com.hercules.game.GameAdapter;
 
 public abstract class Character {
-
-	static public Camera2D camera = new Camera2D(GameAdapter.V_WIDTH, GameAdapter.V_HEIGHT);
 
 	public final String typeId;
 	public final String weaponName;
@@ -104,11 +99,7 @@ public abstract class Character {
 			}
 
 		}
-
-		camera.position.x = camera.viewportWidth / 2;
-		camera.position.y = camera.viewportHeight / 2;
-
-		camera.update();
+		;
 	}
 
 	public abstract void initActor(World2D world);
@@ -123,31 +114,7 @@ public abstract class Character {
 	 *                   actor and sprite sprite_position_y = posY + thresholdY;
 	 * 
 	 */
-	public void animate(float thresholdX, float thresholdY) {
-
-		if (!World2D.onPhysicsDebugMode) {
-
-			float x = this.getPosX() * World2D.GU - this.getTileWidth() / 2 + thresholdX;
-			float y = this.getPosY() * World2D.GU - this.getTileHeight() / 2 + thresholdY;
-
-			this.animator[this.status.isDirRight()].getSpriteBatch().setProjectionMatrix(Character.camera.combined);
-
-			// Animate
-			try {
-
-				this.animator[this.status.isDirRight()].animate(status.getCurrentMode(), x, y, this.FPS_SCALE);
-
-			} catch (KeyException error) {
-
-				error.printStackTrace();
-			}
-
-			if (this.status.isOnGround()) {
-
-				this.status.setCurrentMode("idle");
-			}
-		}
-	}
+	public abstract void animate(float thresholdX, float thresholdY);
 
 	/**
 	 * Movements, Status

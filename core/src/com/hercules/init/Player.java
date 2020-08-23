@@ -2,12 +2,15 @@
 
 package com.hercules.init;
 
+import java.security.KeyException;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.engine.world.Body2D;
 import com.engine.world.World2D;
+import com.hercules.game.GameLevel;
 
 public class Player extends Character {
 
@@ -69,6 +72,43 @@ public class Player extends Character {
 
 		weaponMaskL = Body2D.bodies.get(getWeaponId()).get(1);
 		weaponMaskL.setTransform(new Vector2(x - 0.5f, y + 0.5f), 0.0f);
+
+	}
+
+	@Override
+	public void animate(float thresholdX, float thresholdY) {
+
+		if (!World2D.onPhysicsDebugMode) {
+
+			float x = this.getPosX() * World2D.GU - this.getTileWidth() / 2 + thresholdX;
+			float y = this.getPosY() * World2D.GU - this.getTileHeight() / 2 + thresholdY;
+
+			this.animator[this.status.isDirRight()].getSpriteBatch().setProjectionMatrix(GameLevel.envCam.combined);
+
+			// Animate
+			try {
+
+				GameLevel.envCam.position.x = this.getPosX() * World2D.GU + 560;
+//				GameLevel.envCam.position.y = this.getPosY() * World2D.GU + 190;
+
+				GameLevel.box2dCam.position.x = this.getPosX() + 560 / World2D.GU;
+//				GameLevel.box2dCam.position.y = this.getPosY() + 190 / World2D.GU;
+
+				GameLevel.envCam.update();
+				GameLevel.box2dCam.update();
+
+				this.animator[this.status.isDirRight()].animate(status.getCurrentMode(), x, y, this.FPS_SCALE);
+
+			} catch (KeyException error) {
+
+				error.printStackTrace();
+			}
+
+			if (this.status.isOnGround()) {
+
+				this.status.setCurrentMode("idle");
+			}
+		}
 
 	}
 
@@ -199,17 +239,16 @@ public class Player extends Character {
 
 		else {
 
-			actorPrevPos.x += (actorPrevPos.x * 0.4);
+			actorPrevPos.x += -this.status.getDir() * (actorPrevPos.x * 0.1);
 
-			rWeaponPrevPos.x += (rWeaponPrevPos.x * 0.4);
-			lWeaponPrevPos.x += (rWeaponPrevPos.x * 0.4);
+			rWeaponPrevPos.x += -this.status.getDir() * (rWeaponPrevPos.x * 0.01);
+			lWeaponPrevPos.x += -this.status.getDir() * (rWeaponPrevPos.x * 0.01);
 
 			actor.setTransform(actorPrevPos, 0.0f); // Set - Previous Position
 
 			weaponMaskR.setTransform(rWeaponPrevPos, 0.0f); // Set - Previous Position
 			weaponMaskL.setTransform(lWeaponPrevPos, 0.0f); // Set - Previous Position
 
-			System.out.printf("%f, %f\n", actorPos.x, actorPrevPos.x);
 		}
 	}
 

@@ -32,7 +32,7 @@ public final class ResourceManager {
 				put("idle", 0.3f);
 				put("walk", 0.3f);
 				put("run", 0.5f);
-				put("jump", 0.15f);
+				put("jump", 0.2f);
 				put("attack", 0.5f);
 				put("hurt", 0.5f);
 				put("die", 0.5f);

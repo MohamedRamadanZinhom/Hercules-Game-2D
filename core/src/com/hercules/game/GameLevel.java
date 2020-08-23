@@ -30,15 +30,16 @@ public class GameLevel { // No. of Levels = 5
 	public World gameMap;
 	public World2D world2d; // game world
 
-	public Camera2D envCam;
-	public Camera2D playerCam;
-	public Camera2D box2dCam; // debug
+	static public Camera2D envCam = new Camera2D(GameAdapter.V_WIDTH, GameAdapter.V_HEIGHT);
+
+	static public Camera2D box2dCam = new Camera2D(GameAdapter.V_WIDTH / GameAdapter.GU,
+			GameAdapter.V_HEIGHT / GameAdapter.GU); // box2d debugging camera
 
 	/**
 	 * @param level
 	 * @param GU    - Box2D Game-Unit Scaler, or Pixel Per Meter
 	 */
-	public GameLevel(int level, float V_WIDTH, float V_HEIGHT, float GU) {
+	public GameLevel(int level) {
 
 		if (level < 0 || level > mapFname.length) {
 
@@ -58,23 +59,18 @@ public class GameLevel { // No. of Levels = 5
 		this.initLevel(); // fill - bodyTypeSignature
 
 		this.world2d = gameMap.getWorldFromMap(mapId[this.level], this.bodyTypeSignature, GameAdapter.gravityX,
-				GameAdapter.gravityY, true, GU);
+				GameAdapter.gravityY, true, GameAdapter.GU);
 
 		this.world2d.setContactListener(new CollisionSignal()); // Collision Signal
 		this.world2d.initDebugMode(false, false); // Physics simulation debugger initialization
 
 		// Environment - Box2d Camera
-		float width = V_WIDTH / GU;
-		float height = V_HEIGHT / GU;
-
-		box2dCam = new Camera2D(width, height); // box2d debugging camera
 
 		box2dCam.position.x = box2dCam.viewportWidth / 2;
 		box2dCam.position.y = box2dCam.viewportHeight / 2;
 		box2dCam.update();
 
 		// Environment - Camera
-		envCam = new Camera2D(V_WIDTH, V_HEIGHT);
 		envCam.position.x = envCam.viewportWidth / 2;
 		envCam.position.y = envCam.viewportHeight / 2;
 		envCam.update();

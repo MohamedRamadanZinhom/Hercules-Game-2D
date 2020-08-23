@@ -17,6 +17,11 @@ public class Demon extends Character {
 	}
 
 	@Override
+	public void animate(float thresholdX, float thresholdY) {
+
+	}
+
+	@Override
 	public void update(boolean deltaTimeScale) {
 
 	}

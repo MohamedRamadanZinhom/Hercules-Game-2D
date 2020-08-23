@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.4" tiledversion="1.4.1" orientation="orthogonal" renderorder="left-down" width="230" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="5" nextobjectid="12">
+ <tileset firstgid="1" source="../sprites/sheet-1/sheet-1.tsx"/>
+ <tileset firstgid="25" source="../sprites/sheet-4/sheet-4.tsx"/>
+ <tileset firstgid="39" source="../sprites/sheet-7/sheet-7.tsx"/>
+ <tileset firstgid="50" source="../sprites/sheet-9/sheet-9.tsx"/>
+ <tileset firstgid="63" source="../sprites/sheet-11/sheet-11.tsx"/>
+ <tileset firstgid="75" source="../sprites/sheet-13/sheet-13.tsx"/>
+ <tileset firstgid="94" source="../scene/background.tsx"/>
+ <layer id="1" name="Background" width="230" height="40">
+  <data encoding="base64" compression="zlib">
+   eJzt0bENAEAIAzEmZRZG/6elRqKxJ7goEQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAlNcBS/6Oum7Y4A/aAyO6Ank=
+  </data>
+ </layer>
+ <layer id="4" name="Tiles" width="230" height="40">
+  <data encoding="base64" compression="zlib">
+   eJzt2LENgDAMBEDvARINLTVbMFNGp6bkhUhAd7Xf/tpVAAAAAAAAAAAAAAAAAMBfHVWtdwcAAAAAAAAAAACAL9t6FwAAAAAY1PLAjinIjPivmYPMGmT2e7MtOHGRdAQAAAAAAIA3nE+6ArU=
+  </data>
+ </layer>
+ <objectgroup id="3" name="Bounds">
+  <object id="2" x="0.333333" y="38.5002" width="34" height="560.333"/>
+ </objectgroup>
+ <objectgroup id="2" name="Ground">
+  <object id="1" x="1" y="532" width="3197.33" height="68.1666"/>
+  <object id="3" x="1" y="532" width="3197.33" height="68.1666"/>
+  <object id="4" x="835.972" y="356.665" width="280.726" height="90.2013"/>
+  <object id="5" x="1570.67" y="393.9" width="362.667" height="131"/>
+  <object id="8" x="834.616" y="345.1" width="283.436" height="7.99162"/>
+  <object id="9" x="1570.33" y="373.9" width="363.667" height="22.3333"/>
+  <object id="10" x="546.638" y="439.682" width="280.726" height="90.2013"/>
+  <object id="11" x="545.282" y="428.117" width="283.436" height="7.99162"/>
+ </objectgroup>
+</map>
