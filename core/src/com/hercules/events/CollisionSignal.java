@@ -24,7 +24,8 @@ public class CollisionSignal implements ContactListener {
 
 			String typeId = data[0];
 
-			if (fa.getUserData().equals("Ground") && (typeId.equals("player") || typeId.equals("enemy"))) {
+			if (fa.getUserData().equals("Ground") && (typeId.equals("player") || typeId.equals("enemy"))
+					&& data.length == 1) {
 
 				CharacterStatus.statusRepo.get(typeId).setOnGround(true);
 

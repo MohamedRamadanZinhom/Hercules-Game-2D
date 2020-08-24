@@ -14,7 +14,7 @@ public class GameAdapter extends ApplicationAdapter {
 
 	public static final String TITEL = "Hercules"; // Screen Title
 
-	public static final int V_WIDTH = 1980; // Viewport - X
+	public static final int V_WIDTH = 1200; // Viewport - X
 	public static final int V_HEIGHT = 600; // Viewport - Y
 	public static final boolean FULLSCREEN = false;
 
@@ -74,7 +74,7 @@ public class GameAdapter extends ApplicationAdapter {
 		level.render();
 
 		// Character - animate
-		player.animate(0.0f, 40.0f);
+		player.animate(0.0f, -30.0f);
 
 	}
 

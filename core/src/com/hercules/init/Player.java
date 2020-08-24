@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.engine.world.Body2D;
 import com.engine.world.World2D;
+import com.hercules.game.GameAdapter;
 import com.hercules.game.GameLevel;
 
 public class Player extends Character {
@@ -45,7 +46,7 @@ public class Player extends Character {
 
 		// Player Actor
 		PolygonShape shape = new PolygonShape();
-		shape.setAsBox(40.0f / World2D.GU, 5.0f / World2D.GU);
+		shape.setAsBox(40.0f / World2D.GU, 75.0f / World2D.GU);
 
 		world.createDynamicBody(shape, 0.0f, 0.0f, 1.0f, World.BIT_PLAYER, World.BIT_ANY, false, typeId);
 
@@ -88,14 +89,17 @@ public class Player extends Character {
 			// Animate
 			try {
 
-				GameLevel.envCam.position.x = this.getPosX() * World2D.GU + 560;
-//				GameLevel.envCam.position.y = this.getPosY() * World2D.GU + 190;
+				boolean inFrustum = GameLevel.envCam.frustum.boundsInFrustum(x + 256.0f, 0.0f, 0.0f,
+						this.getTileWidth() / 2 - 220.0f, GameAdapter.V_HEIGHT, 0.0f);
 
-				GameLevel.box2dCam.position.x = this.getPosX() + 560 / World2D.GU;
-//				GameLevel.box2dCam.position.y = this.getPosY() + 190 / World2D.GU;
+				if (!inFrustum) {
 
-				GameLevel.envCam.update();
-				GameLevel.box2dCam.update();
+					GameLevel.envCam.position.x += GameAdapter.V_WIDTH * status.getDir();
+					GameLevel.box2dCam.position.x += (GameAdapter.V_WIDTH * status.getDir()) / World2D.GU;
+
+					GameLevel.envCam.update();
+					GameLevel.box2dCam.update();
+				}
 
 				this.animator[this.status.isDirRight()].animate(status.getCurrentMode(), x, y, this.FPS_SCALE);
 
@@ -137,6 +141,10 @@ public class Player extends Character {
 		Vector2 rWeaponMaskPos = new Vector2(actor.getPosition());
 		Vector2 lWeaponMaskPos = new Vector2(actor.getPosition());
 
+		rWeaponMaskPos.y -= (this.getTileHeight() - 130.0f) / (2 * World2D.GU);
+		lWeaponMaskPos.y -= (this.getTileHeight() - 130.0f) / (2 * World2D.GU);
+
+		// Previous Position (Actor & Sword)
 		Vector2 actorPrevPos = new Vector2(actor.getPosition()); // copy
 
 		Vector2 rWeaponPrevPos = new Vector2(this.weaponMaskR.getPosition()); // copy
