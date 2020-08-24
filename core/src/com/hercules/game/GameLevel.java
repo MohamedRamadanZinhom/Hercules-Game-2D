@@ -21,7 +21,7 @@ public class GameLevel { // No. of Levels = 5
 
 	public static final String[] mapFname = { "level-1.tmx" };
 	public static final String[] mapId = { "1" };
-	public static final int[] nLayers = { 4 };
+	public static final int[] nLayers = { 8 };
 
 	public static final float FPS = 1 / 60f; // Frame per second (Delta Time)
 
@@ -85,15 +85,18 @@ public class GameLevel { // No. of Levels = 5
 
 		if (level == 0) {
 
-			layerProperty[0] = null; // null - means, layer has no object property
+			int end = 6;
 
-			layerProperty[1] = null;
+			for (int i = 0; i < end; i++) {
 
-			layerProperty[2] = new BodyProperty(BodyType.StaticBody, 0.0f, 0.0f, 0.0f, World.BIT_BOUNDS, World.BIT_ANY,
-					false);
+				layerProperty[i] = null; // null - means, layer has no object property
+			}
 
-			layerProperty[3] = new BodyProperty(BodyType.StaticBody, 0.0f, 0.0f, 0.0f, World.BIT_GROUND, World.BIT_ANY,
-					false);
+			layerProperty[end] = new BodyProperty(BodyType.StaticBody, 0.0f, 0.0f, 0.0f, World.BIT_BOUNDS,
+					World.BIT_ANY, false);
+
+			layerProperty[end + 1] = new BodyProperty(BodyType.StaticBody, 0.0f, 0.0f, 0.0f, World.BIT_GROUND,
+					World.BIT_ANY, false);
 		}
 
 		for (int i = 0; i < nLayers[level]; i++) {
