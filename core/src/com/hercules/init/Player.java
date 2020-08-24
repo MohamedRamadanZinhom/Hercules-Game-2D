@@ -79,27 +79,28 @@ public class Player extends Character {
 	@Override
 	public void animate(float thresholdX, float thresholdY) {
 
+		float x = this.getPosX() * World2D.GU - this.getTileWidth() / 2 + thresholdX;
+		float y = this.getPosY() * World2D.GU - this.getTileHeight() / 2 + thresholdY;
+
+		this.animator[this.status.isDirRight()].getSpriteBatch().setProjectionMatrix(GameLevel.envCam.combined);
+
+		boolean inFrustum = GameLevel.envCam.frustum.boundsInFrustum(x + 256.0f, 0.0f, 0.0f,
+				this.getTileWidth() / 2 - 220.0f, GameAdapter.V_HEIGHT, 0.0f);
+
+		if (!inFrustum) {
+
+			GameLevel.envCam.position.x += GameAdapter.V_WIDTH * status.getDir();
+			GameLevel.box2dCam.position.x += (GameAdapter.V_WIDTH * status.getDir()) / World2D.GU;
+
+			GameLevel.envCam.update();
+			GameLevel.box2dCam.update();
+		}
+
 		if (!World2D.onPhysicsDebugMode) {
 
-			float x = this.getPosX() * World2D.GU - this.getTileWidth() / 2 + thresholdX;
-			float y = this.getPosY() * World2D.GU - this.getTileHeight() / 2 + thresholdY;
-
-			this.animator[this.status.isDirRight()].getSpriteBatch().setProjectionMatrix(GameLevel.envCam.combined);
-
 			// Animate
+
 			try {
-
-				boolean inFrustum = GameLevel.envCam.frustum.boundsInFrustum(x + 256.0f, 0.0f, 0.0f,
-						this.getTileWidth() / 2 - 220.0f, GameAdapter.V_HEIGHT, 0.0f);
-
-				if (!inFrustum) {
-
-					GameLevel.envCam.position.x += GameAdapter.V_WIDTH * status.getDir();
-					GameLevel.box2dCam.position.x += (GameAdapter.V_WIDTH * status.getDir()) / World2D.GU;
-
-					GameLevel.envCam.update();
-					GameLevel.box2dCam.update();
-				}
 
 				this.animator[this.status.isDirRight()].animate(status.getCurrentMode(), x, y, this.FPS_SCALE);
 
