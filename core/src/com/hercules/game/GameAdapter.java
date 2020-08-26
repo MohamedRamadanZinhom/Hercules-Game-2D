@@ -67,7 +67,7 @@ public class GameAdapter extends ApplicationAdapter {
 		Gdx.gl20.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
 		// Input & Update (Character & World)
-		level.world2d.updateDebugInfo(1000L, false, true); // // Physics simulation update debugger debug Info
+		level.world2d.updateDebugInfo(600L, false, true, true); // // Physics simulation update debugger debug Info
 		player.update(true);
 
 		// World Render

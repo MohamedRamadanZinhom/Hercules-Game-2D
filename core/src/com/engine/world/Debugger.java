@@ -33,7 +33,7 @@ public class Debugger {
 
 	}
 
-	public void getAllFromBody2D(boolean randomColor, boolean ingoreStatic) {
+	public void getAllFromBody2D(boolean randomColor, boolean ingoreStatic, boolean ignoreZero) {
 
 		for (String key : Body2D.bodies.keySet()) {
 
@@ -58,7 +58,7 @@ public class Debugger {
 					setName = true;
 				}
 
-				OrderedMap<String, String> info = this.getBodyState(bodies.get(i));
+				OrderedMap<String, String> info = this.getBodyState(bodies.get(i), ignoreZero);
 				info.put("Name", key);
 
 				this.debugDialog.tableFromOrderedMap(info, color[colorChoice], setName);
@@ -66,7 +66,7 @@ public class Debugger {
 		}
 	}
 
-	private OrderedMap<String, String> getBodyState(Body body) { // HashMap<String, Vector<Body>>
+	private OrderedMap<String, String> getBodyState(Body body, boolean ignoreZero) { // HashMap<String, Vector<Body>>
 
 		OrderedMap<String, String> info = new OrderedMap<>();
 
@@ -99,12 +99,12 @@ public class Debugger {
 			info.put("Position", body.getPosition().scl(World2D.GU).toString());
 			info.put("Orientation", body.getTransform().getOrientation().toString());
 
-			if (body.getLinearVelocity().x > 0 || body.getLinearVelocity().y > 0) {
+			if ((body.getLinearVelocity().x > 0 || body.getLinearVelocity().y > 0) || !ignoreZero) {
 
 				info.put("Linear Velocity", body.getLinearVelocity().scl(World2D.GU).toString());
 			}
 
-			if (body.getAngularVelocity() > 0) {
+			if (body.getAngularVelocity() > 0 || !ignoreZero) {
 
 				info.put("Angular Velocity", Float.toString(body.getAngularVelocity() * World2D.GU));
 			}

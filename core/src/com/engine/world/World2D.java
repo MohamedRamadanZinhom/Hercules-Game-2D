@@ -136,7 +136,7 @@ public class World2D {
 
 		try {
 
-			this.debugger.getAllFromBody2D(randomColor, ingoreStatic);
+			this.debugger.getAllFromBody2D(randomColor, ingoreStatic, false);
 
 			World2D.initDebug = true;
 
@@ -150,7 +150,7 @@ public class World2D {
 
 	}
 
-	public void updateDebugInfo(long delay, boolean randomColor, boolean ingoreStatic) {
+	public void updateDebugInfo(long delay, boolean randomColor, boolean ingoreStatic, boolean ignoreZero) {
 
 		try {
 
@@ -159,7 +159,7 @@ public class World2D {
 			if (current_time - debuggerUpdateTime > delay) {
 
 				this.debugger.clear();
-				this.debugger.getAllFromBody2D(randomColor, ingoreStatic);
+				this.debugger.getAllFromBody2D(randomColor, ingoreStatic, ignoreZero);
 
 				World2D.initDebug = true;
 
