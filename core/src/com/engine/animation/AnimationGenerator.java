@@ -141,7 +141,7 @@ public class AnimationGenerator {
 		}
 	}
 
-	public void animate(String mode, float x, float y, HashMap<String, Float> FPS_SCALE) throws KeyException {
+	public void animate(String mode, float x, float y, float scale, HashMap<String, Float> FPS_SCALE) throws KeyException {
 
 		if (!FPS_SCALE.containsKey(mode)) {
 			throw new KeyException("FPS_SCALE: Key = " + mode + " is Not Specified");
@@ -150,8 +150,11 @@ public class AnimationGenerator {
 		stateTime += Gdx.graphics.getDeltaTime() * FPS_SCALE.get(mode);
 		TextureRegion currentFrame = animationRepo.get(mode).getKeyFrame(stateTime, true);
 
+		float width = (float) currentFrame.getRegionWidth() * scale;
+		float height = (float) currentFrame.getRegionHeight() * scale;
+
 		spriteBatch.begin();
-		spriteBatch.draw(currentFrame, x, y);
+		spriteBatch.draw(currentFrame, x, y, width, height);
 		spriteBatch.end();
 	}
 

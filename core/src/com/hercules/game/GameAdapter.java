@@ -74,7 +74,7 @@ public class GameAdapter extends ApplicationAdapter {
 		level.render();
 
 		// Character - animate
-		player.animate(0.0f, -30.0f);
+		player.animate(65.0f, 65.0f);
 
 	}
 

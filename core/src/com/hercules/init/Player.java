@@ -15,7 +15,7 @@ import com.hercules.game.GameLevel;
 
 public class Player extends Character {
 
-	private static final Resource res = ResourceManager.getPlayerResources();
+	private static final Resource res = ResourceManager.getPlayerResources_2();
 
 	/**
 	 * @param spritesDirname: String [][] - 2d array, each dir specifies, array of
@@ -102,7 +102,8 @@ public class Player extends Character {
 
 			try {
 
-				this.animator[this.status.isDirRight()].animate(status.getCurrentMode(), x, y, this.FPS_SCALE);
+				this.animator[this.status.isDirRight()].animate(status.getCurrentMode(), x, y, res.scale,
+						this.FPS_SCALE);
 
 			} catch (KeyException error) {
 
@@ -183,21 +184,42 @@ public class Player extends Character {
 				status.setCurrentMode("jump");
 			}
 
-			if (Gdx.input.isKeyPressed(Keys.DOWN) && !status.isOnGround()) {
-
-				// Smashing
-				xStep += status.getDir() * status.getSmashingScale() * scale;
-				yStep = -status.getSmashingScale() * scale;
-
-				status.setCurrentMode("attack");
-			}
-
 			if (Gdx.input.isKeyPressed(Keys.SPACE)) {
 				// Attack
 
 				status.setCurrentMode("attack");
 
 				// do somthing
+			}
+
+			if (Gdx.input.isKeyPressed(Keys.SPACE) && !status.isOnGround()) {
+
+				if (this.FPS_SCALE.containsKey("jump_attack")) {
+
+					status.setCurrentMode("jump_attack");
+
+				} else {
+
+					status.setCurrentMode("attack");
+
+				}
+			}
+
+			if (Gdx.input.isKeyPressed(Keys.DOWN) && !status.isOnGround()) {
+
+				// Smashing
+				xStep += status.getDir() * status.getSmashingScale() * scale;
+				yStep = -status.getSmashingScale() * scale;
+
+				if (this.FPS_SCALE.containsKey("jump_attack")) {
+
+					status.setCurrentMode("jump_attack");
+
+				} else {
+
+					status.setCurrentMode("attack");
+
+				}
 			}
 
 			if (Gdx.input.isKeyPressed(Keys.RIGHT)

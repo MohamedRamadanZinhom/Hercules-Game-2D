@@ -23,10 +23,11 @@ public final class Resource {
 
 	public final float frameDuration;
 
+	public final float scale;
 	public final HashMap<String, Float> FPS_SCALE; // Animation - Frame Key Speed
 
 	public Resource(String mainDir, String[][] spritesDirname, int[] FRAME_ROWS, int[] FRAME_COLS, int[][] startKeys,
-			int[][] endKeys, String[][] typeKeys, String[] keysOrder, float frameDuration,
+			int[][] endKeys, String[][] typeKeys, String[] keysOrder, float frameDuration, float scale,
 			HashMap<String, Float> FPS_SCALE) {
 
 		this.mainDir = mainDir;
@@ -40,6 +41,8 @@ public final class Resource {
 		this.typeKeys = typeKeys;
 		this.keysOrder = keysOrder;
 		this.frameDuration = frameDuration;
+
+		this.scale = scale;
 		this.FPS_SCALE = FPS_SCALE;
 
 	}
