@@ -150,24 +150,14 @@ public abstract class Character {
 	}
 
 	/**
-	 * @return the typeId
-	 */
-	public String getTypeId() {
-		return typeId;
-	}
-
-	/**
-	 * @return the weaponName
-	 */
-	public String getWeaponName() {
-		return weaponName;
-	}
-
-	/**
 	 * @return the weaponName
 	 */
 	public String getWeaponId() {
 		return this.typeId + "-" + this.weaponName;
+	}
+	
+	public boolean isDied() {
+		return status.isDied();
 	}
 
 }

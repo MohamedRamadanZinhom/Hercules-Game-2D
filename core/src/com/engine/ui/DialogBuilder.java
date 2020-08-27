@@ -13,7 +13,7 @@ import com.badlogic.gdx.utils.OrderedMap;
 
 public class DialogBuilder {
 
-	private final String defaultFormat = "./UI/ui-skin/uiskin.json";
+	private final String defaultFormat = "./UI/ui-skin-debugger/uiskin.json";
 
 	private Skin skin;
 	private Stage stage;

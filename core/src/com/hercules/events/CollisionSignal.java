@@ -20,32 +20,41 @@ public class CollisionSignal implements ContactListener {
 		if (fa.getUserData() != null && fb.getUserData() != null && fa.getUserData() instanceof String
 				&& fb.getUserData() instanceof String) {
 
-			String[] data = ((String) fb.getUserData()).split("-");
+			String[] data_1 = ((String) fa.getUserData()).split("-");
+			String[] data_2 = ((String) fb.getUserData()).split("-");
 
-			String typeId = data[0];
+			String typeId_1 = data_1[0];
+			String typeId_2 = data_2[0];
 
-			if (fa.getUserData().equals("Ground") && (typeId.equals("player") || typeId.equals("enemy"))
-					&& data.length == 1) {
+			if (fa.getUserData().equals("Ground") && (typeId_2.equals("player") || typeId_2.equals("demon"))
+					&& data_2.length == 1) {
 
-				CharacterStatus.statusRepo.get(typeId).setOnGround(true);
+				CharacterStatus.statusRepo.get(typeId_2).setOnGround(true);
 
 			}
 
 			// data.length > 1: data[1] = weaponName
-			if (data.length > 1 && fa.getUserData().equals("Bounds")
-					&& (typeId.equals("player") || typeId.equals("enemy"))) {
+			if (data_2.length > 1 && fa.getUserData().equals("Bounds")
+					&& (typeId_2.equals("player") || typeId_2.equals("demon"))) {
 
-				CharacterStatus.statusRepo.get(typeId).setOnBound(true);
+				CharacterStatus.statusRepo.get(typeId_1).setOnBound(true);
 
 			}
 
 			// data.length > 1: data[1] = weaponName
 			// true if : (player ---- hit ----> enemy | enemy ---- hit ----> player)
-			if (data.length > 1 && fa.getUserData().equals(data[1])
-					&& (typeId.equals("player") || typeId.equals("enemy"))
-					&& CharacterStatus.statusRepo.get(typeId).getCurrentMode().equals("attack")) {
+			if (data_1.length > 1 && (typeId_1.equals("player") || typeId_1.equals("demon"))) {
 
-				CharacterStatus.statusRepo.get(typeId).setHit(true);
+				CharacterStatus.statusRepo.get(typeId_1).setHit(true);
+
+			}
+
+			// data.length > 1: data[1] = weaponName
+			// true if : (player ---- hit ----> enemy | enemy ---- hit ----> player)
+			if (data_2.length > 1 && (typeId_2.equals("player") || typeId_2.equals("demon"))) {
+
+				CharacterStatus.statusRepo.get(typeId_2).setHit(true);
+
 			}
 		}
 
@@ -57,34 +66,46 @@ public class CollisionSignal implements ContactListener {
 		Fixture fa = contact.getFixtureA();
 		Fixture fb = contact.getFixtureB();
 
-		if (fb.getUserData() != null && fa.getUserData() != null && fa.getUserData() instanceof String
+		if (fa.getUserData() != null && fb.getUserData() != null && fa.getUserData() instanceof String
 				&& fb.getUserData() instanceof String) {
 
-			String[] data = ((String) fb.getUserData()).split("-");
+			String[] data_1 = ((String) fa.getUserData()).split("-");
+			String[] data_2 = ((String) fb.getUserData()).split("-");
 
-			String typeId = data[0];
+			String typeId_1 = data_1[0];
+			String typeId_2 = data_2[0];
 
-			if (fa.getUserData().equals("Ground") && (typeId.equals("player") || typeId.equals("enemy"))) {
+			if (fa.getUserData().equals("Ground") && (typeId_2.equals("player") || typeId_2.equals("demon"))
+					&& data_2.length == 1) {
 
-				CharacterStatus.statusRepo.get(typeId).setOnGround(false);
+				CharacterStatus.statusRepo.get(typeId_2).setOnGround(false);
 
 			}
 
 			// data.length > 1: data[1] = weaponName
-			if (fa.getUserData().equals("Bounds") && (typeId.equals("player") || typeId.equals("enemy"))) {
+			if (data_2.length > 1 && fa.getUserData().equals("Bounds")
+					&& (typeId_2.equals("player") || typeId_2.equals("demon"))) {
 
-				CharacterStatus.statusRepo.get(typeId).setOnBound(false);
+				CharacterStatus.statusRepo.get(typeId_1).setOnBound(false);
 
 			}
 
-			if (data.length > 1 && fa.getUserData().equals(data[1])
-					&& (typeId.equals("player") || typeId.equals("enemy"))) {
+			// data.length > 1: data[1] = weaponName
+			// true if : (player ---- hit ----> enemy | enemy ---- hit ----> player)
+			if (data_1.length > 1 && (typeId_1.equals("player") || typeId_1.equals("demon"))) {
 
-				CharacterStatus.statusRepo.get(typeId).setHit(false);
+				CharacterStatus.statusRepo.get(typeId_1).setHit(false);
+
 			}
 
+			// data.length > 1: data[1] = weaponName
+			// true if : (player ---- hit ----> enemy | enemy ---- hit ----> player)
+			if (data_2.length > 1 && (typeId_2.equals("player") || typeId_2.equals("demon"))) {
+
+				CharacterStatus.statusRepo.get(typeId_2).setHit(false);
+
+			}
 		}
-
 	}
 
 	@Override

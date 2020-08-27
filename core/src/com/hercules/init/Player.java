@@ -58,18 +58,20 @@ public class Player extends Character {
 
 		// Player swordR
 		PolygonShape swordShapeR = new PolygonShape();
-		swordShapeR.setAsBox(10.0f / World2D.GU, 10.0f / World2D.GU);
+		swordShapeR.setAsBox(5.0f / World2D.GU, 5.0f / World2D.GU);
 
-		world.createDynamicBody(swordShapeR, 0.0f, 0.0f, 0.0f, World.BIT_PLAYER, World.BIT_BOUNDS, true, getWeaponId());
+		world.createDynamicBody(swordShapeR, 0.0f, 0.0f, 0.0f, World.BIT_PLAYER, World.BIT_ENEMY_T1, true,
+				getWeaponId());
 
 		weaponMaskR = Body2D.bodies.get(getWeaponId()).get(0);
 		weaponMaskR.setTransform(new Vector2(x + 0.5f, y + 0.5f), 0.0f);
 
 		// Player swordL
 		PolygonShape swordShapeL = new PolygonShape();
-		swordShapeL.setAsBox(10.0f / World2D.GU, 10.0f / World2D.GU);
+		swordShapeL.setAsBox(5.0f / World2D.GU, 5.0f / World2D.GU);
 
-		world.createDynamicBody(swordShapeL, 0.0f, 0.0f, 0.0f, World.BIT_PLAYER, World.BIT_BOUNDS, true, getWeaponId());
+		world.createDynamicBody(swordShapeL, 0.0f, 0.0f, 0.0f, World.BIT_PLAYER, World.BIT_ENEMY_T1, true,
+				getWeaponId());
 
 		weaponMaskL = Body2D.bodies.get(getWeaponId()).get(1);
 		weaponMaskL.setTransform(new Vector2(x - 0.5f, y + 0.5f), 0.0f);
@@ -84,8 +86,8 @@ public class Player extends Character {
 
 		this.animator[this.status.isDirRight()].getSpriteBatch().setProjectionMatrix(GameLevel.envCam.combined);
 
-		boolean inFrustum = GameLevel.envCam.frustum.boundsInFrustum(x + 256.0f, 0.0f, 0.0f,
-				this.getTileWidth() / 2 - 220.0f, GameAdapter.V_HEIGHT, 0.0f);
+		boolean inFrustum = GameLevel.envCam.frustum.boundsInFrustum(x + 256.0f / 2, 0.0f, 0.0f, 0.0f,
+				GameAdapter.V_HEIGHT, 0.0f);
 
 		if (!inFrustum) {
 
@@ -133,8 +135,8 @@ public class Player extends Character {
 		float xStep = 0.0f; // speed * scale
 		float yStep = 0.0f; // 10.0f * scale;
 
-		float weaponXStep = 90.0f;
-		float weaponYStep = 30.0f;
+		float weaponXStep = 55.0f;
+		float weaponYStep = 50.0f;
 
 		// Actor
 		Vector2 actorPos = actor.getPosition();
@@ -245,10 +247,6 @@ public class Player extends Character {
 				xStep *= 0.4f;
 
 				status.setCurrentMode("walk");
-			}
-
-			if (status.isHit()) {
-				// decrease enemy health
 			}
 
 			actorPos.x += xStep / World2D.GU;

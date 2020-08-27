@@ -243,6 +243,14 @@ public class CharacterStatus {
 	}
 
 	/**
+	 * @param health the health to add
+	 */
+	public void addHealth(float health) {
+		this.health += health;
+	}
+
+	
+	/**
 	 * @return the died
 	 */
 	public boolean isDied() {
