@@ -34,7 +34,7 @@ public class GameMenu implements Screen {
 
 		// <Play Button--->
 		playButton = new MenuButtons("Play", new Skin(Gdx.files.internal(UIResources.uiSkinPath)), stage,
-				World2D.SCREEN_WIDTH / 2, World2D.SCREEN_HEIGHT / 2);
+				World2D.SCREEN_WIDTH / 2 - 100.0f, World2D.SCREEN_HEIGHT / 2);
 		playButton.getButton().setColor(Color.GREEN);
 
 		playButton.getButton().addListener(new ClickListener() {
@@ -49,7 +49,7 @@ public class GameMenu implements Screen {
 		// <--OptionMenu-->
 
 		optionButton = new MenuButtons("Option", new Skin(Gdx.files.internal(UIResources.uiSkinPath)), stage,
-				World2D.SCREEN_WIDTH / 2, World2D.SCREEN_HEIGHT / 2 - 75);
+				World2D.SCREEN_WIDTH / 2 - 100.0f, World2D.SCREEN_HEIGHT / 2 - 75);
 		optionButton.getButton().setColor(Color.GREEN);
 
 		optionButton.getButton().addListener(new ClickListener() {
@@ -65,7 +65,7 @@ public class GameMenu implements Screen {
 		// <<--Exit Button-->>
 
 		exitButton = new MenuButtons("Exit", new Skin(Gdx.files.internal(UIResources.uiSkinPath)), stage,
-				World2D.SCREEN_WIDTH / 2, World2D.SCREEN_HEIGHT / 2 - 150);
+				World2D.SCREEN_WIDTH / 2 - 100.0f, World2D.SCREEN_HEIGHT / 2 - 150);
 		exitButton.getButton().setColor(Color.GREEN);
 
 		exitButton.getButton().addListener(new ClickListener() {

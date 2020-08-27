@@ -30,7 +30,7 @@ public class OptionMenu implements Screen {
 		this.game = gState;
 
 		backButton = new MenuButtons("Back", new Skin(Gdx.files.internal(UIResources.uiSkinPath)), stage,
-				Gdx.graphics.getWidth() / 3, Gdx.graphics.getHeight() / 2 - 150);
+				Gdx.graphics.getWidth() / 3 + 230.0f, Gdx.graphics.getHeight() / 2 - 200);
 		backButton.getButton().setColor(Color.RED);
 		backButton.getButton().addListener(new ClickListener() {
 
@@ -43,7 +43,7 @@ public class OptionMenu implements Screen {
 		});
 
 		muteButton = new MenuButtons("Mute Sound", new Skin(Gdx.files.internal(UIResources.uiSkinPath)), stage,
-				Gdx.graphics.getWidth() / 4 + 250, Gdx.graphics.getHeight() / 2 + 50);
+				Gdx.graphics.getWidth() / 4 + 500, Gdx.graphics.getHeight() / 2);
 		muteButton.getButton().setColor(Color.GREEN);
 		muteButton.getButton().addListener(new ClickListener() {
 
@@ -57,7 +57,7 @@ public class OptionMenu implements Screen {
 		});
 
 		playSoundButton = new MenuButtons("Play Sound", new Skin(Gdx.files.internal(UIResources.uiSkinPath)), stage,
-				Gdx.graphics.getWidth() / 4, Gdx.graphics.getHeight() / 2 + 50);
+				Gdx.graphics.getWidth() / 4 + 250.0f, Gdx.graphics.getHeight() / 2);
 		playSoundButton.getButton().setColor(Color.GREEN);
 		playSoundButton.getButton().addListener(new ClickListener() {
 

@@ -10,7 +10,7 @@ public class UIResources {
 
 	public static final String uiSkinPath = pathUI + "uiskin.json";
 
-	public static final Texture MenuBackGround = new Texture(pathUI + "MenuBackGround.png");; // image for menu
+	public static final Texture MenuBackGround = new Texture(pathUI + "MenuBackGround_2.png");; // image for menu
 																								// background
 	public static final Texture PlayButton_Active = new Texture(pathUI + "002-rocket-1.png"); // image for play button
 																								// when it activated
