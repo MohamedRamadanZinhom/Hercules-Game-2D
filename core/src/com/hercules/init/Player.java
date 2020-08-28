@@ -354,6 +354,13 @@ public class Player extends Character {
 			}
 
 		}
+		
+		else {
+			
+			weaponMaskR.setActive(false);
+			weaponMaskL.setActive(false);
+			actor.setActive(false);
+		}
 
 	}
 

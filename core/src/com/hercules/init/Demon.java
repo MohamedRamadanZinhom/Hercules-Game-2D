@@ -282,6 +282,13 @@ public class Demon extends Character {
 			this.actor.applyForceToCenter(0.0f, -9.81f, true); // Y-axis
 
 		}
+
+		else {
+
+			weaponMaskR.setActive(false);
+			weaponMaskL.setActive(false);
+			actor.setActive(false);
+		}
 	}
 
 	/**
