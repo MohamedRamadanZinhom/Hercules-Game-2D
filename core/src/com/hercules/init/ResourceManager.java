@@ -18,7 +18,7 @@ public final class ResourceManager {
 		final int[][] startKeys = { { 0, 9, 19 }, { 0, 9, 19, 29 } };
 		final int[][] endKeys = { { 9, 19, 29 }, { 9, 19, 29, 39 } };
 
-		final String[][] typeKeys = { { "idle", "walk", "run" }, { "jump", "attack", "hurt", "die" } };
+		final String[][] typeKeys = { { "idle", "walk", "run" }, { "jump", "attack", "hurt", "death" } };
 
 		final String[] keysOrder = { "right", "left" };
 
@@ -37,7 +37,7 @@ public final class ResourceManager {
 				put("jump", 0.2f);
 				put("attack", 0.5f);
 				put("hurt", 0.5f);
-				put("die", 0.5f);
+				put("death", 0.5f);
 
 			}
 		}; // Animation - Frame Key Speed
@@ -62,7 +62,7 @@ public final class ResourceManager {
 		final int[][] startKeys = { { 0, 9, 19 }, { 0, 9, 19, 29 } };
 		final int[][] endKeys = { { 9, 19, 29 }, { 9, 19, 29, 39 } };
 
-		final String[][] typeKeys = { { "idle", "walk", "run" }, { "jump", "attack", "jump_attack", "die" } };
+		final String[][] typeKeys = { { "idle", "walk", "run" }, { "jump", "attack", "jump_attack", "death" } };
 
 		final String[] keysOrder = { "right", "left" };
 
@@ -81,7 +81,7 @@ public final class ResourceManager {
 				put("jump", 0.4f);
 				put("jump_attack", 0.4f);
 				put("attack", 0.3f);
-				put("die", 0.4f);
+				put("death", 0.4f);
 
 			}
 		}; // Animation - Frame Key Speed
@@ -122,7 +122,7 @@ public final class ResourceManager {
 				put("walk", 0.1f);
 				put("attack", 0.1f);
 				put("hurt", 0.1f);
-				put("die", 0.1f);
+				put("death", 0.1f);
 
 			}
 		}; // Animation - Frame Key Speed

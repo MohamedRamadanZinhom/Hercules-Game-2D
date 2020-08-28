@@ -249,7 +249,6 @@ public class CharacterStatus {
 		this.health += health;
 	}
 
-	
 	/**
 	 * @return the died
 	 */

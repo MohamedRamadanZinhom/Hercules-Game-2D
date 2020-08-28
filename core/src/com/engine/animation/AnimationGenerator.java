@@ -202,7 +202,11 @@ public class AnimationGenerator {
 	public SpriteBatch getSpriteBatch() {
 		return spriteBatch;
 	}
-
+	
+	public float getAnimationDuration(String key) {
+		
+		return animationRepo.get(key).getAnimationDuration();
+	}
 	/**
 	 * Dispose, SpriteBatch, Texture
 	 */

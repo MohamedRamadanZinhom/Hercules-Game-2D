@@ -23,13 +23,16 @@ public class CollisionSignal implements ContactListener {
 			String[] data_1 = ((String) fa.getUserData()).split("-");
 			String[] data_2 = ((String) fb.getUserData()).split("-");
 
-			String typeId_1 = data_1[0];
-			String typeId_2 = data_2[0];
+			String[] id_1 = data_1[0].split("_");
+			String[] id_2 = data_2[0].split("_");
+
+			String typeId_1 = id_1[0];
+			String typeId_2 = id_2[0];
 
 			if (fa.getUserData().equals("Ground") && (typeId_2.equals("player") || typeId_2.equals("demon"))
 					&& data_2.length == 1) {
 
-				CharacterStatus.statusRepo.get(typeId_2).setOnGround(true);
+				CharacterStatus.statusRepo.get(data_2[0]).setOnGround(true);
 
 			}
 
@@ -37,7 +40,7 @@ public class CollisionSignal implements ContactListener {
 			if (data_2.length > 1 && fa.getUserData().equals("Bounds")
 					&& (typeId_2.equals("player") || typeId_2.equals("demon"))) {
 
-				CharacterStatus.statusRepo.get(typeId_1).setOnBound(true);
+				CharacterStatus.statusRepo.get(data_1[0]).setOnBound(true);
 
 			}
 
@@ -45,15 +48,14 @@ public class CollisionSignal implements ContactListener {
 			// true if : (player ---- hit ----> enemy | enemy ---- hit ----> player)
 			if (data_1.length > 1 && (typeId_1.equals("player") || typeId_1.equals("demon"))) {
 
-				CharacterStatus.statusRepo.get(typeId_1).setHit(true);
-
+				CharacterStatus.statusRepo.get(data_1[0]).setHit(true);
 			}
 
 			// data.length > 1: data[1] = weaponName
 			// true if : (player ---- hit ----> enemy | enemy ---- hit ----> player)
 			if (data_2.length > 1 && (typeId_2.equals("player") || typeId_2.equals("demon"))) {
 
-				CharacterStatus.statusRepo.get(typeId_2).setHit(true);
+				CharacterStatus.statusRepo.get(data_2[0]).setHit(true);
 
 			}
 		}
@@ -72,13 +74,16 @@ public class CollisionSignal implements ContactListener {
 			String[] data_1 = ((String) fa.getUserData()).split("-");
 			String[] data_2 = ((String) fb.getUserData()).split("-");
 
-			String typeId_1 = data_1[0];
-			String typeId_2 = data_2[0];
+			String[] id_1 = data_1[0].split("_");
+			String[] id_2 = data_2[0].split("_");
+
+			String typeId_1 = id_1[0];
+			String typeId_2 = id_2[0];
 
 			if (fa.getUserData().equals("Ground") && (typeId_2.equals("player") || typeId_2.equals("demon"))
 					&& data_2.length == 1) {
 
-				CharacterStatus.statusRepo.get(typeId_2).setOnGround(false);
+				CharacterStatus.statusRepo.get(data_2[0]).setOnGround(false);
 
 			}
 
@@ -86,7 +91,7 @@ public class CollisionSignal implements ContactListener {
 			if (data_2.length > 1 && fa.getUserData().equals("Bounds")
 					&& (typeId_2.equals("player") || typeId_2.equals("demon"))) {
 
-				CharacterStatus.statusRepo.get(typeId_1).setOnBound(false);
+				CharacterStatus.statusRepo.get(data_1[0]).setOnBound(false);
 
 			}
 
@@ -94,7 +99,7 @@ public class CollisionSignal implements ContactListener {
 			// true if : (player ---- hit ----> enemy | enemy ---- hit ----> player)
 			if (data_1.length > 1 && (typeId_1.equals("player") || typeId_1.equals("demon"))) {
 
-				CharacterStatus.statusRepo.get(typeId_1).setHit(false);
+				CharacterStatus.statusRepo.get(data_1[0]).setHit(false);
 
 			}
 
@@ -102,7 +107,7 @@ public class CollisionSignal implements ContactListener {
 			// true if : (player ---- hit ----> enemy | enemy ---- hit ----> player)
 			if (data_2.length > 1 && (typeId_2.equals("player") || typeId_2.equals("demon"))) {
 
-				CharacterStatus.statusRepo.get(typeId_2).setHit(false);
+				CharacterStatus.statusRepo.get(data_2[0]).setHit(false);
 
 			}
 		}

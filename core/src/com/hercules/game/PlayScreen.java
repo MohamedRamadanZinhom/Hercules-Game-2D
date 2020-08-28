@@ -14,6 +14,8 @@ import com.hercules.init.Player;
 
 public class PlayScreen implements Screen {
 
+	public static long endGameTime = -1L;
+
 	// GameState
 	public GameState state;
 
@@ -91,10 +93,6 @@ public class PlayScreen implements Screen {
 			Gdx.app.exit();
 		}
 
-		else if (player.isDied()) {
-			Gdx.app.exit();
-		}
-
 		Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		Gdx.gl20.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
@@ -118,7 +116,6 @@ public class PlayScreen implements Screen {
 		// UI - healthBar
 		healthBar.render(World2D.SCREEN_WIDTH / 2 - 256.0f, World2D.SCREEN_HEIGHT - 20, 500.0f * healthBar.getValue(),
 				20);
-
 	}
 
 	@Override

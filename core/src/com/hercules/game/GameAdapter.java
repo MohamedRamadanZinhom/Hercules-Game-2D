@@ -10,7 +10,7 @@ public class GameAdapter extends ApplicationAdapter {
 
 	public static final int V_WIDTH = 1200; // Viewport - X
 	public static final int V_HEIGHT = 600; // Viewport - Y
-	public static final boolean FULLSCREEN = true;
+	public static final boolean FULLSCREEN = false;
 
 	public static final float GU = 100.0f; // Box2D Game-Unit Scaler
 
@@ -34,7 +34,7 @@ public class GameAdapter extends ApplicationAdapter {
 
 	@Override
 	public void dispose() {
-
+		gameState.dispose();
 	}
 
 }
