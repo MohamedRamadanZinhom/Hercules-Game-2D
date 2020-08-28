@@ -33,7 +33,7 @@ public class PlayScreen implements Screen {
 	public static float speed = 2.0f;
 	public static final float runScale = 3.0f;
 	public static final float jumpScale = 200.0f;
-	public static final float smashingScale = 5.0f;
+	public static final float smashingScale = 15.0f;
 
 	// ============ Demon - Enemy
 
@@ -112,7 +112,7 @@ public class PlayScreen implements Screen {
 		level.render();
 
 		// Character - animate
-		player.animate(65.0f, 65.0f);
+		player.animate(100.0f, 70.0f);
 		demon.animate(50.0f, 10.0f);
 
 		// UI - healthBar
