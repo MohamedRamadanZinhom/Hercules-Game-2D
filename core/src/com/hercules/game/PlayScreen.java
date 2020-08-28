@@ -30,10 +30,10 @@ public class PlayScreen implements Screen {
 	public static float posX = 150.0f;
 	public static float posY = 115.0f;
 
-	public static float speed = 4.0f;
-	public static final float runScale = 5.0f;
+	public static float speed = 2.0f;
+	public static final float runScale = 3.0f;
 	public static final float jumpScale = 200.0f;
-	public static final float smashingScale = 15.0f;
+	public static final float smashingScale = 5.0f;
 
 	// ============ Demon - Enemy
 

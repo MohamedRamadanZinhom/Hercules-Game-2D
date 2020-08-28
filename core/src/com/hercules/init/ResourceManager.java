@@ -68,7 +68,7 @@ public final class ResourceManager {
 
 		final float frameDuration = 0.015f; // Animation - Frame Duration
 
-		final float scale = 0.5f;
+		final float scale = 0.3f;
 
 		final HashMap<String, Float> FPS_SCALE = new HashMap<String, Float>() {
 
