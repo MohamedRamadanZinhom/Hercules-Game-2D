@@ -3,12 +3,15 @@ package com.hercules.init;
 import java.security.KeyException;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.engine.world.Body2D;
 import com.engine.world.World2D;
 import com.hercules.game.GameLevel;
 import com.hercules.game.PlayScreen;
+import com.hercules.gui.ProgressBar;
+import com.hercules.gui.UIResources;
 
 public class Demon extends Character {
 
@@ -17,6 +20,8 @@ public class Demon extends Character {
 	private static final Resource res = ResourceManager.getDemonrResources();
 	private float steps;
 	private boolean inFrustum;
+
+	public ProgressBar healthBar;
 
 	protected float deathTime;
 
@@ -62,6 +67,8 @@ public class Demon extends Character {
 
 		this.backStep = backStep;
 		this.forthStep = forthStep;
+
+		this.healthBar = new ProgressBar(new Texture(UIResources.pathUI + "blank.png"), PlayScreen.state);
 
 		count += 1;
 	}
@@ -110,6 +117,8 @@ public class Demon extends Character {
 	@Override
 	public void animate(float thresholdX, float thresholdY) {
 
+		healthBar.setValue(status.getHealth() / 100.0f);
+
 		float x = this.getPosX() * World2D.GU - this.getTileWidth() / 2 + status.getDir() * thresholdX;
 		float y = this.getPosY() * World2D.GU - this.getTileHeight() / 2 + thresholdY;
 
@@ -134,6 +143,7 @@ public class Demon extends Character {
 
 					this.status.setCurrentMode("idle");
 				}
+
 			}
 
 			else if (this.deathTime - Gdx.graphics.getDeltaTime() > 0.0f) { // Death
@@ -173,10 +183,16 @@ public class Demon extends Character {
 
 				setInFrustum(true);
 				status.setCurrentMode("walk");
+
 			}
 
 			else {
 				setInFrustum(false);
+			}
+
+			if (Math.abs(playerPos.x - demonPos.x) <= (2 * distance)) {
+
+				healthBar.render(World2D.SCREEN_WIDTH / 2 - 256.0f, 0.0f, 500.0f * healthBar.getValue(), 20);
 			}
 
 			if (status.isHit() && status.getCurrentMode().equals("attack")) {
@@ -188,7 +204,7 @@ public class Demon extends Character {
 
 					player.status.setCurrentMode("death");
 
-					PlayScreen.healthBar.setValue(player.status.getHealth() / 100.0f);
+					Player.healthBar.setValue(player.status.getHealth() / 100.0f);
 
 					PlayScreen.endGameTime = System.currentTimeMillis();
 
@@ -196,7 +212,7 @@ public class Demon extends Character {
 				}
 
 				player.status.addHealth(-1.0f * damageScale);
-				PlayScreen.healthBar.setValue(player.status.getHealth() / 100.0f);
+				Player.healthBar.setValue(player.status.getHealth() / 100.0f);
 
 			}
 		}

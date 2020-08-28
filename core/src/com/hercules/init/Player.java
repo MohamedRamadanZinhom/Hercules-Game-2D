@@ -6,6 +6,7 @@ import java.security.KeyException;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.engine.world.Body2D;
@@ -13,10 +14,14 @@ import com.engine.world.World2D;
 import com.hercules.game.GameAdapter;
 import com.hercules.game.GameLevel;
 import com.hercules.game.PlayScreen;
+import com.hercules.gui.ProgressBar;
+import com.hercules.gui.UIResources;
 
 public class Player extends Character {
 
 	private static final Resource res = ResourceManager.getPlayerResources_2();
+	public static ProgressBar healthBar = new ProgressBar(new Texture(UIResources.pathUI + "blank.png"),
+			PlayScreen.state);;
 
 	/**
 	 * @param spritesDirname: String [][] - 2d array, each dir specifies, array of
@@ -154,6 +159,9 @@ public class Player extends Character {
 					status.setCurrentMode("idle");
 				}
 			}
+
+			healthBar.render(World2D.SCREEN_WIDTH / 2 - 256.0f, World2D.SCREEN_HEIGHT - 20,
+					500.0f * healthBar.getValue(), 20);
 		}
 
 		else { // Death

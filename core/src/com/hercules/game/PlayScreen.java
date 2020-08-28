@@ -4,10 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
-import com.engine.world.World2D;
-import com.hercules.gui.ProgressBar;
-import com.hercules.gui.UIResources;
+
 import com.hercules.init.CharacterStatus;
 import com.hercules.init.Demon;
 import com.hercules.init.Player;
@@ -17,7 +14,7 @@ public class PlayScreen implements Screen {
 	public static long endGameTime = -1L;
 
 	// GameState
-	public GameState state;
+	public static GameState state;
 
 	// ============ World
 	public GameLevel level;
@@ -54,9 +51,9 @@ public class PlayScreen implements Screen {
 
 	public static final float attackDistance = 190.0f;
 
-	public static ProgressBar healthBar;
-
 	public PlayScreen(GameState game) {
+
+		state = game;
 
 		level = new GameLevel(levels[0]);
 
@@ -73,10 +70,6 @@ public class PlayScreen implements Screen {
 
 		demon = new Demon(demonStatus, forthStep, backStep);
 		demon.initActor(level.world2d);
-
-		this.state = game;
-
-		healthBar = new ProgressBar(new Texture(UIResources.pathUI + "blank.png"), this.state);
 
 	}
 
@@ -103,19 +96,18 @@ public class PlayScreen implements Screen {
 		player.update(true);
 
 		// Enemy
-		demon.wait(player, attackDistance);
 		demon.update(true);
 
 		// World Render
 		level.render();
+		
+		// Enemy state 
+		demon.wait(player, attackDistance);
 
 		// Character - animate
 		player.animate(100.0f, 70.0f);
 		demon.animate(50.0f, 10.0f);
 
-		// UI - healthBar
-		healthBar.render(World2D.SCREEN_WIDTH / 2 - 256.0f, World2D.SCREEN_HEIGHT - 20, 500.0f * healthBar.getValue(),
-				20);
 	}
 
 	@Override

@@ -100,7 +100,7 @@ public class GameMenu implements Screen {
 
 		state.batch.draw(UIResources.MenuBackGround, 0, 0); // for the backGround image of Screen
 
-		Button_Animation();
+		animate(); // animate buttons
 
 		UIResources.sound.Music_Play(UIResources.Volume);
 
@@ -141,12 +141,13 @@ public class GameMenu implements Screen {
 		state.batch.draw(img, x, y, width, height);
 	}
 
-	public final void Button_Animation() {
+	public final void animate() {
 
 		if ((Gdx.input.getX() < UIResources.play_button_X + UIResources.play_button_width
 				+ playButton.getButton().getWidth() && Gdx.input.getX() > UIResources.play_button_X)
 				&& (Gdx.input.getY() < UIResources.play_button_Y + UIResources.play_button_height - 50
 						&& Gdx.input.getY() > UIResources.play_button_Y - 50)) {
+
 			DrawImage(UIResources.PlayButton_Active, UIResources.play_button_X - 20, UIResources.play_button_Y,
 					UIResources.play_button_width, UIResources.play_button_height);
 
