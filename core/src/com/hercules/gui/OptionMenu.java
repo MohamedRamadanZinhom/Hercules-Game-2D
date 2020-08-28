@@ -87,7 +87,6 @@ public class OptionMenu implements Screen {
 
 		game.batch.begin();
 		game.batch.draw(UIResources.MenuBackGround, 0, 0); // for the backGround image of Screen .....>>
-		game.batch.end();
 
 		GlyphLayout layout = new GlyphLayout(soundfont, "Volume : " + UIResources.Volume);
 		soundfont.draw(game.batch, layout, Gdx.graphics.getWidth() / 2 - layout.width / 2,
@@ -96,6 +95,7 @@ public class OptionMenu implements Screen {
 		stage.act();
 		stage.draw();
 
+		game.batch.end();
 	}
 
 	@Override
