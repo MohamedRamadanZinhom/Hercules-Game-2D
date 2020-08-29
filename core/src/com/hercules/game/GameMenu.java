@@ -102,7 +102,7 @@ public class GameMenu implements Screen {
 
 		animate(); // animate buttons
 
-		UIResources.sound.Music_Play(UIResources.Volume);
+		UIResources.sound.play(100.0f);
 
 		stage.act();
 		stage.draw();

@@ -15,25 +15,27 @@ public class GameMusic {
 
 	}
 
-	public void Music_Play(float Volume) {
+	public void play(float Volume) {
+
 		music.setLooping(true);
 		music.setVolume(Volume);
 		music.play();
 	}
 
-	public void Music_Stop() {
+	public void stop() {
 		music.setLooping(false);
 		music.stop();
 	}
 
-	public void Music_Pause() {
+	public void pause() {
+
 		music.setLooping(false);
 		music.pause();
 	}
 
 	public Music getsound() {
-		return this.music;
+
+		return music;
 
 	}
-
 }

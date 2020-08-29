@@ -5,7 +5,6 @@ package com.hercules.game;
 import java.util.HashMap;
 
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.engine.loader.MapGenerator;
 import com.engine.ui.ConsoleLogger;
 import com.engine.world.BodyProperty;
 import com.engine.world.Camera2D;
@@ -121,6 +120,6 @@ public class GameLevel { // No. of Levels = 5
 	public void dispose() {
 
 		this.world2d.dispose();
-		MapGenerator.dispose();
+		this.gameMap.dispose();
 	}
 }

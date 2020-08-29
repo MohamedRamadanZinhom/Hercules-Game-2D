@@ -25,6 +25,8 @@ public class World {
 
 	public static final short BIT_ANY = -1;
 
+	public MapGenerator mapGenerator;
+
 	/**
 	 * @param mainDir
 	 * @param mapFname
@@ -32,11 +34,13 @@ public class World {
 	 */
 	public World(String mainDir, String[] mapFname, String[] mapId) {
 
+		mapGenerator = new MapGenerator();
+
 		for (int i = 0; i < mapId.length; i++) {
 
 			try {
 
-				MapGenerator.setMap(mainDir, mapFname[i], mapId[i]);
+				mapGenerator.setMap(mainDir, mapFname[i], mapId[i]);
 
 			} catch (OverwriteException error) {
 
@@ -64,7 +68,7 @@ public class World {
 
 		try {
 
-			world = MapGenerator.buildWorld(mapId, bodyTypeSignature, gravityX, gravityY, doSleep, GU);
+			world = mapGenerator.buildWorld(mapId, bodyTypeSignature, gravityX, gravityY, doSleep, GU);
 
 		} catch (ValidationException error) {
 
@@ -78,11 +82,16 @@ public class World {
 
 		try {
 
-			MapGenerator.renderMap(mapId, envCam);
+			mapGenerator.renderMap(mapId, envCam);
 
 		} catch (KeyException error) {
 
 			error.printStackTrace();
 		}
+	}
+
+	public void dispose() {
+
+		mapGenerator.dispose();
 	}
 }

@@ -70,6 +70,7 @@ class Map {
 	}
 
 	public void dispose() {
+
 		tiledMap.dispose();
 		map.dispose();
 	}

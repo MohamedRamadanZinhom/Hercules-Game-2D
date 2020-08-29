@@ -155,9 +155,27 @@ public abstract class Character {
 	public String getWeaponId() {
 		return this.typeId + "-" + this.weaponName;
 	}
-	
+
 	public boolean isDied() {
 		return status.isDied();
 	}
 
+	public void activate() {
+
+		weaponMaskR.setActive(true);
+		weaponMaskL.setActive(true);
+		actor.setActive(true);
+	}
+
+	public boolean isActivate() {
+
+		return actor.isActive() && weaponMaskR.isActive() && weaponMaskL.isActive();
+	}
+
+	public void deactivate() {
+
+		actor.setActive(false);
+		weaponMaskR.setActive(false);
+		weaponMaskL.setActive(false);
+	}
 }

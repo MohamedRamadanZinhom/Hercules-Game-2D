@@ -17,6 +17,7 @@ public class CharacterStatus {
 	private float runScale;
 	private float jumpScale;
 	private float smashingScale;
+	private float damageScale;
 
 	// dir: int - sprite index, ex. index: dir = 0 - is right dir sprite, dir
 	private int dir;
@@ -30,7 +31,7 @@ public class CharacterStatus {
 	private boolean onBound;
 
 	public CharacterStatus(Vector2 startingPos, Vector2 initialVelocity, float runScale, float jumpScale,
-			float smashingScale, int dir, String currentMode, float health, boolean died) {
+			float smashingScale, float damageScale, int dir, String currentMode, float health, boolean died) {
 
 		this.startingPos = startingPos;
 
@@ -50,9 +51,11 @@ public class CharacterStatus {
 		this.setOnBound(false);
 		this.setHit(false);
 
+		this.setDamageScale(damageScale);
+
 	}
 
-	public CharacterStatus(Vector2 startingPos, Vector2 initialVelocity, Vector3 movementScale, int dir,
+	public CharacterStatus(Vector2 startingPos, Vector2 initialVelocity, Vector3 movementScale, float damageScale, int dir,
 			String currentMode, float health, boolean died) {
 
 		this.startingPos = startingPos;
@@ -72,10 +75,13 @@ public class CharacterStatus {
 		this.setOnGround(false);
 		this.setOnBound(false);
 		this.setHit(false);
+
+		this.setDamageScale(damageScale);
+
 	}
 
 	public CharacterStatus(float startingPosX, float startingPosY, float velocityX, float velocityY, float runScale,
-			float jumpScale, float smashingScale, int dir, String currentMode, float health, boolean died) {
+			float jumpScale, float smashingScale, float damageScale, int dir, String currentMode, float health, boolean died) {
 
 		this.startingPos = new Vector2(startingPosX, startingPosY);
 
@@ -94,10 +100,13 @@ public class CharacterStatus {
 		this.setOnGround(false);
 		this.setOnBound(false);
 		this.setHit(false);
+
+		this.setDamageScale(damageScale);
+
 	}
 
 	public CharacterStatus(float startingPosX, float startingPosY, float velocityX, float runScale, float jumpScale,
-			float smashingScale, int dir, String currentMode, float health, boolean died) {
+			float smashingScale, float damageScale, int dir, String currentMode, float health, boolean died) {
 
 		this.startingPos = new Vector2(startingPosX, startingPosY);
 
@@ -116,6 +125,8 @@ public class CharacterStatus {
 		this.setOnGround(false);
 		this.setOnBound(false);
 		this.setHit(false);
+
+		this.setDamageScale(damageScale);
 	}
 
 	/**
@@ -345,6 +356,20 @@ public class CharacterStatus {
 	 */
 	public void setOnBound(boolean onBound) {
 		this.onBound = onBound;
+	}
+
+	/**
+	 * @return the damageScale
+	 */
+	public float getDamageScale() {
+		return damageScale;
+	}
+
+	/**
+	 * @param damageScale the damageScale to set
+	 */
+	public void setDamageScale(float damageScale) {
+		this.damageScale = damageScale;
 	}
 
 }

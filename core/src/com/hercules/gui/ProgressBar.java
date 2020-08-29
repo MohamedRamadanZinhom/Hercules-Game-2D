@@ -7,14 +7,14 @@ import com.hercules.game.GameState;
 
 public class ProgressBar {
 
-	private float Value;
+	private float value;
 	private Texture image;
 	private final GameState game;
 
 	public ProgressBar(Texture img, GameState game) {
 
 		this.image = img;
-		this.Value = 1;
+		this.value = 1.0f;
 		this.game = game;
 	}
 
@@ -36,11 +36,11 @@ public class ProgressBar {
 
 	public void setValue(float value) {
 		if (value >= -0.5)
-			this.Value = value;
+			this.value = value;
 	}
 
 	public float getValue() {
-		return this.Value;
+		return this.value;
 	}
 
 	public SpriteBatch getGameBatch() {

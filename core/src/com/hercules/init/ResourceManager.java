@@ -79,8 +79,8 @@ public final class ResourceManager {
 				put("walk", 0.4f);
 				put("run", 0.4f);
 				put("jump", 0.4f);
-				put("jump_attack", 0.4f);
-				put("attack", 0.3f);
+				put("jump_attack", 0.5f);
+				put("attack", 0.5f);
 				put("death", 0.4f);
 
 			}

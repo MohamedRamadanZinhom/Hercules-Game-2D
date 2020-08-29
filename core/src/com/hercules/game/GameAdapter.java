@@ -3,6 +3,8 @@
 package com.hercules.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 
 public class GameAdapter extends ApplicationAdapter {
 
@@ -28,6 +30,11 @@ public class GameAdapter extends ApplicationAdapter {
 
 	@Override
 	public void render() {
+
+		if (Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
+
+			Gdx.app.exit();
+		}
 
 		gameState.render();
 	}

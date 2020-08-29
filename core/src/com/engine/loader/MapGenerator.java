@@ -3,7 +3,6 @@
 package com.engine.loader;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map.Entry;
 
 import javax.xml.bind.ValidationException;
@@ -37,10 +36,11 @@ public class MapGenerator {
 	 * {@link #renderMap(String, OrthographicCamera)}
 	 */
 
-	private static HashMap<String, Map> mapsRepo = new HashMap<String, Map>();
+	private HashMap<String, Map> mapsRepo;
 
 	public MapGenerator() {
 
+		mapsRepo = new HashMap<String, Map>();
 	}
 
 	/**
@@ -53,7 +53,7 @@ public class MapGenerator {
 	 * @throws HashMapOverwrite if TiledMap id (key) already exists in the maps
 	 *                          repository. {@link #setMap(String, String, int)}
 	 */
-	public static void setMap(String path, String mapFile, String id) throws OverwriteException {
+	public void setMap(String path, String mapFile, String id) throws OverwriteException {
 
 		// Check if id exist
 		if (mapsRepo.containsKey(id)) {
@@ -86,7 +86,7 @@ public class MapGenerator {
 	 *                int id) is an overloaded function which accepts overwrite to
 	 *                value for the given id in the maps repository.
 	 */
-	public static void setMap(String path, String mapFile, int id) {
+	public void setMap(String path, String mapFile, int id) {
 
 		// Cast id to String
 		String strId = String.valueOf(id);
@@ -112,7 +112,7 @@ public class MapGenerator {
 	 *               with given id.
 	 * @throws KeyException if id (key) doesn't exists in the maps repository.
 	 */
-	public static void renderMap(String id, Camera2D envCam) throws KeyException {
+	public void renderMap(String id, Camera2D envCam) throws KeyException {
 
 		if (!World2D.onPhysicsDebugMode) {
 
@@ -132,7 +132,7 @@ public class MapGenerator {
 	 * 
 	 * @throws KeyException if id (key) doesn't exists in the maps repository.
 	 */
-	public static Map getMap(String id) throws KeyException {
+	public Map getMap(String id) throws KeyException {
 
 		if (mapsRepo.containsKey(id))
 			return mapsRepo.get(id);
@@ -147,7 +147,7 @@ public class MapGenerator {
 	 * 
 	 * @throws KeyException if id (key) doesn't exists in the maps repository.
 	 */
-	public static TiledMap getTiledMap(String id) throws KeyException {
+	public TiledMap getTiledMap(String id) throws KeyException {
 
 		if (mapsRepo.containsKey(id))
 			return mapsRepo.get(id).getTiledMap();
@@ -160,7 +160,7 @@ public class MapGenerator {
 	 * 
 	 * @return layer's width in tiles.
 	 */
-	public static float getLayerWidth(String id, int layerIndex) {
+	public float getLayerWidth(String id, int layerIndex) {
 
 		float width = 0f;
 
@@ -178,7 +178,7 @@ public class MapGenerator {
 	 * 
 	 * @return TiledMapTileLayer: of given index.
 	 */
-	public static TiledMapTileLayer getLayer(String id, int layerIndex) {
+	public TiledMapTileLayer getLayer(String id, int layerIndex) {
 
 		TiledMapTileLayer layer = null;
 
@@ -196,7 +196,7 @@ public class MapGenerator {
 	 * 
 	 * @return tiles' height in pixels.
 	 */
-	public static float getTileWidth(String id, int layerIndex) {
+	public float getTileWidth(String id, int layerIndex) {
 
 		float tileWidth = 0f;
 
@@ -214,7 +214,7 @@ public class MapGenerator {
 	 * 
 	 * @return layer's height in tiles.
 	 */
-	public static float getLayerHeight(String id, int layerIndex) {
+	public float getLayerHeight(String id, int layerIndex) {
 
 		float height = 0f;
 
@@ -232,7 +232,7 @@ public class MapGenerator {
 	 *
 	 * @return tiles' height in pixels.
 	 */
-	public static float getTileHeight(String id, int layerIndex) {
+	public float getTileHeight(String id, int layerIndex) {
 
 		float tileHeight = 0f;
 
@@ -260,7 +260,7 @@ public class MapGenerator {
 	 * @return World2D object
 	 * @throws ValidationException
 	 */
-	public static World2D buildWorld(String id, HashMap<Integer, BodyProperty> bodyTypeSignature, float gravityX,
+	public World2D buildWorld(String id, HashMap<Integer, BodyProperty> bodyTypeSignature, float gravityX,
 			float gravityY, boolean doSleep, float GU) throws ValidationException {
 
 		World2D world = new World2D(gravityX, gravityY, GU, doSleep);
@@ -367,13 +367,12 @@ public class MapGenerator {
 	 * @param envCam : OrthographicCamera - The camera used to render the TiledMap
 	 *               with given id.
 	 */
-	public static void dispose() {
-		Iterator<Entry<String, Map>> it = mapsRepo.entrySet().iterator();
+	public void dispose() {
 
-		while (it.hasNext()) {
-			Map mapRef = (Map) it.next().getValue();
+		for (String key : mapsRepo.keySet()) {
+
+			Map mapRef = mapsRepo.get(key);
 			mapRef.dispose();
-			it.remove();
 		}
 
 		mapsRepo.clear();

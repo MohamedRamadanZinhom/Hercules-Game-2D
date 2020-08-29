@@ -52,7 +52,7 @@ public class Player extends Character {
 
 		// Player Actor
 		PolygonShape shape = new PolygonShape();
-		shape.setAsBox(40.0f / World2D.GU, 75.0f / World2D.GU);
+		shape.setAsBox(30.0f / World2D.GU, 75.0f / World2D.GU);
 
 		world.createDynamicBody(shape, 0.0f, 0.0f, 1.0f, World.BIT_PLAYER, World.BIT_ANY, false, typeId);
 
@@ -87,7 +87,7 @@ public class Player extends Character {
 	@Override
 	public void animate(float thresholdX, float thresholdY) {
 
-		float damageScale = Gdx.graphics.getDeltaTime() + 1.0f;
+		float damageScale = (Gdx.graphics.getDeltaTime() + 0.1f) * status.getDamageScale();
 
 		float x = this.getPosX() * World2D.GU - this.getTileWidth() / 2 + thresholdX;
 		float y = this.getPosY() * World2D.GU - this.getTileHeight() / 2 + thresholdY;
@@ -133,6 +133,11 @@ public class Player extends Character {
 						}
 
 						CharacterStatus enemyStatus = CharacterStatus.statusRepo.get(key);
+
+						if (!enemyStatus.isHit()) {
+
+							continue;
+						}
 
 						if (enemyStatus.getHealth() - 1.0 * damageScale <= 0.0f) {
 
@@ -208,8 +213,8 @@ public class Player extends Character {
 			float xStep = 0.0f; // speed * scale
 			float yStep = 0.0f; // 10.0f * scale;
 
-			float weaponXStep = 55.0f;
-			float weaponYStep = 50.0f;
+			float weaponXStep = 30.0f;
+			float weaponYStep = 40.0f;
 
 			// Actor
 			Vector2 actorPos = actor.getPosition();
@@ -354,12 +359,10 @@ public class Player extends Character {
 			}
 
 		}
-		
+
 		else {
-			
-			weaponMaskR.setActive(false);
-			weaponMaskL.setActive(false);
-			actor.setActive(false);
+
+			deactivate();
 		}
 
 	}

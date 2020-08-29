@@ -1,13 +1,12 @@
 package com.hercules.game;
 
 import com.badlogic.gdx.Game;
-
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class GameState extends Game {
 
 	public SpriteBatch batch;
-	// Texture img;
 
 	public GameState() {
 
@@ -18,18 +17,20 @@ public class GameState extends Game {
 	public void create() {
 
 		batch = new SpriteBatch();
-		super.setScreen(new GameMenu(this)); // <<-- To set which screen will be shown -->> ?!
+		super.setScreen(new GameMenu(this));
 
-	}
-
-	public void render() {
-
-		super.render();
 	}
 
 	@Override
 	public void dispose() {
+
 		batch.dispose();
 		super.dispose();
 	}
+
+	public void setState(Screen screen) {
+
+		this.setScreen(this.screen);
+	}
+
 }

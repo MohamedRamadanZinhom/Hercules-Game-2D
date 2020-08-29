@@ -50,7 +50,7 @@ public class OptionMenu implements Screen {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 
-				UIResources.sound.Music_Pause();
+				UIResources.sound.pause();
 
 			}
 
@@ -64,7 +64,7 @@ public class OptionMenu implements Screen {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 
-				UIResources.sound.Music_Play(100.0f);
+				UIResources.sound.play(100.0f);
 
 			}
 

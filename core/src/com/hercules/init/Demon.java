@@ -171,9 +171,9 @@ public class Demon extends Character {
 			Vector2 playerPos = player.actor.getPosition().scl(World2D.GU);
 			Vector2 demonPos = actor.getPosition().scl(World2D.GU);
 
-			float damageScale = Gdx.graphics.getDeltaTime() + 0.4f;
+			float damageScale = (Gdx.graphics.getDeltaTime() + 0.1f) * status.getDamageScale();
 
-			if (Math.abs(playerPos.x - demonPos.x) <= distance) {
+			if (Math.abs(playerPos.x - demonPos.x) <= distance && Math.abs(playerPos.y - demonPos.y) < 200.0f) {
 
 				status.setDir(-player.status.getDir());
 				status.setCurrentMode("attack");
@@ -223,11 +223,12 @@ public class Demon extends Character {
 	public void update(boolean deltaTimeScale) {
 
 		if (!isDied()) {
+
 			float scale = deltaTimeScale ? Gdx.graphics.getDeltaTime() + 1.0f : 1.0f;
 
 			float xStep = 0.0f;
 
-			float weaponXStep = 50.0f;
+			float weaponXStep = 80.0f;
 			float weaponYStep = 55.0f;
 
 			if (status.getCurrentMode().equals("attack")) {
@@ -280,15 +281,16 @@ public class Demon extends Character {
 			this.weaponMaskL.setTransform(lWeaponMaskPos, 0.0f);
 
 			this.actor.applyForceToCenter(0.0f, -9.81f, true); // Y-axis
-
 		}
 
-		else {
+		else if (isDied() && isActivate()) {
 
-			weaponMaskR.setActive(false);
-			weaponMaskL.setActive(false);
-			actor.setActive(false);
+			deactivate();
+
+			PlayScreen.op += 1;
+			PlayScreen.demon[PlayScreen.op].activate();
 		}
+
 	}
 
 	/**
