@@ -19,13 +19,12 @@ public class GameAdapter extends ApplicationAdapter {
 	public static final float gravityX = 0.0f;
 	public static final float gravityY = -9.81f;
 
-	public static GameState gameState;
+	public static GameState state = new GameState();
 
 	@Override
 	public void create() {
 
-		gameState = new GameState();
-
+		state.create();
 	}
 
 	@Override
@@ -36,12 +35,19 @@ public class GameAdapter extends ApplicationAdapter {
 			Gdx.app.exit();
 		}
 
-		gameState.render();
+		if (Gdx.input.isKeyJustPressed(Keys.R)) {
+
+			GameAdapter.state.updateState("menu-screen");
+		}
+
+		state.render();
 	}
 
 	@Override
 	public void dispose() {
-		gameState.dispose();
+
+		state.dispose();
+
 	}
 
 }

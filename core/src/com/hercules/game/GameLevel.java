@@ -42,7 +42,7 @@ public class GameLevel { // No. of Levels = 5
 
 		if (level < 0 || level > mapFname.length) {
 
-			ConsoleLogger.setWarning(GameLevel.class.getName(), "Invalid Game Level = " + Integer.toString(level));
+			ConsoleLogger.setWarning("GameLevel", "Invalid Game Level = " + Integer.toString(level));
 
 			this.level = 1;
 		}

@@ -45,35 +45,39 @@ public class UIResources {
 	/* << Play Button >> */
 	public static final float play_button_width = 50;
 	public static final float play_button_height = 50;
+
 	public static final float play_button_X = World2D.SCREEN_WIDTH / 2 - 150.0f;
-	public static final float play_button_Y = Gdx.graphics.getHeight() / 2;
+	public static final float play_button_Y = World2D.SCREEN_HEIGHT / 2;
 	/* <<---------------------------------------------->> */
 
 	/* << Setting Button >> */
-	public static final float Setting_button_width = 45;
-	public static final float Setting_button_height = 45;
+	public static final float Setting_button_width = 50;
+	public static final float Setting_button_height = 50;
+
 	public static final float Setting_button_X = World2D.SCREEN_WIDTH / 2 - 150.0f;
-	public static final float Setting_button_Y = Gdx.graphics.getHeight() / 2 - 75;
+	public static final float Setting_button_Y = World2D.SCREEN_HEIGHT / 2 - 75;
 	/* <<---------------------------------------------->> */
 
 	/* << Sounds Button >> */
 	public static final float Sounds_button_width = 50;
 	public static final float Sounds_button_height = 50;
+
 	public static final float Sounds_button_X = World2D.SCREEN_WIDTH / 2 - 150.0f;
-	public static final float Sounds_button_Y = Gdx.graphics.getHeight() - 50;
+	public static final float Sounds_button_Y = World2D.SCREEN_HEIGHT - 50;
 	/* <<---------------------------------------------->> */
 
 	/* << Exit Button >> */
-	public static final float Exit_button_width = 45;
-	public static final float Exit_button_height = 45;
-	public static final float Exit_button_X = Gdx.graphics.getWidth() / 2 - 30;
-	public static final float Exit_button_Y = Gdx.graphics.getHeight() / 2 - 150;
+	public static final float Exit_button_width = 50;
+	public static final float Exit_button_height = 50;
+
+	public static final float Exit_button_X = World2D.SCREEN_WIDTH / 2 - 150.0f;
+	public static final float Exit_button_Y = World2D.SCREEN_HEIGHT / 2 - 150.0f;
 	/* <<---------------------------------------------->> */
 
 	// <<----End sub---->>
 
 	// <<----Sounds Files---->>
-	public static float Volume = 100f;
+	public static int Volume = 100;
 	public static final GameMusic sound = new GameMusic(
 			Gdx.files.internal(pathUI + "Victory - AShamaluevMusic.mp3").toString());
 

@@ -20,8 +20,7 @@ import com.hercules.gui.UIResources;
 public class Player extends Character {
 
 	private static final Resource res = ResourceManager.getPlayerResources_2();
-	public static ProgressBar healthBar = new ProgressBar(new Texture(UIResources.pathUI + "blank.png"),
-			PlayScreen.state);;
+	public static ProgressBar healthBar = new ProgressBar(new Texture(UIResources.pathUI + "blank.png"));
 
 	/**
 	 * @param spritesDirname: String [][] - 2d array, each dir specifies, array of

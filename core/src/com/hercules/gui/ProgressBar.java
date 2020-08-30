@@ -3,19 +3,21 @@ package com.hercules.gui;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.hercules.game.GameState;
 
 public class ProgressBar {
 
-	private float value;
+	private SpriteBatch batch;
 	private Texture image;
-	private final GameState game;
 
-	public ProgressBar(Texture img, GameState game) {
+	private float value;
 
+	public ProgressBar(Texture img) {
+
+		this.batch = new SpriteBatch();
 		this.image = img;
+
 		this.value = 1.0f;
-		this.game = game;
+
 	}
 
 	public void render(float x, float y, float width, float height) {
@@ -28,9 +30,9 @@ public class ProgressBar {
 			setBatchColor(Color.valueOf("#F31912"));
 		}
 
-		this.game.batch.begin();
-		this.game.batch.draw(this.image, x, y, width, height);
-		this.game.batch.end();
+		batch.begin();
+		batch.draw(this.image, x, y, width, height);
+		batch.end();
 
 	}
 
@@ -43,12 +45,8 @@ public class ProgressBar {
 		return this.value;
 	}
 
-	public SpriteBatch getGameBatch() {
-		return this.game.batch;
-	}
-
 	public void setBatchColor(Color color) {
-		this.game.batch.setColor(color);
+		batch.setColor(color);
 	}
 
 }

@@ -68,7 +68,7 @@ public class Demon extends Character {
 		this.backStep = backStep;
 		this.forthStep = forthStep;
 
-		this.healthBar = new ProgressBar(new Texture(UIResources.pathUI + "blank.png"), PlayScreen.state);
+		this.healthBar = new ProgressBar(new Texture(UIResources.pathUI + "blank.png"));
 
 		count += 1;
 	}

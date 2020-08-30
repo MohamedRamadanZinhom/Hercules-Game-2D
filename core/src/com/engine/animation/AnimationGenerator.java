@@ -13,7 +13,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.engine.exception.InconsistentSpriteSheetException;
 import com.engine.exception.OverwriteException;
 
-// AnimationGenerator : handle only horizontal sprite sheets
 public class AnimationGenerator {
 
 	private float tileWidth;
@@ -141,7 +140,8 @@ public class AnimationGenerator {
 		}
 	}
 
-	public void animate(String mode, float x, float y, float scale, HashMap<String, Float> FPS_SCALE) throws KeyException {
+	public void animate(String mode, float x, float y, float scale, HashMap<String, Float> FPS_SCALE)
+			throws KeyException {
 
 		if (!FPS_SCALE.containsKey(mode)) {
 			throw new KeyException("FPS_SCALE: Key = " + mode + " is Not Specified");
@@ -202,11 +202,12 @@ public class AnimationGenerator {
 	public SpriteBatch getSpriteBatch() {
 		return spriteBatch;
 	}
-	
+
 	public float getAnimationDuration(String key) {
-		
+
 		return animationRepo.get(key).getAnimationDuration();
 	}
+
 	/**
 	 * Dispose, SpriteBatch, Texture
 	 */

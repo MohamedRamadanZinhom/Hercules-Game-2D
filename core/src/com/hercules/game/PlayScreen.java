@@ -2,7 +2,6 @@ package com.hercules.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
 
 import com.hercules.init.CharacterStatus;
@@ -14,9 +13,6 @@ public class PlayScreen implements Screen {
 	int[] levels = { 0 };
 
 	public static long endGameTime = -1L;
-
-	// GameState
-	public static GameState state;
 
 	// ============ World
 	public static GameLevel level;
@@ -55,11 +51,14 @@ public class PlayScreen implements Screen {
 
 	public static final float attackDistance = 190.0f;
 
-	public static final float damageScaleDemon = 2.0f;
+	public static final float[] damageScaleDemon = { 1.0f, 1.5f };
 
-	public PlayScreen(GameState game) {
+	public PlayScreen() {
 
-		state = game;
+		create();
+	}
+
+	public void create() {
 
 		level = new GameLevel(levels[0]);
 
@@ -77,7 +76,7 @@ public class PlayScreen implements Screen {
 		for (int i = 0; i < n; i++) {
 
 			demonStatus[i] = new CharacterStatus(posXD[i], posYD[i], speedD, runScaleD, jumpScaleD, smashingScaleD,
-					damageScaleDemon, 1, "idle", 100.0f, false);
+					damageScaleDemon[i], 1, "idle", 100.0f, false);
 
 			demon[i] = new Demon(demonStatus[i], forthStep, backStep);
 
@@ -88,7 +87,6 @@ public class PlayScreen implements Screen {
 				demon[i].deactivate();
 			}
 		}
-
 	}
 
 	@Override
@@ -99,13 +97,9 @@ public class PlayScreen implements Screen {
 	@Override
 	public void render(float delta) {
 
-		if (Gdx.input.isKeyJustPressed(Keys.R)) {
-			// return to menu
-		}
-
 		if (!demon[op].isActivate() && op >= n) {
 
-			// return to menu
+			// return to menu, create new play-screen
 		}
 
 		Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);

@@ -5,13 +5,13 @@ import com.badlogic.gdx.audio.Music;
 
 public class GameMusic {
 
-	private final String Path;
+	private final String path;
 	private final Music music;
 
 	public GameMusic(String path) {
 
-		this.Path = path;
-		this.music = Gdx.audio.newMusic(Gdx.files.internal(this.Path));
+		this.path = path;
+		this.music = Gdx.audio.newMusic(Gdx.files.internal(this.path));
 
 	}
 
